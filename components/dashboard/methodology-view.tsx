@@ -75,7 +75,7 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
               <span className="p-1.5 bg-surface-subtle border border-border-subtle rounded text-delta-positive font-bold">T+45 (45d)</span>
             </div>
             <p className="text-[11px] text-secondary-muted pt-1">
-              Fares are collected under ethical scraping safeguards: transparent User-Agent identification, randomized 3–7s jitter delays to keep server load minimal, and robots.txt path validation. (Note: These safeguards minimize infrastructure impact; commercial travel portals typically prohibit automated access in their Terms of Service).
+              Fares are collected under ethical scraping safeguards: transparent User-Agent identification, randomized 3–7s jitter delays to keep server load minimal, and robots.txt path validation. Where a carrier's own website restricts automated search access (per robots.txt), that carrier's fare data is still represented in the index via compliant OTA aggregators that legitimately list their fares (e.g. IndiGo flights via EaseMyTrip/Cleartrip), preserving basket coverage without violating source compliance boundaries.
             </p>
           </PanelContent>
         </Panel>

@@ -1,20 +1,19 @@
 import { IScraperSource } from '../core/types';
-import { IndiGoScraper } from './indigo';
 import { EaseMyTripScraper } from './easemytrip';
 import { CleartripScraper } from './cleartrip';
 import { AkasaScraper } from './akasa';
-import { MakeMyTripScraper } from './makemytrip';
+import { AirIndiaScraper } from './airindia';
 
 export class ScraperRegistry {
   private static instance: ScraperRegistry;
   private sources: Map<string, IScraperSource> = new Map();
 
   private constructor() {
-    this.register(new IndiGoScraper());
+    // Active compliant scraper sources only
     this.register(new EaseMyTripScraper());
     this.register(new CleartripScraper());
     this.register(new AkasaScraper());
-    this.register(new MakeMyTripScraper());
+    this.register(new AirIndiaScraper());
   }
 
   public static getInstance(): ScraperRegistry {
