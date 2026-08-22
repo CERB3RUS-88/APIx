@@ -2,6 +2,7 @@ import { IScraperSource } from '../core/types';
 import { IndiGoScraper } from './indigo';
 import { EaseMyTripScraper } from './easemytrip';
 import { CleartripScraper } from './cleartrip';
+import { AkasaScraper } from './akasa';
 import { MakeMyTripScraper } from './makemytrip';
 
 export class ScraperRegistry {
@@ -12,6 +13,7 @@ export class ScraperRegistry {
     this.register(new IndiGoScraper());
     this.register(new EaseMyTripScraper());
     this.register(new CleartripScraper());
+    this.register(new AkasaScraper());
     this.register(new MakeMyTripScraper());
   }
 
@@ -27,6 +29,12 @@ export class ScraperRegistry {
   }
 
   public get(name: string): IScraperSource | undefined {
+    const key = name.toLowerCase().replace(/[-_ ]/g, '');
+    for (const [k, v] of this.sources.entries()) {
+      if (k.replace(/[-_ ]/g, '') === key) {
+        return v;
+      }
+    }
     return this.sources.get(name.toLowerCase());
   }
 

@@ -1,0 +1,77 @@
+name: APIx Daily Automated Scraper & Index Engine
+
+on:
+  schedule:
+    # Runs daily at 00:00 UTC (05:30 AM IST)
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      routes:
+        description: 'Routes to scrape (comma-separated or "all")'
+        required: false
+        default: 'all'
+      sources:
+        description: 'Sources to scrape (comma-separated or "all")'
+        required: false
+        default: 'easemytrip,cleartrip,akasa'
+      windows:
+        description: 'Booking windows (comma-separated or "all")'
+        required: false
+        default: 'T+1,T+7,T+15,T+30,T+45'
+
+concurrency:
+  group: apix-daily-scraper
+  cancel-in-progress: false
+
+jobs:
+  scrape-and-index:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Setup Node.js 20.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Install Playwright Browsers & Dependencies
+        run: npx playwright install --with-deps chromium
+
+      - name: Execute Real Playwright Scraper across Basket
+        run: |
+          npm run scrape -- --routes all --sources easemytrip,cleartrip,akasa --windows T+1,T+7,T+15,T+30,T+45
+
+      - name: Execute Data Cleaning & Outlier Detection ETL
+        run: |
+          npm run clean
+
+      - name: Compute Official Laspeyres Index & Time Series
+        run: |
+          npm run compute-index
+
+      - name: Commit and Push Updated Data Records
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "APIx PriceIndex Bot"
+          
+          git add data/snapshots/ data/cleaned/ data/index/ data/runs/
+          
+          # Check if there are changes to commit
+          if git diff --staged --quiet; then
+            echo "No new data changes to commit."
+          else
+            git commit -m "chore(data): automated daily scrape & index computation [skip ci]"
+            git push origin main
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

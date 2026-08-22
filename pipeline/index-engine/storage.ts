@@ -73,12 +73,28 @@ export class IndexStorage {
 
   private async updateTimeSeriesCsv(csvPath: string, index: DailyIndexRecord) {
     const header = 'index_date,frequency,apix_value,base_period_value,raw_weighted_fare,delta_24h,records_sampled,outliers_excluded\n';
-    const row = `${index.index_date},${index.frequency},${index.apix_value},${index.base_period_value},${index.raw_weighted_fare},${index.delta_24h || 0},${index.total_records_processed},${index.outliers_excluded_count}\n`;
+    const row = `${index.index_date},${index.frequency},${index.apix_value},${index.base_period_value},${index.raw_weighted_fare},${index.delta_24h || 0},${index.total_records_processed},${index.outliers_excluded_count}`;
 
-    if (!fs.existsSync(csvPath)) {
-      await fs.promises.writeFile(csvPath, header + row, 'utf-8');
-    } else {
-      await fs.promises.appendFile(csvPath, row, 'utf-8');
+    const dateMap = new Map<string, string>();
+
+    if (fs.existsSync(csvPath)) {
+      const existing = fs.readFileSync(csvPath, 'utf-8');
+      const lines = existing.trim().split('\n').slice(1);
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts[0]) {
+          dateMap.set(parts[0], line);
+        }
+      }
     }
+
+    // Upsert today's record
+    dateMap.set(index.index_date, row);
+
+    // Sort by date ascending
+    const sortedDates = Array.from(dateMap.keys()).sort();
+    const outputRows = sortedDates.map((d) => dateMap.get(d)!);
+
+    await fs.promises.writeFile(csvPath, header + outputRows.join('\n') + '\n', 'utf-8');
   }
 }

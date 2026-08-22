@@ -14,7 +14,7 @@ import { SnapshotStorage } from './core/storage';
 import { ScraperRegistry } from './sources/registry';
 import { HONEST_USER_AGENT } from './core/user-agent';
 import { ETLPipeline } from '../pipeline/cleaner/pipeline';
-import { LaspeyresIndexEngine } from '../pipeline/index-engine/engine';
+import { IndexComputationEngine } from '../pipeline/index-engine/engine';
 
 const DEFAULT_ROUTES: RouteTarget[] = [
   { id: 'DEL-BOM', origin_code: 'DEL', destination_code: 'BOM', dgca_traffic_weight: 0.185, active: true },
@@ -280,8 +280,8 @@ export class ScraperRunner {
 
       if (etlSummary.records_inserted > 0) {
         console.log(`[Auto-Trigger] Launching Laspeyres Index Engine calculation...`);
-        const indexEngine = new LaspeyresIndexEngine();
-        await indexEngine.executeIndexRun({ date: 'latest' });
+        const indexEngine = new IndexComputationEngine();
+        await indexEngine.computeIndex({ date: 'latest' });
       }
     } catch (pipelineErr) {
       console.warn(`[Auto-Trigger Warning] Pipeline execution note: ${(pipelineErr as Error).message}`);
