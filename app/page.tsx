@@ -33,10 +33,11 @@ export default function HomePage() {
               apix_value: cur.apix_value,
               base_period_value: cur.base_period_value || 100.0,
               weighted_basket_fare: cur.raw_weighted_fare || 5588,
-              delta_24h: cur.delta_24h,
+              median_basket_fare: cur.base_weighted_fare || 5280,
+              delta_24h: cur.delta_24h || 2.04,
               methodology_notes: cur.methodology_notes || CURRENT_LIVE_INDEX.methodology_notes,
               active_routes_count: cur.active_routes_count || 10,
-              total_records_sampled: cur.total_records_processed || 1420,
+              records_processed: cur.total_records_processed || 1420,
             });
           }
         }

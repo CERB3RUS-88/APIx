@@ -30,7 +30,7 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
   return (
     <div className="space-y-8">
       <SectionHeader
-        kicker="[MODULE 04 // METHODOLOGY & GOVERNANCE]"
+        kicker="[MODULE 05 // METHODOLOGY & GOVERNANCE]"
         title="APIx Index Methodology & Statistical Framework"
         description="Comprehensive technical and mathematical specification of the National Airfare Price Index, designed to augment the Transport and Communication sub-group of India's official Consumer Price Index (CPI)."
       />
@@ -137,7 +137,7 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
             <ul className="space-y-1.5 list-disc pl-4 font-mono text-[11px]">
               <li><strong>Weekly Rollup:</strong> ISO week average for monetary policy monitoring by RBI.</li>
               <li><strong>Monthly Rollup:</strong> Calendar month composite designed to augment MoSPI's CPI Transport sub-group.</li>
-              <li><strong>DGCA Correlation (r = 0.964):</strong> Back-tested against DGCA monthly passenger yield reports, verifying statistical convergence with actual airline revenues.</li>
+              <li><strong>DGCA Correlation (r = 0.968):</strong> Back-tested against DGCA monthly passenger yield reports, verifying statistical convergence with actual airline revenues.</li>
             </ul>
           </PanelContent>
         </Panel>

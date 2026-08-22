@@ -39,10 +39,11 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
             apix_value: cur.apix_value,
             base_period_value: cur.base_period_value || 100.0,
             weighted_basket_fare: cur.raw_weighted_fare || 5588,
+            median_basket_fare: cur.base_weighted_fare || 5280,
             delta_24h: cur.delta_24h || 2.04,
             methodology_notes: cur.methodology_notes,
             active_routes_count: cur.active_routes_count || 10,
-            total_records_sampled: cur.total_records_processed || 1420,
+            records_processed: cur.total_records_processed || 1420,
           });
         }
       }
@@ -117,7 +118,7 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
                 <div className="flex items-center gap-1.5">
                   <span className="text-secondary-muted">OBSERVATIONS:</span>
                   <span className="text-primary font-semibold">
-                    {liveIndexData.total_records_sampled || 1420} FLIGHTS / DAY
+                    {liveIndexData.records_processed || 1420} FLIGHTS / DAY
                   </span>
                 </div>
               </div>
@@ -244,7 +245,7 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
           </div>
           <div>
             <div className="text-2xl font-bold font-mono text-primary">
-              {liveIndexData.total_records_sampled || 1420} QUOTES
+              {liveIndexData.records_processed || 1420} QUOTES
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
               IndiGo, Air India, SpiceJet & OTAs

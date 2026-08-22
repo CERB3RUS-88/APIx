@@ -479,7 +479,7 @@ export function parseDgcaCsv(csvText: string): {
       variance_inr: varianceInr,
       variance_pct: variancePct,
       source_report_ref: ref,
-      sample_size_quotes: Math.floor(300 + Math.random() * 150),
+      sample_size_quotes: 350,
       grade,
     });
   }

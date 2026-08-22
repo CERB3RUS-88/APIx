@@ -250,7 +250,7 @@ export function ApiDocsView() {
   return (
     <div className="space-y-8">
       <SectionHeader
-        kicker="[MODULE 05 // PUBLIC REST API]"
+        kicker="[MODULE 06 // PUBLIC REST API]"
         title="APIx Open Data API Specifications"
         description="High-frequency programmatic access to India's official Airfare Price Index time series, route weights, and cleaned flight quotes. Optimized for NSO, RBI econometricians, and algorithmic consumers."
       />

@@ -33,7 +33,7 @@ export function DesignSystemPreview({ audioEnabled }: { audioEnabled: boolean })
   return (
     <div className="space-y-8">
       <SectionHeader
-        kicker="[SYSTEM // 05 DESIGN SYSTEM]"
+        kicker="[SYSTEM // 07 DESIGN SYSTEM]"
         title="APIx Terminal Design System & Primitives"
         description="Opinionated data-instrument aesthetics inspired by airport departure boards and financial index terminals. Pure monospace numerals, high-contrast tokens, zero emoji, zero generic SaaS gradients."
       />

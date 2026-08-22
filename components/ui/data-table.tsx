@@ -35,7 +35,7 @@ export function DataTable<T>({
   dense = true,
   hoverable = true,
   emptyTitle = 'NO ACTIVE CORRIDOR OBSERVATIONS RECORDED',
-  emptyMessage = "No flight quotes match the selected filter criteria. To ingest new data, execute 'npm run scrape' and 'npm run clean' in your terminal.",
+  emptyMessage = 'No flight observations match the selected filter criteria. Awaiting next automated 06:00 IST scheduled ingest batch.',
   onRowClick,
 }: DataTableProps<T>) {
   const [sortColumn, setSortColumn] = React.useState<string | null>(null);
