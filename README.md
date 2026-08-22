@@ -6,6 +6,14 @@ APIx is an end-to-end software platform that scrapes domestic airfare data from 
 
 ---
 
+## 🌐 Live Demo & Deployments
+
+- **Live Production Terminal**: **[https://api-x-chi.vercel.app](https://api-x-chi.vercel.app)**
+- **Live REST API Base**: **[https://api-x-chi.vercel.app/api](https://api-x-chi.vercel.app/api)**
+- **Interactive API Documentation**: **[https://api-x-chi.vercel.app/api-docs](https://api-x-chi.vercel.app/api-docs)**
+
+---
+
 ## 🛫 Key Capabilities
 
 - **Ethical Scraping Safeguards**: Automated, rate-limited (3–7s randomized jitter delay to keep server load minimal), transparent User-Agent identification, and robots.txt path verification across sources (EaseMyTrip, Cleartrip, Akasa Air, Air India). Where a carrier's own website restricts automated search access (per robots.txt), that carrier's fare data is still represented in the index via compliant OTA aggregators that legitimately list their fares (e.g. IndiGo flights via EaseMyTrip/Cleartrip), preserving basket coverage without violating source compliance boundaries.
@@ -13,7 +21,7 @@ APIx is an end-to-end software platform that scrapes domestic airfare data from 
 - **Laspeyres Index Engine**: Aggregates quotes across 5 booking windows ($T+1, T+7, T+15, T+30, T+45$) weighted by official DGCA route volume shares with Jan 2026 base period normalization ($100.00 = ₹5,280$).
 - **Institutional Terminal Dashboard**: High-frequency Solari Split-Flap board with mechanical flip audio, 30D/90D/365D trend line chart, departure route heatmap, and advance-purchase elasticity curves.
 - **Empirical DGCA Ground-Truth Validation**: Validation pending — 1 day of live data collected, accumulating toward first monthly comparison against official DGCA reference circulars.
-- **Open REST API**: High-frequency read-only endpoints (`/api/index`, `/api/routes`, `/api/fares`) with built-in rate limiting (60 req/min) and interactive documentation at `/api-docs`.
+- **Open REST API**: High-frequency read-only endpoints (`/api/index`, `/api/routes`, `/api/fares`, `/api/latest`) with built-in rate limiting (60 req/min) and interactive documentation at `/api-docs`.
 
 ---
 
@@ -26,7 +34,7 @@ APIx is an end-to-end software platform that scrapes domestic airfare data from 
 
 ---
 
-## 🚀 Quick Start
+## 🚀 Quick Start (Local Development)
 
 ### 1. Installation
 
@@ -58,13 +66,17 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 
 ## 📡 Public REST API Endpoints
 
+**Base URL:** `https://api-x-chi.vercel.app` (production) or `http://localhost:3000` (local development)
+
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `GET` | `/api/index?frequency=daily&from=YYYY-MM-DD&to=YYYY-MM-DD` | Query APIx index time series with base normalization |
 | `GET` | `/api/routes?active_only=true` | Query 10 DGCA route corridors with traffic volume weights |
 | `GET` | `/api/fares?route_id=DEL-BOM&booking_window=T+1` | Query clean non-outlier flight quotes with base/tax breakdown |
+| `GET` | `/api/latest` | Query latest real-time index snapshot with full corridor telemetry |
+| `GET` | `/api/cron/scrape` | Automated daily scraping & Laspeyres re-computation endpoint |
 
-Interactive API documentation is accessible at **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)**.
+Interactive API documentation is accessible at **[https://api-x-chi.vercel.app/api-docs](https://api-x-chi.vercel.app/api-docs)** (production) or **[http://localhost:3000/api-docs](http://localhost:3000/api-docs)** (local development).
 
 ---
 
