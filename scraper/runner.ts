@@ -17,16 +17,22 @@ import { ETLPipeline } from '../pipeline/cleaner/pipeline';
 import { IndexComputationEngine } from '../pipeline/index-engine/engine';
 
 const DEFAULT_ROUTES: RouteTarget[] = [
-  { id: 'DEL-BOM', origin_code: 'DEL', destination_code: 'BOM', dgca_traffic_weight: 0.185, active: true },
-  { id: 'BOM-DEL', origin_code: 'BOM', destination_code: 'DEL', dgca_traffic_weight: 0.178, active: true },
-  { id: 'DEL-BLR', origin_code: 'DEL', destination_code: 'BLR', dgca_traffic_weight: 0.112, active: true },
-  { id: 'BLR-DEL', origin_code: 'BLR', destination_code: 'DEL', dgca_traffic_weight: 0.109, active: true },
-  { id: 'BOM-BLR', origin_code: 'BOM', destination_code: 'BLR', dgca_traffic_weight: 0.094, active: true },
-  { id: 'BLR-BOM', origin_code: 'BLR', destination_code: 'BOM', dgca_traffic_weight: 0.091, active: true },
-  { id: 'DEL-CCU', origin_code: 'DEL', destination_code: 'CCU', dgca_traffic_weight: 0.068, active: true },
-  { id: 'CCU-DEL', origin_code: 'CCU', destination_code: 'DEL', dgca_traffic_weight: 0.065, active: true },
-  { id: 'BLR-HYD', origin_code: 'BLR', destination_code: 'HYD', dgca_traffic_weight: 0.052, active: true },
-  { id: 'MAA-DEL', origin_code: 'MAA', destination_code: 'DEL', dgca_traffic_weight: 0.046, active: true },
+  { id: 'DEL-BOM', origin_code: 'DEL', destination_code: 'BOM', dgca_traffic_weight: 0.155, active: true },
+  { id: 'BOM-DEL', origin_code: 'BOM', destination_code: 'DEL', dgca_traffic_weight: 0.145, active: true },
+  { id: 'DEL-BLR', origin_code: 'DEL', destination_code: 'BLR', dgca_traffic_weight: 0.095, active: true },
+  { id: 'BLR-DEL', origin_code: 'BLR', destination_code: 'DEL', dgca_traffic_weight: 0.090, active: true },
+  { id: 'BOM-BLR', origin_code: 'BOM', destination_code: 'BLR', dgca_traffic_weight: 0.078, active: true },
+  { id: 'BLR-BOM', origin_code: 'BLR', destination_code: 'BOM', dgca_traffic_weight: 0.075, active: true },
+  { id: 'DEL-CCU', origin_code: 'DEL', destination_code: 'CCU', dgca_traffic_weight: 0.058, active: true },
+  { id: 'CCU-DEL', origin_code: 'CCU', destination_code: 'DEL', dgca_traffic_weight: 0.055, active: true },
+  { id: 'BLR-HYD', origin_code: 'BLR', destination_code: 'HYD', dgca_traffic_weight: 0.040, active: true },
+  { id: 'MAA-DEL', origin_code: 'MAA', destination_code: 'DEL', dgca_traffic_weight: 0.034, active: true },
+  { id: 'DEL-GAU', origin_code: 'DEL', destination_code: 'GAU', dgca_traffic_weight: 0.035, active: true },
+  { id: 'BOM-GOI', origin_code: 'BOM', destination_code: 'GOI', dgca_traffic_weight: 0.032, active: true },
+  { id: 'DEL-PAT', origin_code: 'DEL', destination_code: 'PAT', dgca_traffic_weight: 0.038, active: true },
+  { id: 'BLR-COK', origin_code: 'BLR', destination_code: 'COK', dgca_traffic_weight: 0.028, active: true },
+  { id: 'DEL-IXC', origin_code: 'DEL', destination_code: 'IXC', dgca_traffic_weight: 0.022, active: true },
+  { id: 'BOM-PNQ', origin_code: 'BOM', destination_code: 'PNQ', dgca_traffic_weight: 0.020, active: true },
 ];
 
 const WINDOW_DAYS: Record<BookingWindow, number> = {

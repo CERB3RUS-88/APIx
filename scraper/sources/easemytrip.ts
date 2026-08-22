@@ -56,6 +56,12 @@ export class EaseMyTripScraper extends BaseScraper {
       CCU: 'Kolkata',
       HYD: 'Hyderabad',
       MAA: 'Chennai',
+      GAU: 'Guwahati',
+      GOI: 'Goa',
+      PAT: 'Patna',
+      COK: 'Cochin',
+      IXC: 'Chandigarh',
+      PNQ: 'Pune',
     };
     const origLabel = CITY_NAMES[origin] || origin;
     const destLabel = CITY_NAMES[dest] || dest;

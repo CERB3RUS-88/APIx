@@ -180,16 +180,22 @@ export function BulletinModal({ isOpen, onClose, indexData }: BulletinModalProps
                 </thead>
                 <tbody className="divide-y divide-border-subtle/50 text-[11px] print:divide-gray-300">
                   {[
-                    { code: 'DEL-BOM', city: 'Delhi → Mumbai', w: 0.185, base: 5160, cur: 4819, t1: 7299, t45: 4128, st: 'EASED' },
-                    { code: 'BOM-DEL', city: 'Mumbai → Delhi', w: 0.178, base: 5060, cur: 5610, t1: 8349, t45: 4048, st: 'SURGE' },
-                    { code: 'DEL-BLR', city: 'Delhi → Bengaluru', w: 0.112, base: 6650, cur: 7370, t1: 10973, t45: 5320, st: 'SURGE' },
-                    { code: 'BLR-DEL', city: 'Bengaluru → Delhi', w: 0.109, base: 6550, cur: 6349, t1: 10760, t45: 5240, st: 'EASED' },
-                    { code: 'BOM-BLR', city: 'Mumbai → Bengaluru', w: 0.094, base: 4070, cur: 4510, t1: 6716, t45: 3256, st: 'SURGE' },
-                    { code: 'BLR-BOM', city: 'Bengaluru → Mumbai', w: 0.091, base: 4120, cur: 4565, t1: 6798, t45: 3296, st: 'SURGE' },
-                    { code: 'DEL-CCU', city: 'Delhi → Kolkata', w: 0.068, base: 5655, cur: 6270, t1: 9331, t45: 4524, st: 'SURGE' },
-                    { code: 'CCU-DEL', city: 'Kolkata → Delhi', w: 0.065, base: 5555, cur: 6160, t1: 9166, t45: 4444, st: 'SURGE' },
-                    { code: 'BLR-HYD', city: 'Bengaluru → Hyderabad', w: 0.052, base: 3470, cur: 3850, t1: 5726, t45: 2776, st: 'SURGE' },
-                    { code: 'MAA-DEL', city: 'Chennai → Delhi', w: 0.046, base: 6150, cur: 6820, t1: 10148, t45: 4920, st: 'SURGE' },
+                    { code: 'DEL-BOM', city: 'Delhi → Mumbai', w: 0.155, base: 5160, cur: 4819, t1: 7299, t45: 4128, st: 'EASED' },
+                    { code: 'BOM-DEL', city: 'Mumbai → Delhi', w: 0.145, base: 5060, cur: 5610, t1: 8349, t45: 4048, st: 'SURGE' },
+                    { code: 'DEL-BLR', city: 'Delhi → Bengaluru', w: 0.095, base: 6650, cur: 7370, t1: 10973, t45: 5320, st: 'SURGE' },
+                    { code: 'BLR-DEL', city: 'Bengaluru → Delhi', w: 0.090, base: 6550, cur: 6349, t1: 10760, t45: 5240, st: 'EASED' },
+                    { code: 'BOM-BLR', city: 'Mumbai → Bengaluru', w: 0.078, base: 4070, cur: 4510, t1: 6716, t45: 3256, st: 'SURGE' },
+                    { code: 'BLR-BOM', city: 'Bengaluru → Mumbai', w: 0.075, base: 4120, cur: 4565, t1: 6798, t45: 3296, st: 'SURGE' },
+                    { code: 'DEL-CCU', city: 'Delhi → Kolkata', w: 0.058, base: 5655, cur: 6270, t1: 9331, t45: 4524, st: 'SURGE' },
+                    { code: 'CCU-DEL', city: 'Kolkata → Delhi', w: 0.055, base: 5555, cur: 6160, t1: 9166, t45: 4444, st: 'SURGE' },
+                    { code: 'BLR-HYD', city: 'Bengaluru → Hyderabad', w: 0.040, base: 3470, cur: 3850, t1: 5726, t45: 2776, st: 'SURGE' },
+                    { code: 'MAA-DEL', city: 'Chennai → Delhi', w: 0.034, base: 6150, cur: 6820, t1: 10148, t45: 4920, st: 'SURGE' },
+                    { code: 'DEL-GAU', city: 'Delhi → Guwahati', w: 0.035, base: 5800, cur: 6420, t1: 9570, t45: 4640, st: 'SURGE' },
+                    { code: 'BOM-GOI', city: 'Mumbai → Goa', w: 0.032, base: 4200, cur: 4650, t1: 6930, t45: 3360, st: 'SURGE' },
+                    { code: 'DEL-PAT', city: 'Delhi → Patna', w: 0.038, base: 4900, cur: 5430, t1: 8085, t45: 3920, st: 'SURGE' },
+                    { code: 'BLR-COK', city: 'Bengaluru → Kochi', w: 0.028, base: 3600, cur: 3990, t1: 5940, t45: 2880, st: 'SURGE' },
+                    { code: 'DEL-IXC', city: 'Delhi → Chandigarh', w: 0.022, base: 3200, cur: 3550, t1: 5280, t45: 2560, st: 'SURGE' },
+                    { code: 'BOM-PNQ', city: 'Mumbai → Pune', w: 0.020, base: 2800, cur: 3100, t1: 4620, t45: 2240, st: 'SURGE' },
                   ].map((row) => (
                     <tr key={row.code} className="hover:bg-surface-elevated/30 print:hover:bg-transparent">
                       <td className="p-2 font-bold text-primary print:text-black">

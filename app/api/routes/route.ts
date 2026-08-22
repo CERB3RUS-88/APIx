@@ -46,7 +46,7 @@ export async function GET(request: NextRequest) {
     {
       total_basket_weight: totalWeight,
       dgca_source_year: '2025/2026',
-      total_national_volume_coverage_pct: 78.4,
+      total_national_volume_coverage_pct: 86.8,
     },
     rateLimit.headers
   );

@@ -49,8 +49,8 @@ Usage:
   npm run scrape -- [options]
 
 Options:
-  --routes <list>       Comma-separated route codes (e.g. DEL-BOM,BLR-DEL or 'all')
-  --sources <list>      Target sources: indigo, easemytrip, makemytrip (default: indigo,easemytrip)
+  --routes <list>       Comma-separated route codes (e.g. DEL-BOM,DEL-GAU or 'all' for all 16 routes)
+  --sources <list>      Target sources: easemytrip, cleartrip, akasa, airindia
   --windows <list>      Booking windows: T+1,T+7,T+15,T+30,T+45 (default: all)
   --dry-run             Simulate scrape without opening live browsers
   --no-headless         Run Playwright in visible headful mode for debugging
@@ -59,8 +59,8 @@ Options:
   --help, -h            Show this help guide
 
 Examples:
-  npm run scrape -- --routes DEL-BOM --windows T+1,T+7 --dry-run
-  npm run scrape -- --sources indigo,easemytrip --routes DEL-BOM,DEL-BLR
+  npm run scrape -- --routes DEL-BOM,DEL-GAU --windows T+1,T+7
+  npm run scrape -- --sources easemytrip,cleartrip,akasa,airindia --routes all
   npm run scrape -- --dry-run
 `);
 }

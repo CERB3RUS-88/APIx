@@ -189,14 +189,14 @@ export function IndexHero({ currentIndex, audioEnabled }: IndexHeroProps) {
             <Layers className="w-4 h-4 text-amber-signal" />
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-primary">10 ROUTES</div>
+            <div className="text-2xl font-bold font-mono text-primary">16 ROUTES</div>
             <p className="text-[11px] font-mono text-secondary mt-1">
-              78.4% National DGCA passenger volume
+              86.8% National DGCA volume (Trunk + Tier-2)
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
-            <span>METRO CORRIDORS</span>
-            <span className="text-amber-signal">100% SAMPLED</span>
+            <span>BASKET COMPOSITION</span>
+            <span className="text-amber-signal">TRUNK + TIER-2</span>
           </div>
         </Panel>
 

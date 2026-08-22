@@ -20,6 +20,12 @@ const CITY_NAMES: Record<string, { origin: string; dest: string }> = {
   'CCU-DEL': { origin: 'Kolkata', dest: 'Delhi' },
   'BLR-HYD': { origin: 'Bengaluru', dest: 'Hyderabad' },
   'MAA-DEL': { origin: 'Chennai', dest: 'Delhi' },
+  'DEL-GAU': { origin: 'Delhi', dest: 'Guwahati' },
+  'BOM-GOI': { origin: 'Mumbai', dest: 'Goa' },
+  'DEL-PAT': { origin: 'Delhi', dest: 'Patna' },
+  'BLR-COK': { origin: 'Bengaluru', dest: 'Kochi' },
+  'DEL-IXC': { origin: 'Delhi', dest: 'Chandigarh' },
+  'BOM-PNQ': { origin: 'Mumbai', dest: 'Pune' },
 };
 
 export function ElasticityView() {

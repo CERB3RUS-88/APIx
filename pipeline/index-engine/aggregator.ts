@@ -5,16 +5,22 @@ import { RouteFareAggregation } from './types';
 import { BookingWindow } from '../../types';
 
 export const DGCA_ROUTE_WEIGHTS: Record<string, number> = {
-  'DEL-BOM': 0.185,
-  'BOM-DEL': 0.178,
-  'DEL-BLR': 0.112,
-  'BLR-DEL': 0.109,
-  'BOM-BLR': 0.094,
-  'BLR-BOM': 0.091,
-  'DEL-CCU': 0.068,
-  'CCU-DEL': 0.065,
-  'BLR-HYD': 0.052,
-  'MAA-DEL': 0.046,
+  'DEL-BOM': 0.155,
+  'BOM-DEL': 0.145,
+  'DEL-BLR': 0.095,
+  'BLR-DEL': 0.090,
+  'BOM-BLR': 0.078,
+  'BLR-BOM': 0.075,
+  'DEL-CCU': 0.058,
+  'CCU-DEL': 0.055,
+  'BLR-HYD': 0.040,
+  'MAA-DEL': 0.034,
+  'DEL-GAU': 0.035,
+  'BOM-GOI': 0.032,
+  'DEL-PAT': 0.038,
+  'BLR-COK': 0.028,
+  'DEL-IXC': 0.022,
+  'BOM-PNQ': 0.020,
 };
 
 // Empirical passenger booking-volume distribution across lead-time horizons

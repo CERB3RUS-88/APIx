@@ -143,10 +143,10 @@ const ENDPOINTS: EndpointSpec[] = [
       ],
       meta: {
         generated_at: '2026-08-22T05:20:00.000Z',
-        count: 10,
+        count: 16,
         total_basket_weight: 1.0,
         dgca_source_year: '2025/2026',
-        total_national_volume_coverage_pct: 78.4,
+        total_national_volume_coverage_pct: 86.8,
       },
     },
   },

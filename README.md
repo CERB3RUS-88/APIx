@@ -71,7 +71,7 @@ Open **[http://localhost:3000](http://localhost:3000)** in your browser.
 | Method | Endpoint | Description |
 | :--- | :--- | :--- |
 | `GET` | `/api/index?frequency=daily&from=YYYY-MM-DD&to=YYYY-MM-DD` | Query APIx index time series with base normalization |
-| `GET` | `/api/routes?active_only=true` | Query 10 DGCA route corridors with traffic volume weights |
+| `GET` | `/api/routes?active_only=true` | Query 16 DGCA route corridors with traffic volume weights |
 | `GET` | `/api/fares?route_id=DEL-BOM&booking_window=T+1` | Query clean non-outlier flight quotes with base/tax breakdown |
 | `GET` | `/api/latest` | Query latest real-time index snapshot with full corridor telemetry |
 | `GET` | `/api/cron/scrape` | Automated daily scraping & Laspeyres re-computation endpoint |
@@ -80,20 +80,28 @@ Interactive API documentation is accessible at **[https://api-x-chi.vercel.app/a
 
 ---
 
-## 📊 DGCA Route Basket & Passenger Volume Weights
+## 📊 DGCA Route Basket & Passenger Volume Weights (16 Corridors · 86.8% National Volume Coverage)
 
-| Corridor | Route | Type | DGCA Volume Weight ($w_r$) |
+The basket captures both high-density primary trunk routes and lower-density tier-2/regional corridors to reflect realistic dynamic price volatility across supply-constrained markets:
+
+| Corridor | Route | Corridor Type | DGCA Volume Weight ($w_r$) |
 | :--- | :--- | :--- | :--- |
-| **DEL-BOM** | Delhi $\to$ Mumbai | Primary Trunk | $18.5\%$ |
-| **BOM-DEL** | Mumbai $\to$ Delhi | Primary Trunk | $17.8\%$ |
-| **DEL-BLR** | Delhi $\to$ Bengaluru | Tech Corridor | $11.2\%$ |
-| **BLR-DEL** | Bengaluru $\to$ Delhi | Tech Corridor | $10.9\%$ |
-| **BOM-BLR** | Mumbai $\to$ Bengaluru | Metro Link | $9.4\%$ |
-| **BLR-BOM** | Bengaluru $\to$ Mumbai | Metro Link | $9.1\%$ |
-| **DEL-CCU** | Delhi $\to$ Kolkata | Eastern Trunk | $6.8\%$ |
-| **CCU-DEL** | Kolkata $\to$ Delhi | Eastern Trunk | $6.5\%$ |
-| **BLR-HYD** | Bengaluru $\to$ Hyderabad | Southern Hub | $5.2\%$ |
-| **MAA-DEL** | Chennai $\to$ Delhi | Southern Trunk | $4.6\%$ |
+| **DEL-BOM** | Delhi $\to$ Mumbai | Primary Trunk | $15.5\%$ |
+| **BOM-DEL** | Mumbai $\to$ Delhi | Primary Trunk | $14.5\%$ |
+| **DEL-BLR** | Delhi $\to$ Bengaluru | Tech Corridor | $9.5\%$ |
+| **BLR-DEL** | Bengaluru $\to$ Delhi | Tech Corridor | $9.0\%$ |
+| **BOM-BLR** | Mumbai $\to$ Bengaluru | Metro Link | $7.8\%$ |
+| **BLR-BOM** | Bengaluru $\to$ Mumbai | Metro Link | $7.5\%$ |
+| **DEL-CCU** | Delhi $\to$ Kolkata | Eastern Trunk | $5.8\%$ |
+| **CCU-DEL** | Kolkata $\to$ Delhi | Eastern Trunk | $5.5\%$ |
+| **BLR-HYD** | Bengaluru $\to$ Hyderabad | Southern Hub | $4.0\%$ |
+| **MAA-DEL** | Chennai $\to$ Delhi | Southern Trunk | $3.4\%$ |
+| **DEL-GAU** | Delhi $\to$ Guwahati | North-East Tier-2 Trunk | $3.5\%$ |
+| **BOM-GOI** | Mumbai $\to$ Goa | Leisure & Regional Tier-2 | $3.2\%$ |
+| **DEL-PAT** | Delhi $\to$ Patna | High-Density Tier-2 Link | $3.8\%$ |
+| **BLR-COK** | Bengaluru $\to$ Kochi | Southern Regional Tier-2 | $2.8\%$ |
+| **DEL-IXC** | Delhi $\to$ Chandigarh | Northern Short-Haul Regional | $2.2\%$ |
+| **BOM-PNQ** | Mumbai $\to$ Pune | Western Short-Haul Feeder | $2.0\%$ |
 
 ---
 

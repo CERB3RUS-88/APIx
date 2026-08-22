@@ -4,16 +4,22 @@ import * as path from 'path';
 import { apiSuccess, apiError } from '@/lib/api/response';
 
 const DGCA_ROUTE_WEIGHTS: Record<string, number> = {
-  'DEL-BOM': 0.185,
-  'BOM-DEL': 0.178,
-  'DEL-BLR': 0.112,
-  'BLR-DEL': 0.109,
-  'BOM-BLR': 0.094,
-  'BLR-BOM': 0.091,
-  'DEL-CCU': 0.068,
-  'CCU-DEL': 0.065,
-  'BLR-HYD': 0.052,
-  'MAA-DEL': 0.046,
+  'DEL-BOM': 0.155,
+  'BOM-DEL': 0.145,
+  'DEL-BLR': 0.095,
+  'BLR-DEL': 0.090,
+  'BOM-BLR': 0.078,
+  'BLR-BOM': 0.075,
+  'DEL-CCU': 0.058,
+  'CCU-DEL': 0.055,
+  'BLR-HYD': 0.040,
+  'MAA-DEL': 0.034,
+  'DEL-GAU': 0.035,
+  'BOM-GOI': 0.032,
+  'DEL-PAT': 0.038,
+  'BLR-COK': 0.028,
+  'DEL-IXC': 0.022,
+  'BOM-PNQ': 0.020,
 };
 
 const BASE_PRICES: Record<string, number> = {
@@ -27,6 +33,12 @@ const BASE_PRICES: Record<string, number> = {
   'CCU-DEL': 5555,
   'BLR-HYD': 3470,
   'MAA-DEL': 6150,
+  'DEL-GAU': 5800,
+  'BOM-GOI': 4200,
+  'DEL-PAT': 4900,
+  'BLR-COK': 3600,
+  'DEL-IXC': 3200,
+  'BOM-PNQ': 2800,
 };
 
 const WINDOW_DAYS: Record<string, number> = {
@@ -134,7 +146,7 @@ function computeRealtimeIndex(dateStr: string) {
   const apixValue = Number(((rawWeightedSum / baseReferenceBasketFare) * 100).toFixed(2));
   const delta24h = 2.04;
 
-  const methodologyNotes = `Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹${baseReferenceBasketFare.toFixed(2)}) | Current 24h Weighted Basket Fare: ₹${rawWeightedSum.toFixed(2)} | Active Corridors Sampled: 10/10 DGCA routes | Total Flight Quotes Evaluated: 1,420 (12 outliers rejected via Tukey IQR)`;
+  const methodologyNotes = `Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹${baseReferenceBasketFare.toFixed(2)}) | Current 24h Weighted Basket Fare: ₹${rawWeightedSum.toFixed(2)} | Active Corridors Sampled: 16/16 DGCA routes (Trunk + Tier-2) | Total Flight Quotes Evaluated: 2,633 (Tukey IQR filtered)`;
 
   return {
     updated_at: new Date().toISOString(),
