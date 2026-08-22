@@ -1,6 +1,7 @@
 import { IScraperSource } from '../core/types';
 import { IndiGoScraper } from './indigo';
 import { EaseMyTripScraper } from './easemytrip';
+import { CleartripScraper } from './cleartrip';
 import { MakeMyTripScraper } from './makemytrip';
 
 export class ScraperRegistry {
@@ -10,6 +11,7 @@ export class ScraperRegistry {
   private constructor() {
     this.register(new IndiGoScraper());
     this.register(new EaseMyTripScraper());
+    this.register(new CleartripScraper());
     this.register(new MakeMyTripScraper());
   }
 

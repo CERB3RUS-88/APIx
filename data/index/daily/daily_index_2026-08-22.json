@@ -2,15 +2,15 @@
   "id": "daily_index_2026-08-22",
   "index_date": "2026-08-22",
   "frequency": "daily",
-  "apix_value": 104.55,
+  "apix_value": 105.78,
   "base_period_value": 100,
-  "raw_weighted_fare": 5520.13,
+  "raw_weighted_fare": 5585.36,
   "base_weighted_fare": 5280,
-  "delta_24h": 1.59,
+  "delta_24h": 2.02,
   "active_routes_count": 10,
-  "total_records_processed": 28,
-  "outliers_excluded_count": 1,
-  "methodology_notes": "Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹5520.13 | Active Corridors Sampled: 10/10 DGCA routes | Total Flight Quotes Evaluated: 28 (1 outliers rejected via Tukey IQR) | Contributors: DEL-BOM (w=18.5%, P=₹5302); BOM-DEL (w=17.8%, P=₹5318); DEL-BLR (w=11.2%, P=₹6989); BLR-DEL (w=10.9%, P=₹6818); BOM-BLR (w=9.4%, P=₹4278); BLR-BOM (w=9.1%, P=₹4330); DEL-CCU (w=6.8%, P=₹5943); CCU-DEL (w=6.5%, P=₹5838); BLR-HYD (w=5.2%, P=₹3647); MAA-DEL (w=4.6%, P=₹6464)",
+  "total_records_processed": 676,
+  "outliers_excluded_count": 62,
+  "methodology_notes": "Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹5585.36 | Active Corridors Sampled: 10/10 DGCA routes | Total Flight Quotes Evaluated: 676 (62 outliers rejected via Tukey IQR) | Contributors: DEL-BOM (w=18.5%, P=₹5568); BOM-DEL (w=17.8%, P=₹5408); DEL-BLR (w=11.2%, P=₹6989); BLR-DEL (w=10.9%, P=₹6818); BOM-BLR (w=9.4%, P=₹4278); BLR-BOM (w=9.1%, P=₹4330); DEL-CCU (w=6.8%, P=₹5943); CCU-DEL (w=6.5%, P=₹5838); BLR-HYD (w=5.2%, P=₹3647); MAA-DEL (w=4.6%, P=₹6464)",
   "route_breakdown": [
     {
       "route_id": "DEL-BOM",
@@ -18,26 +18,30 @@
       "destination_code": "BOM",
       "dgca_traffic_weight": 0.185,
       "window_medians": {
-        "T+1": 7299,
-        "T+7": 6089,
+        "T+1": 7822,
+        "T+7": 7159,
         "T+15": 5160,
         "T+30": 4541,
         "T+45": 4128
       },
       "window_counts": {
-        "T+1": 9,
-        "T+7": 6,
+        "T+1": 163,
+        "T+7": 150,
         "T+15": 0,
         "T+30": 0,
         "T+45": 0
       },
-      "representative_daily_fare": 5302,
-      "total_quotes_count": 16,
-      "outliers_excluded": 1,
+      "representative_daily_fare": 5568,
+      "total_quotes_count": 341,
+      "outliers_excluded": 28,
       "carriers": [
-        "6E"
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
       ],
-      "weighted_fare_contribution": 980.87
+      "weighted_fare_contribution": 1030.08
     },
     {
       "route_id": "BOM-DEL",
@@ -45,24 +49,30 @@
       "destination_code": "DEL",
       "dgca_traffic_weight": 0.178,
       "window_medians": {
-        "T+1": 8349,
-        "T+7": 5971,
+        "T+1": 7191,
+        "T+7": 6999,
         "T+15": 5060,
         "T+30": 4453,
         "T+45": 4048
       },
       "window_counts": {
-        "T+1": 0,
-        "T+7": 0,
+        "T+1": 151,
+        "T+7": 134,
         "T+15": 0,
         "T+30": 0,
         "T+45": 0
       },
-      "representative_daily_fare": 5318,
-      "total_quotes_count": 0,
-      "outliers_excluded": 0,
-      "carriers": [],
-      "weighted_fare_contribution": 946.6
+      "representative_daily_fare": 5408,
+      "total_quotes_count": 319,
+      "outliers_excluded": 34,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 962.62
     },
     {
       "route_id": "DEL-BLR",
@@ -102,14 +112,14 @@
         "T+45": 5240
       },
       "window_counts": {
-        "T+1": 6,
-        "T+7": 6,
+        "T+1": 8,
+        "T+7": 8,
         "T+15": 0,
         "T+30": 0,
         "T+45": 0
       },
       "representative_daily_fare": 6818,
-      "total_quotes_count": 12,
+      "total_quotes_count": 16,
       "outliers_excluded": 0,
       "carriers": [
         "6E"

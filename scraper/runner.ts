@@ -13,6 +13,8 @@ import { DomainRateLimiter } from './core/rate-limiter';
 import { SnapshotStorage } from './core/storage';
 import { ScraperRegistry } from './sources/registry';
 import { HONEST_USER_AGENT } from './core/user-agent';
+import { ETLPipeline } from '../pipeline/cleaner/pipeline';
+import { LaspeyresIndexEngine } from '../pipeline/index-engine/engine';
 
 const DEFAULT_ROUTES: RouteTarget[] = [
   { id: 'DEL-BOM', origin_code: 'DEL', destination_code: 'BOM', dgca_traffic_weight: 0.185, active: true },
@@ -49,7 +51,7 @@ export class ScraperRunner {
   }
 
   /**
-   * Helper to format YYYY-MM-DD for T+N days ahead from now in IST
+   * Helper to format YYYY-MM-DD for T+N days ahead from today in IST
    */
   private getTargetDate(daysAhead: number): string {
     const d = new Date();
@@ -78,15 +80,14 @@ export class ScraperRunner {
   }
 
   /**
-   * Execute full batch run
+   * Execute full scraping run with Playwright
    */
   public async runBatch(options: ScraperRunOptions = {}): Promise<ScrapeBatchSummary> {
     const startedAt = new Date().toISOString();
     const runId = `run_${Date.now()}`;
     const headless = options.headless !== false;
-    const isDryRun = options.dryRun === true;
 
-    // 1. Select routes
+    // 1. Select routes (default to top 2 for initial verification or specified list)
     let targetRoutes = DEFAULT_ROUTES;
     if (options.routes && options.routes.length > 0 && options.routes[0] !== 'all') {
       const selected = options.routes.map((r) => r.toUpperCase());
@@ -110,30 +111,31 @@ export class ScraperRunner {
         .filter((s): s is IScraperSource => Boolean(s));
     }
     if (targetSources.length === 0) {
-      // Default: 1 Airline (IndiGo) + 1 OTA (EaseMyTrip)
-      const indigo = this.registry.get('indigo');
+      // Default sources: EaseMyTrip + Cleartrip / IndiGo
       const easemytrip = this.registry.get('easemytrip');
-      targetSources = [indigo, easemytrip].filter((s): s is IScraperSource => Boolean(s));
+      const cleartrip = this.registry.get('cleartrip');
+      const indigo = this.registry.get('indigo');
+      targetSources = [easemytrip, cleartrip, indigo].filter((s): s is IScraperSource => Boolean(s));
     }
 
     const tasks = this.buildTasks(targetRoutes, targetWindows);
     const totalRuns = tasks.length * targetSources.length;
 
     console.log(`\n======================================================================`);
-    console.log(`  APIx SCRAPING ENGINE (MoSPI SIH 2026 PS 26056)`);
+    console.log(`  APIx REAL PLAYWRIGHT SCRAPING ENGINE (MoSPI SIH 2026 PS 26056)`);
     console.log(`  Run ID: ${runId}`);
     console.log(`  Routes: ${targetRoutes.map((r) => r.id).join(', ')} (${targetRoutes.length})`);
     console.log(`  Windows: ${targetWindows.join(', ')} (${targetWindows.length})`);
     console.log(`  Sources: ${targetSources.map((s) => s.name).join(', ')} (${targetSources.length})`);
-    console.log(`  Total Tasks to Execute: ${totalRuns}`);
-    console.log(`  Mode: ${isDryRun ? 'DRY-RUN (Simulated)' : 'LIVE PLAYWRIGHT'}`);
+    console.log(`  Total Tasks: ${totalRuns}`);
+    console.log(`  Mode: HEADLESS CHROMIUM PLAYWRIGHT`);
     console.log(`======================================================================\n`);
 
     const results: ScrapeResult[] = [];
     let browser: Browser | null = null;
     let context: BrowserContext | null = null;
 
-    if (!isDryRun) {
+    try {
       browser = await chromium.launch({
         headless: headless,
         args: [
@@ -147,18 +149,21 @@ export class ScraperRunner {
         userAgent: HONEST_USER_AGENT,
         viewport: { width: 1366, height: 768 },
       });
+    } catch (launchErr) {
+      console.error(`Fatal: Failed to launch Chromium browser: ${(launchErr as Error).message}`);
+      throw launchErr;
     }
 
     let completedCount = 0;
 
     try {
-      // Iterate tasks with domain-staggered rate-limiting
+      // Iterate sources and tasks
       for (const source of targetSources) {
-        // Step A: Check robots.txt for domain
+        // Step A: Check and respect robots.txt
         const robotsCheck = await this.robots.isAllowed(source.baseUrl);
         if (!robotsCheck.allowed) {
           console.warn(
-            `\n⚠️ [ROBOTS.TXT DISALLOWED] Domain ${source.domain} disallowed: ${robotsCheck.reason}. Skipping source entirely.`
+            `\n⚠️ [ROBOTS.TXT DISALLOWED] Domain ${source.domain} disallowed: ${robotsCheck.reason}. Skipping source.`
           );
           for (const task of tasks) {
             results.push({
@@ -185,39 +190,7 @@ export class ScraperRunner {
           completedCount++;
           const prefix = `[${completedCount}/${totalRuns}] [${source.name}] ${task.route.id} (${task.booking_window} · ${task.target_date})`;
 
-          if (isDryRun) {
-            // Simulated dry run
-            console.log(`${prefix} -> DRY RUN OK (simulated 4 quotes)`);
-            const mockFare = Math.round(3500 + Math.random() * 4000);
-            const mockBase = Math.round(mockFare * 0.82);
-            const res: ScrapeResult = {
-              task,
-              source: source.name,
-              success: true,
-              quotes: [
-                {
-                  source: source.name,
-                  carrier: '6E',
-                  flight_number: '6E-501',
-                  departure_time: '07:00',
-                  arrival_time: '09:15',
-                  is_nonstop: true,
-                  base_fare: mockBase,
-                  taxes: mockFare - mockBase,
-                  total_fare: mockFare,
-                },
-              ],
-              raw_payload: { simulated: true, route: task.route.id, date: task.target_date },
-              scraped_at: new Date().toISOString(),
-              duration_ms: 120,
-              intercepted_api: true,
-            };
-            results.push(res);
-            await this.storage.saveSnapshot(res);
-            continue;
-          }
-
-          // Step B: Domain Rate-Limiting Jitter Delay
+          // Step B: Domain Rate-Limiting Jitter Delay (3-7 seconds)
           const waitTime = await this.rateLimiter.throttle(source.domain, robotsCheck.crawlDelay);
           if (waitTime > 0) {
             console.log(`   ⏳ Jitter delay: ${(waitTime / 1000).toFixed(2)}s for domain rate limit...`);
@@ -225,16 +198,18 @@ export class ScraperRunner {
 
           // Step C: Scrape attempt with isolated error handling
           try {
-            console.log(`${prefix} -> scraping...`);
-            const result = await source.scrape(task, context!);
+            console.log(`${prefix} -> navigating & extracting real fares...`);
+            const result = await source.scrape(task, context);
 
-            if (result.success) {
+            if (result.success && result.quotes.length > 0) {
               console.log(
-                `   ✓ SUCCESS: ${result.quotes.length} quotes captured in ${(result.duration_ms / 1000).toFixed(1)}s (API: ${result.intercepted_api ? 'YES' : 'DOM'})`
+                `   ✓ SUCCESS: Captured ${result.quotes.length} real flight quotes in ${(result.duration_ms / 1000).toFixed(1)}s (Method: ${result.intercepted_api ? 'JSON XHR' : 'DOM Extraction'})`
               );
+            } else if (result.success && result.quotes.length === 0) {
+              console.log(`   ℹ️ INFO: Scrape completed but 0 flights found for this window.`);
             } else {
               console.warn(
-                `   ⚠️ WARNING: Failed (${result.error?.type}): ${result.error?.message}`
+                `   ⚠️ WARNING: Scrape failed (${result.error?.type}): ${result.error?.message}`
               );
             }
 
@@ -262,12 +237,12 @@ export class ScraperRunner {
         }
       }
     } finally {
-      if (context) await context.close();
-      if (browser) await browser.close();
+      if (context) await context.close().catch(() => {});
+      if (browser) await browser.close().catch(() => {});
     }
 
     const finishedAt = new Date().toISOString();
-    const successful = results.filter((r) => r.success).length;
+    const successful = results.filter((r) => r.success && r.quotes.length > 0).length;
     const failed = results.filter((r) => !r.success).length;
     const totalQuotes = results.reduce((acc, r) => acc + r.quotes.length, 0);
     const durations = results.map((r) => r.duration_ms).sort((a, b) => a - b);
@@ -291,11 +266,26 @@ export class ScraperRunner {
 
     console.log(`\n======================================================================`);
     console.log(`  SCRAPING BATCH COMPLETE`);
-    console.log(`  Success: ${successful}/${totalRuns} tasks`);
-    console.log(`  Quotes Ingested: ${totalQuotes} fare records`);
+    console.log(`  Successful Task Runs: ${successful}/${totalRuns}`);
+    console.log(`  Total Real Flight Quotes Captured: ${totalQuotes}`);
     console.log(`  Median Task Latency: ${(medianDuration / 1000).toFixed(2)}s`);
-    console.log(`  Snapshots saved to: data/snapshots/${new Date().toISOString().split('T')[0]}/`);
+    console.log(`  Raw Snapshots Stored: data/snapshots/${new Date().toISOString().split('T')[0]}/`);
     console.log(`======================================================================\n`);
+
+    // Step D: Automatically run the Cleaning ETL pipeline on newly scraped snapshots
+    console.log(`[Auto-Trigger] Launching Data Cleaning ETL Pipeline on raw snapshots...`);
+    try {
+      const etlPipeline = new ETLPipeline();
+      const etlSummary = await etlPipeline.executePipeline({ date: 'latest' });
+
+      if (etlSummary.records_inserted > 0) {
+        console.log(`[Auto-Trigger] Launching Laspeyres Index Engine calculation...`);
+        const indexEngine = new LaspeyresIndexEngine();
+        await indexEngine.executeIndexRun({ date: 'latest' });
+      }
+    } catch (pipelineErr) {
+      console.warn(`[Auto-Trigger Warning] Pipeline execution note: ${(pipelineErr as Error).message}`);
+    }
 
     return summary;
   }

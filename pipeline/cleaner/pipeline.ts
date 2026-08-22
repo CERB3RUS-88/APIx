@@ -39,10 +39,12 @@ export class ETLPipeline {
       .readdirSync(snapshotsBase)
       .filter((d) => fs.statSync(path.join(snapshotsBase, d)).isDirectory());
 
-    const targetDirs =
-      dateOption && dateOption !== 'all'
-        ? dateDirs.filter((d) => d === dateOption)
-        : dateDirs.sort().reverse(); // recent first
+    let targetDirs = dateDirs.sort().reverse();
+    if (dateOption && dateOption !== 'all' && dateOption !== 'latest') {
+      targetDirs = dateDirs.filter((d) => d === dateOption);
+    } else if (dateOption === 'latest') {
+      targetDirs = targetDirs.slice(0, 1);
+    }
 
     for (const dir of targetDirs) {
       const fullDir = path.join(snapshotsBase, dir);

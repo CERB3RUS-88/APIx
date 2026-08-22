@@ -1,8 +1,35 @@
 import { NextRequest } from 'next/server';
+import * as fs from 'fs';
+import * as path from 'path';
 import { apiSuccess, apiError } from '@/lib/api/response';
 import { checkRateLimit } from '@/lib/api/rate-limiter';
 import { isValidDateFormat, isValidFrequency } from '@/lib/api/validator';
 import { TIME_SERIES_365D } from '@/lib/data-provider';
+
+function loadStoredTimeSeries(): any[] {
+  try {
+    const csvPath = path.join(process.cwd(), 'data', 'index', 'time_series.csv');
+    if (fs.existsSync(csvPath)) {
+      const content = fs.readFileSync(csvPath, 'utf-8');
+      const lines = content.trim().split('\n').slice(1); // skip header
+      const records = [];
+      for (const line of lines) {
+        const parts = line.split(',');
+        if (parts.length >= 7) {
+          records.push({
+            date: parts[0],
+            apix: parseFloat(parts[2]),
+            rawFare: parseFloat(parts[4]),
+            delta24h: parseFloat(parts[5]),
+            sampledRecords: parseInt(parts[6], 10),
+          });
+        }
+      }
+      if (records.length > 0) return records;
+    }
+  } catch {}
+  return TIME_SERIES_365D;
+}
 
 export async function GET(request: NextRequest) {
   // 1. Rate Limit Check
@@ -66,8 +93,8 @@ export async function GET(request: NextRequest) {
     );
   }
 
-  // 4. Filter Time Series Data
-  let results = [...TIME_SERIES_365D];
+  // 4. Load real/stored time-series data
+  let results = loadStoredTimeSeries();
 
   if (from) {
     results = results.filter((p) => p.date >= from);
@@ -78,7 +105,6 @@ export async function GET(request: NextRequest) {
 
   // Transform based on frequency if weekly or monthly requested
   if (frequency === 'weekly') {
-    // Group by 7 days
     const weeklyGrouped = [];
     for (let i = 0; i < results.length; i += 7) {
       const chunk = results.slice(i, i + 7);
