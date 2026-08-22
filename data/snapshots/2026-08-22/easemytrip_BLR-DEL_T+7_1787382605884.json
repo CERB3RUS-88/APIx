@@ -1,0 +1,18 @@
+{
+  "route_id": "BLR-DEL",
+  "origin": "BLR",
+  "destination": "DEL",
+  "source": "EaseMyTrip",
+  "booking_window": "T+7",
+  "flight_date": "2026-08-29",
+  "scraped_at": "2026-08-22T07:10:01.547Z",
+  "duration_ms": 4305,
+  "success": true,
+  "quotes_count": 0,
+  "quotes": [],
+  "intercepted_api": false,
+  "raw_payload": {
+    "dom_extracted_count": 0,
+    "url": "https://flight.easemytrip.com/FlightList/Index?srch=BLR-Delhi-India|DEL-Mumbai-India|29/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "route_id": "DEL-BLR",
+  "origin": "DEL",
+  "destination": "BLR",
+  "source": "IndiGo",
+  "booking_window": "T+1",
+  "flight_date": "2026-08-23",
+  "scraped_at": "2026-08-22T07:08:44.898Z",
+  "duration_ms": 2818,
+  "success": true,
+  "quotes_count": 0,
+  "quotes": [],
+  "intercepted_api": false,
+  "raw_payload": {
+    "dom_extracted_count": 0,
+    "url": "https://www.goindigo.in/booking.html?from=DEL&to=BLR&date=2026-08-23&adults=1"
+  }
+}

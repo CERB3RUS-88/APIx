@@ -11,10 +11,77 @@ import { RouteHeatmapItem, ROUTE_HEATMAP_DATA } from '@/lib/data-provider';
 import { formatINR, formatWeight } from '@/lib/utils';
 import { ArrowRight, Plane, Filter, Download, ArrowUpDown } from 'lucide-react';
 
+const CITY_NAMES: Record<string, { origin: string; dest: string }> = {
+  'DEL-BOM': { origin: 'Delhi', dest: 'Mumbai' },
+  'BOM-DEL': { origin: 'Mumbai', dest: 'Delhi' },
+  'DEL-BLR': { origin: 'Delhi', dest: 'Bengaluru' },
+  'BLR-DEL': { origin: 'Bengaluru', dest: 'Delhi' },
+  'BOM-BLR': { origin: 'Mumbai', dest: 'Bengaluru' },
+  'BLR-BOM': { origin: 'Bengaluru', dest: 'Mumbai' },
+  'DEL-CCU': { origin: 'Delhi', dest: 'Kolkata' },
+  'CCU-DEL': { origin: 'Kolkata', dest: 'Delhi' },
+  'BLR-HYD': { origin: 'Bengaluru', dest: 'Hyderabad' },
+  'MAA-DEL': { origin: 'Chennai', dest: 'Delhi' },
+};
+
 export function RouteHeatmap() {
   const [data, setData] = React.useState<RouteHeatmapItem[]>(ROUTE_HEATMAP_DATA);
   const [filterStatus, setFilterStatus] = React.useState<string>('all');
   const [viewMode, setViewMode] = React.useState<'table' | 'tiles'>('table');
+
+  // Load dynamically from /api/latest if available
+  React.useEffect(() => {
+    async function fetchLatestRoutes() {
+      try {
+        const res = await fetch('/api/latest');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data?.current_index?.route_breakdown) {
+            const rawRoutes = json.data.current_index.route_breakdown;
+            const dynamicHeatmap: RouteHeatmapItem[] = rawRoutes.map((r: any) => {
+              const baseFare = r.window_medians?.['T+15'] || r.representative_daily_fare || 5000;
+              const currentFare = r.representative_daily_fare || 5000;
+              const deltaAmt = currentFare - baseFare;
+              const deltaPct = Number(((deltaAmt / baseFare) * 100).toFixed(2));
+              const cities = CITY_NAMES[r.route_id] || { origin: r.origin_code, dest: r.destination_code };
+
+              let status: 'SURGE' | 'EASED' | 'STABLE' | 'NORMAL' = 'NORMAL';
+              if (deltaPct > 2.0) status = 'SURGE';
+              else if (deltaPct < -1.0) status = 'EASED';
+              else if (Math.abs(deltaPct) <= 1.0) status = 'STABLE';
+
+              return {
+                id: r.route_id,
+                origin_code: r.origin_code,
+                origin_city: cities.origin,
+                destination_code: r.destination_code,
+                destination_city: cities.dest,
+                dgca_traffic_weight: r.dgca_traffic_weight,
+                current_fare: currentFare,
+                baseline_fare: baseFare,
+                delta_amount: deltaAmt,
+                delta_percent: deltaPct,
+                t1_fare: r.window_medians?.['T+1'] || Math.round(currentFare * 1.65),
+                t7_fare: r.window_medians?.['T+7'] || Math.round(currentFare * 1.15),
+                t15_fare: r.window_medians?.['T+15'] || currentFare,
+                t30_fare: r.window_medians?.['T+30'] || Math.round(currentFare * 0.88),
+                t45_fare: r.window_medians?.['T+45'] || Math.round(currentFare * 0.82),
+                status,
+                carriers: r.carriers || ['6E', 'AI'],
+              };
+            });
+
+            if (dynamicHeatmap.length > 0) {
+              setData(dynamicHeatmap);
+            }
+          }
+        }
+      } catch {
+        // Fallback to static ROUTE_HEATMAP_DATA
+      }
+    }
+    fetchLatestRoutes();
+  }, []);
 
   const filteredData = React.useMemo(() => {
     if (filterStatus === 'all') return data;

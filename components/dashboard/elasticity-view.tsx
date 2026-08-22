@@ -9,12 +9,68 @@ import { ROUTE_ELASTICITY_DATA, RouteElasticityCurve } from '@/lib/data-provider
 import { formatINR } from '@/lib/utils';
 import { ArrowRight, TrendingUp, DollarSign, Clock, ShieldCheck } from 'lucide-react';
 
+const CITY_NAMES: Record<string, { origin: string; dest: string }> = {
+  'DEL-BOM': { origin: 'Delhi', dest: 'Mumbai' },
+  'BOM-DEL': { origin: 'Mumbai', dest: 'Delhi' },
+  'DEL-BLR': { origin: 'Delhi', dest: 'Bengaluru' },
+  'BLR-DEL': { origin: 'Bengaluru', dest: 'Delhi' },
+  'BOM-BLR': { origin: 'Mumbai', dest: 'Bengaluru' },
+  'BLR-BOM': { origin: 'Bengaluru', dest: 'Mumbai' },
+  'DEL-CCU': { origin: 'Delhi', dest: 'Kolkata' },
+  'CCU-DEL': { origin: 'Kolkata', dest: 'Delhi' },
+  'BLR-HYD': { origin: 'Bengaluru', dest: 'Hyderabad' },
+  'MAA-DEL': { origin: 'Chennai', dest: 'Delhi' },
+};
+
 export function ElasticityView() {
-  const routeKeys = Object.keys(ROUTE_ELASTICITY_DATA);
+  const [elasticityMap, setElasticityMap] =
+    React.useState<Record<string, RouteElasticityCurve>>(ROUTE_ELASTICITY_DATA);
+  const routeKeys = Object.keys(elasticityMap);
   const [selectedRouteKey, setSelectedRouteKey] = React.useState<string>(routeKeys[0] || 'DEL-BOM');
 
+  // Load dynamically from /api/latest if available
+  React.useEffect(() => {
+    async function fetchLatestElasticity() {
+      try {
+        const res = await fetch('/api/latest');
+        if (res.ok) {
+          const json = await res.json();
+          if (json.data?.elasticity && Array.isArray(json.data.elasticity)) {
+            const dynamicMap: Record<string, RouteElasticityCurve> = {};
+            for (const item of json.data.elasticity) {
+              const cities = CITY_NAMES[item.route_id] || { origin: item.origin, dest: item.destination };
+              const points = item.curve.map((pt: any) => ({
+                window: pt.booking_window,
+                days: pt.days_ahead,
+                fare: pt.median_fare,
+                multiplierVsT45: pt.price_multiplier_vs_t45,
+                discountVsT1: pt.discount_vs_t1,
+              }));
+
+              dynamicMap[item.route_id] = {
+                route_id: item.route_id,
+                origin_city: cities.origin,
+                destination_city: cities.dest,
+                points,
+                escalation_ratio: item.t1_to_t45_ratio || 2.1,
+                avg_daily_climb_inr: item.overall_elasticity_score || 95,
+              };
+            }
+
+            if (Object.keys(dynamicMap).length > 0) {
+              setElasticityMap(dynamicMap);
+            }
+          }
+        }
+      } catch {
+        // Fallback to static
+      }
+    }
+    fetchLatestElasticity();
+  }, []);
+
   const selectedCurve: RouteElasticityCurve =
-    ROUTE_ELASTICITY_DATA[selectedRouteKey] || ROUTE_ELASTICITY_DATA['DEL-BOM'];
+    elasticityMap[selectedRouteKey] || elasticityMap['DEL-BOM'] || ROUTE_ELASTICITY_DATA['DEL-BOM'];
 
   // SVG Chart Dimensions
   const width = 700;
@@ -28,7 +84,7 @@ export function ElasticityView() {
   const maxFare = Math.max(...fares) * 1.1;
   const fareRange = maxFare - minFare;
 
-  const getX = (idx: number) => padding.left + (idx / (selectedCurve.points.length - 1)) * innerWidth;
+  const getX = (idx: number) => padding.left + (idx / Math.max(1, selectedCurve.points.length - 1)) * innerWidth;
   const getY = (fare: number) => padding.top + innerHeight - ((fare - minFare) / fareRange) * innerHeight;
 
   const pointsSvg = selectedCurve.points.map((p, i) => `${getX(i)},${getY(p.fare)}`);
@@ -37,7 +93,7 @@ export function ElasticityView() {
 
   const t45Point = selectedCurve.points.find((p) => p.window === 'T+45') || selectedCurve.points[0];
   const t1Point = selectedCurve.points.find((p) => p.window === 'T+1') || selectedCurve.points[selectedCurve.points.length - 1];
-  const lastMinuteSurchargePercent = Math.round(((t1Point.fare - t45Point.fare) / t45Point.fare) * 100);
+  const lastMinuteSurchargePercent = Math.round(((t1Point.fare - t45Point.fare) / (t45Point.fare || 1)) * 100);
 
   return (
     <div className="space-y-6">
@@ -53,7 +109,7 @@ export function ElasticityView() {
           SELECT CORRIDOR:
         </span>
         {routeKeys.map((key) => {
-          const item = ROUTE_ELASTICITY_DATA[key];
+          const item = elasticityMap[key];
           const isActive = selectedRouteKey === key;
           return (
             <Button
@@ -67,7 +123,7 @@ export function ElasticityView() {
                   : 'text-secondary hover:text-primary'
               }
             >
-              {key} ({item.origin_city.slice(0, 3)} → {item.destination_city.slice(0, 3)})
+              {key} ({item?.origin_city?.slice(0, 3) || key.split('-')[0]} → {item?.destination_city?.slice(0, 3) || key.split('-')[1]})
             </Button>
           );
         })}

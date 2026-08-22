@@ -1,0 +1,614 @@
+{
+  "run_id": "run_1787382464028",
+  "started_at": "2026-08-22T07:07:44.027Z",
+  "finished_at": "2026-08-22T07:10:11.870Z",
+  "total_tasks": 24,
+  "successful_scrapes": 24,
+  "failed_scrapes": 0,
+  "skipped_robots": 0,
+  "skipped_captcha": 0,
+  "total_quotes_collected": 0,
+  "median_duration_ms": 3605,
+  "results": [
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=DEL&to=BOM&date=2026-08-23&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:15.976Z",
+      "duration_ms": 6047,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=DEL&to=BOM&date=2026-08-29&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:22.026Z",
+      "duration_ms": 2732,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=DEL&to=BOM&date=2026-09-06&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:26.856Z",
+      "duration_ms": 2759,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BOM-DEL",
+          "origin_code": "BOM",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.178,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=BOM&to=DEL&date=2026-08-23&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:30.432Z",
+      "duration_ms": 2762,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BOM-DEL",
+          "origin_code": "BOM",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.178,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=BOM&to=DEL&date=2026-08-29&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:35.619Z",
+      "duration_ms": 2776,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BOM-DEL",
+          "origin_code": "BOM",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.178,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=BOM&to=DEL&date=2026-09-06&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:39.988Z",
+      "duration_ms": 2809,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BLR",
+          "origin_code": "DEL",
+          "destination_code": "BLR",
+          "dgca_traffic_weight": 0.112,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=DEL&to=BLR&date=2026-08-23&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:44.898Z",
+      "duration_ms": 2818,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BLR",
+          "origin_code": "DEL",
+          "destination_code": "BLR",
+          "dgca_traffic_weight": 0.112,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=DEL&to=BLR&date=2026-08-29&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:51.508Z",
+      "duration_ms": 2771,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BLR",
+          "origin_code": "DEL",
+          "destination_code": "BLR",
+          "dgca_traffic_weight": 0.112,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=DEL&to=BLR&date=2026-09-06&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:08:58.290Z",
+      "duration_ms": 2746,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=BLR&to=DEL&date=2026-08-23&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:02.274Z",
+      "duration_ms": 2751,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=BLR&to=DEL&date=2026-08-29&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:05.417Z",
+      "duration_ms": 2774,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://www.goindigo.in/booking.html?from=BLR&to=DEL&date=2026-09-06&adults=1"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:11.655Z",
+      "duration_ms": 2790,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|BOM-Mumbai-India|23/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:14.894Z",
+      "duration_ms": 4916,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|BOM-Mumbai-India|29/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:19.823Z",
+      "duration_ms": 3642,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|BOM-Mumbai-India|06/09/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:24.495Z",
+      "duration_ms": 3673,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BOM-DEL",
+          "origin_code": "BOM",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.178,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=BOM-Delhi-India|DEL-Mumbai-India|23/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:28.438Z",
+      "duration_ms": 3625,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BOM-DEL",
+          "origin_code": "BOM",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.178,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=BOM-Delhi-India|DEL-Mumbai-India|29/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:32.083Z",
+      "duration_ms": 3605,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BOM-DEL",
+          "origin_code": "BOM",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.178,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=BOM-Delhi-India|DEL-Mumbai-India|06/09/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:37.302Z",
+      "duration_ms": 3655,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BLR",
+          "origin_code": "DEL",
+          "destination_code": "BLR",
+          "dgca_traffic_weight": 0.112,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|BLR-Mumbai-India|23/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:42.525Z",
+      "duration_ms": 3549,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BLR",
+          "origin_code": "DEL",
+          "destination_code": "BLR",
+          "dgca_traffic_weight": 0.112,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|BLR-Mumbai-India|29/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:46.602Z",
+      "duration_ms": 3685,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BLR",
+          "origin_code": "DEL",
+          "destination_code": "BLR",
+          "dgca_traffic_weight": 0.112,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|BLR-Mumbai-India|06/09/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:50.770Z",
+      "duration_ms": 3758,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=BLR-Delhi-India|DEL-Mumbai-India|23/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:09:57.469Z",
+      "duration_ms": 3699,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=BLR-Delhi-India|DEL-Mumbai-India|29/08/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:10:01.547Z",
+      "duration_ms": 4305,
+      "http_status": 200
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+15",
+        "days_ahead": 15,
+        "target_date": "2026-09-06"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [],
+      "raw_payload": {
+        "dom_extracted_count": 0,
+        "url": "https://flight.easemytrip.com/FlightList/Index?srch=BLR-Delhi-India|DEL-Mumbai-India|06/09/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+      },
+      "intercepted_api": false,
+      "scraped_at": "2026-08-22T07:10:07.847Z",
+      "duration_ms": 3669,
+      "http_status": 200
+    }
+  ]
+}
