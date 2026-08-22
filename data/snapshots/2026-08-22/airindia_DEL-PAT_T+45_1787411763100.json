@@ -1,0 +1,23 @@
+{
+  "route_id": "DEL-PAT",
+  "origin": "DEL",
+  "destination": "PAT",
+  "source": "Air India",
+  "booking_window": "T+45",
+  "flight_date": "2026-10-06",
+  "scraped_at": "2026-08-22T15:16:02.913Z",
+  "duration_ms": 185,
+  "success": false,
+  "quotes_count": 0,
+  "quotes": [],
+  "intercepted_api": false,
+  "raw_payload": {
+    "error": "page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\nCall log:\n\u001b[2m  - navigating to \"https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\", waiting until \"domcontentloaded\"\u001b[22m\n",
+    "stack": "page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\nCall log:\n\u001b[2m  - navigating to \"https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at AirIndiaScraper.executeExtraction (D:\\SHAURYA_DATA\\airfare_index\\scraper\\sources\\airindia.ts:54:18)\n    at AirIndiaScraper.scrape (D:\\SHAURYA_DATA\\airfare_index\\scraper\\sources\\base-scraper.ts:24:37)\n    at async ScraperRunner.runBatch (D:\\SHAURYA_DATA\\airfare_index\\scraper\\runner.ts:207:28)\n    at async main (D:\\SHAURYA_DATA\\airfare_index\\scraper\\cli.ts:73:21)"
+  },
+  "error": {
+    "type": "NETWORK_ERROR",
+    "message": "page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\nCall log:\n\u001b[2m  - navigating to \"https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\", waiting until \"domcontentloaded\"\u001b[22m\n",
+    "stack": "page.goto: net::ERR_HTTP2_PROTOCOL_ERROR at https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\nCall log:\n\u001b[2m  - navigating to \"https://www.airindia.com/in/en/book-flights.html?origin=DEL&destination=PAT&departureDate=2026-10-06&tripType=O&adults=1\", waiting until \"domcontentloaded\"\u001b[22m\n\n    at AirIndiaScraper.executeExtraction (D:\\SHAURYA_DATA\\airfare_index\\scraper\\sources\\airindia.ts:54:18)\n    at AirIndiaScraper.scrape (D:\\SHAURYA_DATA\\airfare_index\\scraper\\sources\\base-scraper.ts:24:37)\n    at async ScraperRunner.runBatch (D:\\SHAURYA_DATA\\airfare_index\\scraper\\runner.ts:207:28)\n    at async main (D:\\SHAURYA_DATA\\airfare_index\\scraper\\cli.ts:73:21)"
+  }
+}

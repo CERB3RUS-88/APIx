@@ -25,7 +25,7 @@ export interface RouteHeatmapItem {
   t15_fare: number;
   t30_fare: number;
   t45_fare: number;
-  status: 'SURGE' | 'EASED' | 'STABLE' | 'NORMAL';
+  status: 'SURGE' | 'EASED' | 'STABLE' | 'NORMAL' | 'AWAITING_FIRST_SCRAPE';
   carriers: string[];
 }
 

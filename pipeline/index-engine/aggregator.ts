@@ -126,7 +126,22 @@ export class RouteAggregator {
 
       const carriersSet = new Set<string>();
 
-      // Compute median for each booking window
+      if (routeRecords.length === 0) {
+        routeAggregations.push({
+          route_id: routeId,
+          origin_code: originCode,
+          destination_code: destinationCode,
+          dgca_traffic_weight: weight,
+          window_medians: windowMedians,
+          window_counts: windowCounts,
+          representative_daily_fare: 0,
+          total_quotes_count: 0,
+          outliers_excluded: 0,
+          carriers: [],
+          weighted_fare_contribution: 0,
+        });
+        continue;
+      }
       for (const win of ALL_WINDOWS) {
         const winRecords = nonOutliers.filter((r) => r.booking_window === win);
         winRecords.forEach((r) => carriersSet.add(r.carrier));

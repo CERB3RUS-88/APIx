@@ -59,7 +59,7 @@ export class IndexComputationEngine {
 
     // Step 4: Compute Lead-Time Elasticity
     const elasticityDataset = this.elasticityCalculator.computeElasticity(routeAggregations);
-    console.log(`[Index Engine ✓] Calculated Advance-Purchase Elasticity Curves for 10 routes.`);
+    console.log(`[Index Engine ✓] Calculated Advance-Purchase Elasticity Curves for ${elasticityDataset.length} routes.`);
 
     // Step 5: Compute Weekly & Monthly Rollups
     const weeklyIndex = this.rollupCalculator.computeWeeklyRollup([dailyIndex], indexDate);

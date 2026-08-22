@@ -45,16 +45,19 @@ export function RouteHeatmap() {
           if (json.data?.current_index?.route_breakdown) {
             const rawRoutes = json.data.current_index.route_breakdown;
             const dynamicHeatmap: RouteHeatmapItem[] = rawRoutes.map((r: any) => {
+              const hasData = (r.total_quotes_count && r.total_quotes_count > 0) || (r.representative_daily_fare && r.representative_daily_fare > 0);
               const baseFare = r.window_medians?.['T+15'] || r.representative_daily_fare || 5000;
-              const currentFare = r.representative_daily_fare || 5000;
-              const deltaAmt = currentFare - baseFare;
-              const deltaPct = Number(((deltaAmt / baseFare) * 100).toFixed(2));
+              const currentFare = hasData ? (r.representative_daily_fare || 0) : 0;
+              const deltaAmt = hasData ? currentFare - baseFare : 0;
+              const deltaPct = hasData && baseFare > 0 ? Number(((deltaAmt / baseFare) * 100).toFixed(2)) : 0;
               const cities = CITY_NAMES[r.route_id] || { origin: r.origin_code, dest: r.destination_code };
 
-              let status: 'SURGE' | 'EASED' | 'STABLE' | 'NORMAL' = 'NORMAL';
-              if (deltaPct > 2.0) status = 'SURGE';
-              else if (deltaPct < -1.0) status = 'EASED';
-              else if (Math.abs(deltaPct) <= 1.0) status = 'STABLE';
+              let status: 'SURGE' | 'EASED' | 'STABLE' | 'NORMAL' | 'AWAITING_FIRST_SCRAPE' = hasData ? 'NORMAL' : 'AWAITING_FIRST_SCRAPE';
+              if (hasData) {
+                if (deltaPct > 2.0) status = 'SURGE';
+                else if (deltaPct < -1.0) status = 'EASED';
+                else if (Math.abs(deltaPct) <= 1.0) status = 'STABLE';
+              }
 
               return {
                 id: r.route_id,
@@ -67,13 +70,13 @@ export function RouteHeatmap() {
                 baseline_fare: baseFare,
                 delta_amount: deltaAmt,
                 delta_percent: deltaPct,
-                t1_fare: r.window_medians?.['T+1'] || Math.round(currentFare * 1.65),
-                t7_fare: r.window_medians?.['T+7'] || Math.round(currentFare * 1.15),
-                t15_fare: r.window_medians?.['T+15'] || currentFare,
-                t30_fare: r.window_medians?.['T+30'] || Math.round(currentFare * 0.88),
-                t45_fare: r.window_medians?.['T+45'] || Math.round(currentFare * 0.82),
+                t1_fare: hasData ? (r.window_medians?.['T+1'] || 0) : 0,
+                t7_fare: hasData ? (r.window_medians?.['T+7'] || 0) : 0,
+                t15_fare: hasData ? (r.window_medians?.['T+15'] || 0) : 0,
+                t30_fare: hasData ? (r.window_medians?.['T+30'] || 0) : 0,
+                t45_fare: hasData ? (r.window_medians?.['T+45'] || 0) : 0,
                 status,
-                carriers: r.carriers || ['6E', 'AI'],
+                carriers: r.carriers || [],
               };
             });
 
@@ -165,11 +168,20 @@ export function RouteHeatmap() {
       header: 'CURRENT FARE',
       sortable: true,
       align: 'right',
-      cell: (row) => (
-        <span className="font-mono font-bold text-xs text-primary">
-          {formatINR(row.current_fare)}
-        </span>
-      ),
+      cell: (row) => {
+        if (!row.current_fare || row.status === 'AWAITING_FIRST_SCRAPE') {
+          return (
+            <span className="font-mono text-[11px] text-amber-signal font-semibold uppercase tracking-wider">
+              Awaiting first scrape
+            </span>
+          );
+        }
+        return (
+          <span className="font-mono font-bold text-xs text-primary">
+            {formatINR(row.current_fare)}
+          </span>
+        );
+      },
     },
     {
       id: 'delta_percent',
@@ -177,6 +189,13 @@ export function RouteHeatmap() {
       sortable: true,
       align: 'center',
       cell: (row) => {
+        if (!row.current_fare || row.status === 'AWAITING_FIRST_SCRAPE') {
+          return (
+            <span className="font-mono text-[10px] text-secondary-muted px-2 py-0.5 rounded border border-border-subtle bg-surface-subtle">
+              PENDING
+            </span>
+          );
+        }
         const isSurge = row.delta_percent > 0;
         const colorClass = isSurge
           ? 'bg-delta-negative/15 text-delta-negative border-delta-negative/30'
@@ -202,7 +221,7 @@ export function RouteHeatmap() {
       align: 'right',
       cell: (row) => (
         <span className="font-mono text-xs text-delta-negative/90">
-          {formatINR(row.t1_fare)}
+          {row.t1_fare > 0 ? formatINR(row.t1_fare) : '—'}
         </span>
       ),
     },
@@ -213,7 +232,7 @@ export function RouteHeatmap() {
       align: 'right',
       cell: (row) => (
         <span className="font-mono text-xs text-delta-positive/90">
-          {formatINR(row.t45_fare)}
+          {row.t45_fare > 0 ? formatINR(row.t45_fare) : '—'}
         </span>
       ),
     },
@@ -222,6 +241,13 @@ export function RouteHeatmap() {
       header: 'STATUS',
       align: 'center',
       cell: (row) => {
+        if (row.status === 'AWAITING_FIRST_SCRAPE' || !row.current_fare) {
+          return (
+            <TerminalBadge variant="subtle" size="xs">
+              PENDING
+            </TerminalBadge>
+          );
+        }
         const variantMap = {
           SURGE: 'red',
           NORMAL: 'default',
@@ -322,8 +348,11 @@ export function RouteHeatmap() {
         /* Heatmap Matrix Tiles View */
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {filteredData.map((item) => {
+            const hasData = item.current_fare > 0 && item.status !== 'AWAITING_FIRST_SCRAPE';
             const isSurge = item.delta_percent > 0;
-            const bgTint = isSurge
+            const bgTint = !hasData
+              ? 'bg-surface-subtle/40 border-border-subtle hover:border-border-subtle/80'
+              : isSurge
               ? 'bg-delta-negative/10 border-delta-negative/30 hover:border-delta-negative/60'
               : 'bg-delta-positive/10 border-delta-positive/30 hover:border-delta-positive/60';
 
@@ -338,20 +367,38 @@ export function RouteHeatmap() {
                     <ArrowRight className="w-3 h-3 text-amber-signal" />
                     <span>{item.destination_code}</span>
                   </div>
-                  <TerminalBadge variant={isSurge ? 'red' : 'green'} size="xs">
-                    {isSurge ? 'SURGE' : 'EASED'}
-                  </TerminalBadge>
+                  {hasData ? (
+                    <TerminalBadge variant={isSurge ? 'red' : 'green'} size="xs">
+                      {isSurge ? 'SURGE' : 'EASED'}
+                    </TerminalBadge>
+                  ) : (
+                    <TerminalBadge variant="subtle" size="xs">
+                      PENDING
+                    </TerminalBadge>
+                  )}
                 </div>
 
                 <div>
                   <div className="text-lg font-bold text-primary">
-                    {formatINR(item.current_fare)}
+                    {hasData ? (
+                      formatINR(item.current_fare)
+                    ) : (
+                      <span className="text-xs text-amber-signal font-mono uppercase tracking-wider">
+                        Awaiting first scrape
+                      </span>
+                    )}
                   </div>
                   <div className="flex items-center justify-between text-[11px] text-secondary-muted mt-1">
                     <span>Base: {formatINR(item.baseline_fare)}</span>
-                    <span className={isSurge ? 'text-delta-negative font-bold' : 'text-delta-positive font-bold'}>
-                      {isSurge ? '+' : ''}{item.delta_percent.toFixed(1)}%
-                    </span>
+                    {hasData ? (
+                      <span className={isSurge ? 'text-delta-negative font-bold' : 'text-delta-positive font-bold'}>
+                        {isSurge ? '+' : ''}{item.delta_percent.toFixed(1)}%
+                      </span>
+                    ) : (
+                      <span className="text-[10px] text-secondary-muted font-mono">
+                        NO SCRAPE DATA
+                      </span>
+                    )}
                   </div>
                 </div>
 
