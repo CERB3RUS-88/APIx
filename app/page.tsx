@@ -8,7 +8,6 @@ import { ElasticityView } from '@/components/dashboard/elasticity-view';
 import { ValidationView } from '@/components/dashboard/validation-view';
 import { MethodologyView } from '@/components/dashboard/methodology-view';
 import { ApiDocsView } from '@/components/dashboard/api-docs-view';
-import { DesignSystemPreview } from '@/components/dashboard/design-system-preview';
 import { BulletinModal } from '@/components/dashboard/bulletin-modal';
 import { PolicySimulator } from '@/components/dashboard/policy-simulator';
 import { AntiGougingWatchdog } from '@/components/dashboard/anti-gouging-watchdog';
@@ -92,10 +91,6 @@ export default function HomePage() {
         )}
 
         {activeTab === 'api-docs' && <ApiDocsView />}
-
-        {activeTab === 'design-system' && (
-          <DesignSystemPreview audioEnabled={audioEnabled} />
-        )}
       </main>
 
       {/* 1-Click MoSPI Press Bulletin Modal */}
