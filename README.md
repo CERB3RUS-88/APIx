@@ -8,7 +8,7 @@ APIx is an end-to-end software platform that scrapes domestic airfare data from 
 
 ## 🛫 Key Capabilities
 
-- **Ethical Scraping Engine**: Automated, rate-limited (3–7s jitter), RFC 9309 robots.txt-compliant ingestion across IndiGo, SpiceJet, and OTAs (EaseMyTrip, MakeMyTrip).
+- **Ethical Scraping Safeguards**: Automated, rate-limited (3–7s randomized jitter delay to keep server load minimal), transparent User-Agent identification, and robots.txt path verification across sources (EaseMyTrip, Cleartrip, Akasa Air). *Note: Operates under polite research scraping safeguards rather than a claim of commercial ToS clearance.*
 - **Data Cleaning & Anomaly Detection**: Enforces base fare and GST tax separation, deduplication, and Tukey IQR statistical outlier tagging.
 - **Laspeyres Index Engine**: Aggregates quotes across 5 booking windows ($T+1, T+7, T+15, T+30, T+45$) weighted by official DGCA route volume shares with Jan 2026 base period normalization ($100.00 = ₹5,280$).
 - **Institutional Terminal Dashboard**: High-frequency Solari Split-Flap board with mechanical flip audio, 30D/90D/365D trend line chart, departure route heatmap, and advance-purchase elasticity curves.

@@ -79,7 +79,7 @@ export function TerminalHeader({
           <span className="text-border-subtle hidden md:inline">|</span>
           <div className="hidden md:flex items-center gap-1 text-delta-positive">
             <ShieldCheck className="w-3 h-3" />
-            <span>ETHICAL SCRAPING: STRICT ROBOTS.TXT</span>
+            <span>ETHICAL SCRAPING SAFEGUARDS: ROBOTS.TXT & RATE-LIMITED</span>
           </div>
         </div>
       </div>

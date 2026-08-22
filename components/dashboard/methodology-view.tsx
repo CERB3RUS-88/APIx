@@ -75,7 +75,7 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
               <span className="p-1.5 bg-surface-subtle border border-border-subtle rounded text-delta-positive font-bold">T+45 (45d)</span>
             </div>
             <p className="text-[11px] text-secondary-muted pt-1">
-              Fares are ethically collected from IndiGo, Air India, SpiceJet, and OTAs (EaseMyTrip, MakeMyTrip) using transparent User-Agent headers, 3–7s jittered rate limiting, and RFC 9309 robots.txt validation.
+              Fares are collected under ethical scraping safeguards: transparent User-Agent identification, randomized 3–7s jitter delays to keep server load minimal, and robots.txt path validation. (Note: These safeguards minimize infrastructure impact; commercial travel portals typically prohibit automated access in their Terms of Service).
             </p>
           </PanelContent>
         </Panel>
