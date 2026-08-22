@@ -262,11 +262,11 @@ export function ApiDocsView() {
             <Globe className="w-4 h-4" />
             <span>BASE URL & PROTOCOL</span>
           </div>
-          <div className="font-mono text-xs text-primary font-bold bg-[#090D15] p-2 rounded border border-border-subtle">
-            https://apix.gov.in/api (or http://localhost:3000/api)
+          <div className="font-mono text-xs text-primary font-bold bg-[#090D15] p-2 rounded border border-border-subtle break-all">
+            https://api-x-chi.vercel.app/api
           </div>
           <p className="text-[11px] text-secondary mt-1">
-            All endpoints are strictly read-only (GET) with JSON envelopes.
+            Live production base URL (or <span className="font-mono text-primary text-[10px]">http://localhost:3000/api</span> locally). Aspirational Ministry domain: <span className="font-mono text-secondary-muted text-[10px]">apix.gov.in/api</span>.
           </p>
         </Panel>
 
@@ -335,7 +335,7 @@ export function ApiDocsView() {
                     <span className="text-primary font-bold">{ep.path}</span>
                   </div>
                   <button
-                    onClick={() => handleCopy(`curl -X GET "http://localhost:3000${ep.exampleQuery}"`, ep.path)}
+                    onClick={() => handleCopy(`curl -X GET "https://api-x-chi.vercel.app${ep.exampleQuery}"`, ep.path)}
                     className="text-secondary hover:text-amber-signal flex items-center gap-1.5 text-[11px] transition-colors"
                   >
                     {copiedPath === ep.path ? (
