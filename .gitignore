@@ -21,6 +21,10 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+*.log
+
+# large raw pipeline run dumps
+data/runs/
 
 # local env files
 .env*.local

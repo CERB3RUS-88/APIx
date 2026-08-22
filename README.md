@@ -53,6 +53,9 @@ npm run clean
 
 # 3. Compute DGCA Laspeyres Index, rollups & lead-time elasticity
 npm run compute-index
+
+# 4. Run automated unit test suite (Deduplication, Tukey IQR, Laspeyres math)
+npm test
 ```
 
 ### 3. Launch the Terminal Dashboard
