@@ -153,9 +153,9 @@ export function BulletinModal({ isOpen, onClose, indexData }: BulletinModalProps
                 <span className="text-[10px] text-secondary-muted block mt-1">Transport Sub-Group</span>
               </div>
               <div className="p-3 rounded border border-border-subtle bg-surface-subtle print:border-gray-300">
-                <span className="text-[10px] text-secondary-muted print:text-gray-600 block">DGCA CORRELATION</span>
-                <span className="text-lg font-bold text-delta-positive print:text-black">r = 0.968</span>
-                <span className="text-[10px] text-secondary-muted block mt-1">Grade A+ Convergence</span>
+                <span className="text-[10px] text-secondary-muted print:text-gray-600 block">DGCA VALIDATION</span>
+                <span className="text-sm font-bold text-amber-signal print:text-black">Pending Validation</span>
+                <span className="text-[10px] text-secondary-muted block mt-1">1 Day Collected · Accumulating</span>
               </div>
             </div>
           </div>

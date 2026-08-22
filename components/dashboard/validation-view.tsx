@@ -28,23 +28,56 @@ import {
 } from 'lucide-react';
 
 export function ValidationView() {
-  const [monthlyData, setMonthlyData] = React.useState<MonthlyBasketComparison[]>(
-    OFFICIAL_DGCA_MONTHLY_BENCHMARKS
-  );
-  const [routeRecords, setRouteRecords] = React.useState<DgcaReferenceFareRecord[]>(
-    INITIAL_ROUTE_BENCHMARKS
-  );
+  const [monthlyData, setMonthlyData] = React.useState<MonthlyBasketComparison[]>([]);
+  const [routeRecords, setRouteRecords] = React.useState<DgcaReferenceFareRecord[]>([]);
   const [selectedRouteFilter, setSelectedRouteFilter] = React.useState<string>('ALL');
 
-  const metrics = React.useMemo(() => calculateValidationMetrics(monthlyData), [monthlyData]);
+  const hasSufficientData = monthlyData.length >= 2;
+  const metrics = React.useMemo(
+    () => (hasSufficientData ? calculateValidationMetrics(monthlyData) : null),
+    [monthlyData, hasSufficientData]
+  );
 
   const handleImportRecords = (newRecords: DgcaReferenceFareRecord[]) => {
     setRouteRecords((prev) => [...newRecords, ...prev]);
+
+    // Group by month to create monthly basket comparisons for validation
+    const monthGroups: Record<string, { apixSum: number; dgcaSum: number; count: number }> = {};
+    for (const r of newRecords) {
+      if (!monthGroups[r.month]) {
+        monthGroups[r.month] = { apixSum: 0, dgcaSum: 0, count: 0 };
+      }
+      monthGroups[r.month].apixSum += r.apix_computed_fare;
+      monthGroups[r.month].dgcaSum += r.dgca_official_fare;
+      monthGroups[r.month].count += 1;
+    }
+
+    const newComparisons: MonthlyBasketComparison[] = Object.entries(monthGroups).map(
+      ([month, group]) => {
+        const apixAvg = Math.round(group.apixSum / group.count);
+        const dgcaAvg = Math.round(group.dgcaSum / group.count);
+        const varianceInr = apixAvg - dgcaAvg;
+        const variancePct = Number(((varianceInr / dgcaAvg) * 100).toFixed(2));
+        return {
+          month,
+          month_label: month,
+          apix_basket_fare: apixAvg,
+          dgca_basket_fare: dgcaAvg,
+          apix_index_value: Number(((apixAvg / 5280) * 100).toFixed(2)),
+          dgca_index_value: Number(((dgcaAvg / 5280) * 100).toFixed(2)),
+          variance_inr: varianceInr,
+          variance_pct: variancePct,
+          status: Math.abs(variancePct) <= 1.5 ? 'EXACT_MATCH' : 'TIGHT_TRACK',
+        };
+      }
+    );
+
+    setMonthlyData((prev) => [...newComparisons, ...prev]);
   };
 
   const handleResetToDefault = () => {
-    setMonthlyData(OFFICIAL_DGCA_MONTHLY_BENCHMARKS);
-    setRouteRecords(INITIAL_ROUTE_BENCHMARKS);
+    setMonthlyData([]);
+    setRouteRecords([]);
   };
 
   const filteredRouteRecords = React.useMemo(() => {
@@ -155,7 +188,7 @@ export function ValidationView() {
       <SectionHeader
         kicker="[MODULE 04 // EMPIRICAL VALIDATION & GROUND TRUTH]"
         title="DGCA Back-Test Validation & Econometric Convergence"
-        description="Rigorous empirical proof of the APIx Index against official Ministry of Civil Aviation / DGCA monthly tariff reports. Evaluates statistical convergence across 14 overlapping months of domestic aviation data."
+        description="Empirical validation of the real-time APIx Index against official Ministry of Civil Aviation / DGCA tariff benchmark circulars. Live validation requires minimum N ≥ 2 overlapping monthly periods."
       />
 
       {/* 1. Executive Statistical Accuracy KPI Banner */}
@@ -164,19 +197,23 @@ export function ValidationView() {
         <Panel variant="highlight" className="p-4 flex flex-col justify-between">
           <div className="flex items-center justify-between text-secondary-muted font-mono text-xs mb-2">
             <span>PEARSON CORRELATION (r)</span>
-            <ShieldCheck className="w-4 h-4 text-delta-positive" />
+            <ShieldCheck className="w-4 h-4 text-amber-signal" />
           </div>
           <div>
-            <div className="text-3xl font-bold font-mono text-delta-positive">
-              {metrics.pearson_correlation.toFixed(3)}
+            <div className="text-2xl font-bold font-mono text-amber-signal">
+              {metrics ? metrics.pearson_correlation.toFixed(3) : 'PENDING'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
-              Near-perfect statistical convergence (p &lt; 0.001)
+              {metrics
+                ? 'Empirically computed from overlapping data'
+                : 'Validation pending — 1 day of live data collected, accumulating toward first comparison'}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
-            <span>COVARIANCE</span>
-            <span className="text-delta-positive">STRONG POSITIVE</span>
+            <span>STATUS</span>
+            <span className="text-amber-signal">
+              {metrics ? 'COMPUTED' : 'ACCUMULATING LIVE DATA'}
+            </span>
           </div>
         </Panel>
 
@@ -187,16 +224,18 @@ export function ValidationView() {
             <Percent className="w-4 h-4 text-amber-signal" />
           </div>
           <div>
-            <div className="text-3xl font-bold font-mono text-amber-signal">
-              {metrics.mape_pct.toFixed(2)}%
+            <div className="text-2xl font-bold font-mono text-primary">
+              {metrics ? `${metrics.mape_pct.toFixed(2)}%` : 'PENDING'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
-              Average tracking variance vs DGCA published fares
+              {metrics
+                ? 'Average tracking variance vs DGCA published fares'
+                : 'Awaiting 2+ overlapping monthly circulars'}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
-            <span>THRESHOLD</span>
-            <span className="text-primary">&lt; 3.0% ACCEPTABLE</span>
+            <span>SAMPLE REQUIREMENT</span>
+            <span className="text-primary">{metrics ? `${metrics.total_months_evaluated} MONTHS` : 'MIN N ≥ 2'}</span>
           </div>
         </Panel>
 
@@ -207,16 +246,16 @@ export function ValidationView() {
             <Calculator className="w-4 h-4 text-secondary-muted" />
           </div>
           <div>
-            <div className="text-3xl font-bold font-mono text-primary">
-              ₹{metrics.rmse_inr}
+            <div className="text-2xl font-bold font-mono text-primary">
+              {metrics ? `₹${metrics.rmse_inr}` : 'PENDING'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
-              INR Root-mean-square standard error
+              {metrics ? 'INR Root-mean-square standard error' : 'Tracking standard error pending'}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
-            <span>BASKET MEAN</span>
-            <span className="text-secondary">~₹5,410</span>
+            <span>CURRENT REPO</span>
+            <span className="text-secondary">1 LIVE DAY</span>
           </div>
         </Panel>
 
@@ -227,16 +266,18 @@ export function ValidationView() {
             <Award className="w-4 h-4 text-delta-positive" />
           </div>
           <div>
-            <div className="text-2xl font-bold font-mono text-delta-positive truncate">
-              GRADE A+
+            <div className="text-xl font-bold font-mono text-primary truncate">
+              {metrics ? metrics.overall_grade : 'IN PROGRESS'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
-              Statistically validated for MoSPI CPI augmentation
+              {metrics
+                ? 'Statistically validated for MoSPI CPI augmentation'
+                : 'Automated daily scraping active (05:30 IST)'}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
-            <span>SAMPLE PERIOD</span>
-            <span className="text-amber-signal">14 MONTHS</span>
+            <span>AUTOMATION CRON</span>
+            <span className="text-delta-positive">ACTIVE DAILY</span>
           </div>
         </Panel>
       </div>
@@ -249,7 +290,9 @@ export function ValidationView() {
           statusDot="amber"
           actions={
             <TerminalBadge variant="default" size="xs">
-              14 MONTHS OVERLAPPING
+              {hasSufficientData
+                ? `${monthlyData.length} MONTHS OVERLAPPING`
+                : 'DATA ACCUMULATION PHASE (1 DAY RECORDED)'}
             </TerminalBadge>
           }
         />

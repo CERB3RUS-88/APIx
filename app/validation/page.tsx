@@ -42,7 +42,7 @@ export default function ValidationPage() {
           <div className="flex items-center gap-4 text-[11px]">
             <span>DGCA GROUND TRUTH VALIDATION</span>
             <span className="text-border-subtle">|</span>
-            <span className="text-delta-positive">PEARSON r = 0.968 (GRADE A+)</span>
+            <span className="text-amber-signal">VALIDATION PENDING (1 DAY LIVE DATA COLLECTED)</span>
           </div>
         </div>
       </footer>

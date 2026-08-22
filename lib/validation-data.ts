@@ -24,7 +24,7 @@ export interface MonthlyBasketComparison {
 }
 
 export interface ValidationMetrics {
-  pearson_correlation: number; // r value e.g. 0.968
+  pearson_correlation: number; // Pearson r correlation coefficient (-1.0 to 1.0)
   mape_pct: number; // Mean Absolute Percentage Error e.g. 2.14%
   rmse_inr: number; // Root Mean Square Error e.g. 118 INR
   max_tracking_error_pct: number; // Max deviation e.g. 3.45%

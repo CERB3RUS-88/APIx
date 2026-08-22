@@ -119,7 +119,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>APIx · SMART INDIA HACKATHON 2026 · PROBLEM STATEMENT 26056 · MoSPI / DIID</span>
           <div className="flex items-center gap-4 text-[11px]">
-            <span>DGCA EMPIRICALLY VALIDATED (r = 0.968)</span>
+            <span>DGCA VALIDATION PENDING (1 DAY LIVE DATA COLLECTED)</span>
             <span className="text-border-subtle">|</span>
             <span className="text-amber-signal">LIVE COMPUTED ENGINE (BASE = 100.00)</span>
           </div>

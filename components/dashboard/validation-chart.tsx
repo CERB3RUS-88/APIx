@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { TerminalBadge } from '@/components/ui/terminal-badge';
 import { MonthlyBasketComparison } from '@/lib/validation-data';
 import { formatINR, formatIndexValue } from '@/lib/utils';
-import { TrendingUp, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { TrendingUp, ShieldCheck, CheckCircle2, Clock } from 'lucide-react';
 
 interface ValidationChartProps {
   data: MonthlyBasketComparison[];
@@ -16,6 +16,33 @@ type ViewMode = 'inr' | 'index';
 export function ValidationChart({ data }: ValidationChartProps) {
   const [viewMode, setViewMode] = React.useState<ViewMode>('inr');
   const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);
+
+  if (!data || data.length === 0) {
+    return (
+      <div className="space-y-4">
+        <div className="h-[280px] w-full rounded border border-border-subtle/60 bg-surface-subtle/30 flex flex-col items-center justify-center p-6 text-center">
+          <Clock className="w-8 h-8 text-amber-signal mb-3 animate-pulse-subtle" />
+          <div className="font-mono text-sm font-bold text-primary uppercase">
+            Live Validation Data Accumulation Phase
+          </div>
+          <p className="font-mono text-xs text-secondary max-w-md mt-2 leading-relaxed">
+            Validation pending — 1 day of live data collected, accumulating toward first comparison against official DGCA circulars (minimum N ≥ 2 overlapping periods required).
+          </p>
+          <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-surface-elevated rounded border border-border-subtle text-[11px] font-mono text-amber-signal">
+            <span className="w-2 h-2 rounded-full bg-amber-signal animate-pulse-subtle" />
+            <span>DAILY AUTOMATED CRON ACTIVE (05:30 IST)</span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-secondary pt-1">
+          <div className="flex items-center gap-2 text-amber-signal">
+            <Clock className="w-4 h-4" />
+            <span>VALIDATION PENDING — 1 DAY OF LIVE DATA COLLECTED, ACCUMULATING TOWARD FIRST COMPARISON</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   // SVG Chart Dimensions
   const width = 850;
@@ -303,9 +330,9 @@ export function ValidationChart({ data }: ValidationChartProps) {
           </div>
         </div>
 
-        <div className="flex items-center gap-2 text-delta-positive">
-          <ShieldCheck className="w-4 h-4" />
-          <span>STATISTICAL CORRELATION: r = 0.968 (p &lt; 0.001)</span>
+        <div className="flex items-center gap-2 text-amber-signal">
+          <Clock className="w-4 h-4" />
+          <span>VALIDATION PENDING — 1 DAY OF LIVE DATA COLLECTED, ACCUMULATING TOWARD FIRST COMPARISON</span>
         </div>
       </div>
     </div>

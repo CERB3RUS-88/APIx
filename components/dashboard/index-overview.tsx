@@ -148,9 +148,9 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
                 </div>
 
                 <div className="p-2.5 bg-surface-elevated/70 rounded border border-border-subtle flex flex-col gap-1">
-                  <span className="text-[10px] text-secondary-muted">CPI CORRELATION</span>
-                  <span className="text-delta-positive font-bold">r = 0.968 (Grade A+)</span>
-                  <span className="text-[10px] text-secondary">DGCA Yield Alignment</span>
+                  <span className="text-[10px] text-secondary-muted">DGCA VALIDATION</span>
+                  <span className="text-amber-signal font-bold text-[11px] leading-tight">Pending (1 day collected)</span>
+                  <span className="text-[10px] text-secondary-muted">Accumulating toward 1st comparison</span>
                 </div>
 
                 <div className="p-2.5 bg-surface-elevated/70 rounded border border-border-subtle flex flex-col gap-1">
