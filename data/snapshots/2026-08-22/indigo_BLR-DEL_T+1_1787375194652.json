@@ -1,0 +1,31 @@
+{
+  "route_id": "BLR-DEL",
+  "origin": "BLR",
+  "destination": "DEL",
+  "source": "IndiGo",
+  "booking_window": "T+1",
+  "flight_date": "2026-08-23",
+  "scraped_at": "2026-08-22T05:06:34.652Z",
+  "duration_ms": 120,
+  "success": true,
+  "quotes_count": 1,
+  "quotes": [
+    {
+      "source": "IndiGo",
+      "carrier": "6E",
+      "flight_number": "6E-501",
+      "departure_time": "07:00",
+      "arrival_time": "09:15",
+      "is_nonstop": true,
+      "base_fare": 5333,
+      "taxes": 1171,
+      "total_fare": 6504
+    }
+  ],
+  "intercepted_api": true,
+  "raw_payload": {
+    "simulated": true,
+    "route": "BLR-DEL",
+    "date": "2026-08-23"
+  }
+}

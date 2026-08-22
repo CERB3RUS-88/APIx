@@ -1,0 +1,31 @@
+{
+  "route_id": "DEL-BOM",
+  "origin": "DEL",
+  "destination": "BOM",
+  "source": "EaseMyTrip",
+  "booking_window": "T+7",
+  "flight_date": "2026-08-29",
+  "scraped_at": "2026-08-22T05:06:35.385Z",
+  "duration_ms": 120,
+  "success": true,
+  "quotes_count": 1,
+  "quotes": [
+    {
+      "source": "EaseMyTrip",
+      "carrier": "6E",
+      "flight_number": "6E-501",
+      "departure_time": "07:00",
+      "arrival_time": "09:15",
+      "is_nonstop": true,
+      "base_fare": 4128,
+      "taxes": 906,
+      "total_fare": 5034
+    }
+  ],
+  "intercepted_api": true,
+  "raw_payload": {
+    "simulated": true,
+    "route": "DEL-BOM",
+    "date": "2026-08-29"
+  }
+}

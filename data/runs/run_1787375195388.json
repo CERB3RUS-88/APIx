@@ -1,0 +1,310 @@
+{
+  "run_id": "run_1787375188632",
+  "started_at": "2026-08-22T05:06:28.632Z",
+  "finished_at": "2026-08-22T05:06:35.387Z",
+  "total_tasks": 8,
+  "successful_scrapes": 8,
+  "failed_scrapes": 0,
+  "skipped_robots": 0,
+  "skipped_captcha": 0,
+  "total_quotes_collected": 8,
+  "median_duration_ms": 120,
+  "results": [
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [
+        {
+          "source": "IndiGo",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 4772,
+          "taxes": 1048,
+          "total_fare": 5820
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "DEL-BOM",
+        "date": "2026-08-23"
+      },
+      "scraped_at": "2026-08-22T05:06:34.648Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [
+        {
+          "source": "IndiGo",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 3890,
+          "taxes": 854,
+          "total_fare": 4744
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "DEL-BOM",
+        "date": "2026-08-29"
+      },
+      "scraped_at": "2026-08-22T05:06:34.651Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [
+        {
+          "source": "IndiGo",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 5333,
+          "taxes": 1171,
+          "total_fare": 6504
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "BLR-DEL",
+        "date": "2026-08-23"
+      },
+      "scraped_at": "2026-08-22T05:06:34.652Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "IndiGo",
+      "success": true,
+      "quotes": [
+        {
+          "source": "IndiGo",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 6085,
+          "taxes": 1336,
+          "total_fare": 7421
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "BLR-DEL",
+        "date": "2026-08-29"
+      },
+      "scraped_at": "2026-08-22T05:06:34.652Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [
+        {
+          "source": "EaseMyTrip",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 3505,
+          "taxes": 769,
+          "total_fare": 4274
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "DEL-BOM",
+        "date": "2026-08-23"
+      },
+      "scraped_at": "2026-08-22T05:06:35.383Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "DEL-BOM",
+          "origin_code": "DEL",
+          "destination_code": "BOM",
+          "dgca_traffic_weight": 0.185,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [
+        {
+          "source": "EaseMyTrip",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 4128,
+          "taxes": 906,
+          "total_fare": 5034
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "DEL-BOM",
+        "date": "2026-08-29"
+      },
+      "scraped_at": "2026-08-22T05:06:35.385Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+1",
+        "days_ahead": 1,
+        "target_date": "2026-08-23"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [
+        {
+          "source": "EaseMyTrip",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 3390,
+          "taxes": 744,
+          "total_fare": 4134
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "BLR-DEL",
+        "date": "2026-08-23"
+      },
+      "scraped_at": "2026-08-22T05:06:35.386Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    },
+    {
+      "task": {
+        "route": {
+          "id": "BLR-DEL",
+          "origin_code": "BLR",
+          "destination_code": "DEL",
+          "dgca_traffic_weight": 0.109,
+          "active": true
+        },
+        "booking_window": "T+7",
+        "days_ahead": 7,
+        "target_date": "2026-08-29"
+      },
+      "source": "EaseMyTrip",
+      "success": true,
+      "quotes": [
+        {
+          "source": "EaseMyTrip",
+          "carrier": "6E",
+          "flight_number": "6E-501",
+          "departure_time": "07:00",
+          "arrival_time": "09:15",
+          "is_nonstop": true,
+          "base_fare": 6041,
+          "taxes": 1326,
+          "total_fare": 7367
+        }
+      ],
+      "raw_payload": {
+        "simulated": true,
+        "route": "BLR-DEL",
+        "date": "2026-08-29"
+      },
+      "scraped_at": "2026-08-22T05:06:35.387Z",
+      "duration_ms": 120,
+      "intercepted_api": true
+    }
+  ]
+}
