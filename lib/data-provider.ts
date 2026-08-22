@@ -139,7 +139,7 @@ export const ROUTE_HEATMAP_DATA: RouteHeatmapItem[] = [
     t30_fare: 4400,
     t45_fare: 4100,
     status: 'SURGE',
-    carriers: ['6E', 'AI', 'QP', 'UK'],
+    carriers: ['6E', 'AI', 'QP', 'SG'],
   },
   {
     id: 'BOM-DEL',
@@ -158,7 +158,7 @@ export const ROUTE_HEATMAP_DATA: RouteHeatmapItem[] = [
     t30_fare: 4350,
     t45_fare: 4050,
     status: 'SURGE',
-    carriers: ['6E', 'AI', 'QP', 'UK'],
+    carriers: ['6E', 'AI', 'QP', 'SG'],
   },
   {
     id: 'DEL-BLR',

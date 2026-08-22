@@ -9,7 +9,7 @@ import { TerminalBadge } from '@/components/ui/terminal-badge';
 import { Button } from '@/components/ui/button';
 import { RouteHeatmapItem, ROUTE_HEATMAP_DATA } from '@/lib/data-provider';
 import { formatINR, formatWeight } from '@/lib/utils';
-import { ArrowRight, Plane, Filter, Download, ArrowUpDown } from 'lucide-react';
+import { ArrowRight, Plane, Filter, Download, ArrowUpDown, Search } from 'lucide-react';
 
 const CITY_NAMES: Record<string, { origin: string; dest: string }> = {
   'DEL-BOM': { origin: 'Delhi', dest: 'Mumbai' },
@@ -83,10 +83,22 @@ export function RouteHeatmap() {
     fetchLatestRoutes();
   }, []);
 
+  const [searchQuery, setSearchQuery] = React.useState<string>('');
+
   const filteredData = React.useMemo(() => {
-    if (filterStatus === 'all') return data;
-    return data.filter((item) => item.status === filterStatus);
-  }, [data, filterStatus]);
+    return data.filter((item) => {
+      const matchesStatus = filterStatus === 'all' || item.status === filterStatus;
+      const q = searchQuery.toLowerCase().trim();
+      const matchesSearch =
+        !q ||
+        item.id.toLowerCase().includes(q) ||
+        item.origin_city.toLowerCase().includes(q) ||
+        item.destination_city.toLowerCase().includes(q) ||
+        item.origin_code.toLowerCase().includes(q) ||
+        item.destination_code.toLowerCase().includes(q);
+      return matchesStatus && matchesSearch;
+    });
+  }, [data, filterStatus, searchQuery]);
 
   const columns: ColumnDef<RouteHeatmapItem>[] = [
     {
@@ -246,13 +258,26 @@ export function RouteHeatmap() {
         }
       />
 
-      {/* Filter Bar */}
+      {/* Filter & Search Bar */}
       <div className="p-3.5 bg-surface border border-border-subtle rounded flex flex-wrap items-center justify-between gap-3 text-xs font-mono">
-        <div className="flex items-center gap-2">
-          <Filter className="w-3.5 h-3.5 text-secondary-muted" />
-          <span className="text-secondary-muted">FILTER TARIFF DIRECTION:</span>
+        <div className="flex flex-wrap items-center gap-2">
+          {/* Quick Search */}
+          <div className="relative flex items-center">
+            <Search className="w-3.5 h-3.5 text-secondary-muted absolute left-2.5 pointer-events-none" />
+            <input
+              type="text"
+              placeholder="Search code/city (e.g. BOM, Delhi)..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="pl-8 pr-3 py-1 bg-surface-elevated border border-border-subtle rounded text-xs text-primary placeholder:text-secondary-muted/60 focus:outline-none focus:border-amber-signal w-56 font-mono"
+            />
+          </div>
+
+          <div className="h-4 w-px bg-border-subtle mx-1 hidden sm:block" />
+
+          <Filter className="w-3.5 h-3.5 text-secondary-muted hidden sm:inline" />
           {[
-            { id: 'all', label: 'ALL ROUTES (10)' },
+            { id: 'all', label: 'ALL (10)' },
             { id: 'SURGE', label: 'SURGE (>2%)' },
             { id: 'NORMAL', label: 'NORMAL (0-2%)' },
             { id: 'EASED', label: 'EASED (<0%)' },
@@ -275,9 +300,9 @@ export function RouteHeatmap() {
 
         <div className="flex items-center gap-2 text-secondary-muted text-[11px]">
           <span className="w-2 h-2 rounded-full bg-delta-negative" />
-          <span>Fare Surge (Inflation)</span>
-          <span className="w-2 h-2 rounded-full bg-delta-positive ml-2" />
-          <span>Fare Eased (Deflation)</span>
+          <span>Surge</span>
+          <span className="w-2 h-2 rounded-full bg-delta-positive ml-1" />
+          <span>Eased</span>
         </div>
       </div>
 

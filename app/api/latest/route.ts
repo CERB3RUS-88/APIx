@@ -2,7 +2,6 @@ import { NextRequest } from 'next/server';
 import * as fs from 'fs';
 import * as path from 'path';
 import { apiSuccess, apiError } from '@/lib/api/response';
-import { DGCA_ROUTE_BASKET, CURRENT_LIVE_INDEX } from '@/lib/mock-data';
 
 const DGCA_ROUTE_WEIGHTS: Record<string, number> = {
   'DEL-BOM': 0.185,
@@ -18,16 +17,16 @@ const DGCA_ROUTE_WEIGHTS: Record<string, number> = {
 };
 
 const BASE_PRICES: Record<string, number> = {
-  'DEL-BOM': 5200,
-  'BOM-DEL': 5100,
-  'DEL-BLR': 6700,
-  'BLR-DEL': 6600,
-  'BOM-BLR': 4100,
-  'BLR-BOM': 4150,
-  'DEL-CCU': 5700,
-  'CCU-DEL': 5600,
-  'BLR-HYD': 3500,
-  'MAA-DEL': 6200,
+  'DEL-BOM': 5160,
+  'BOM-DEL': 5060,
+  'DEL-BLR': 6650,
+  'BLR-DEL': 6550,
+  'BOM-BLR': 4070,
+  'BLR-BOM': 4120,
+  'DEL-CCU': 5655,
+  'CCU-DEL': 5555,
+  'BLR-HYD': 3470,
+  'MAA-DEL': 6150,
 };
 
 const WINDOW_DAYS: Record<string, number> = {
@@ -36,6 +35,14 @@ const WINDOW_DAYS: Record<string, number> = {
   'T+15': 15,
   'T+7': 7,
   'T+1': 1,
+};
+
+const BOOKING_WINDOW_VOLUME_WEIGHTS: Record<string, number> = {
+  'T+1': 0.10,
+  'T+7': 0.20,
+  'T+15': 0.35,
+  'T+30': 0.25,
+  'T+45': 0.10,
 };
 
 const ORDERED_WINDOWS = ['T+45', 'T+30', 'T+15', 'T+7', 'T+1'];
@@ -56,25 +63,30 @@ function computeRealtimeIndex(dateStr: string) {
     const weight = DGCA_ROUTE_WEIGHTS[routeId];
     const baseRoutePrice = BASE_PRICES[routeId] || 5000;
 
-    // Window multipliers reflecting actual Indian aviation dynamic pricing
+    // Window multipliers reflecting actual Indian aviation dynamic pricing (monotonic)
     const windowMedians: Record<string, number> = {
-      'T+1': Math.round(baseRoutePrice * 1.68),
-      'T+7': Math.round(baseRoutePrice * 1.16),
+      'T+1': Math.round(baseRoutePrice * 1.65),
+      'T+7': Math.round(baseRoutePrice * 1.18),
       'T+15': baseRoutePrice,
       'T+30': Math.round(baseRoutePrice * 0.88),
-      'T+45': Math.round(baseRoutePrice * 0.82),
+      'T+45': Math.round(baseRoutePrice * 0.80),
     };
 
     const windowCounts: Record<string, number> = {
-      'T+1': 12,
-      'T+7': 10,
-      'T+15': 8,
+      'T+1': 14,
+      'T+7': 12,
+      'T+15': 10,
       'T+30': 8,
       'T+45': 6,
     };
 
-    const activeVals = Object.values(windowMedians);
-    const representativeFare = Math.round(activeVals.reduce((a, b) => a + b, 0) / activeVals.length);
+    // Weighted representative fare
+    let representativeFare = 0;
+    for (const win of ORDERED_WINDOWS) {
+      representativeFare += windowMedians[win] * (BOOKING_WINDOW_VOLUME_WEIGHTS[win] || 0.2);
+    }
+    representativeFare = Math.round(representativeFare);
+
     const weightedContribution = Number((representativeFare * weight).toFixed(2));
     rawWeightedSum += weightedContribution;
 
@@ -86,7 +98,7 @@ function computeRealtimeIndex(dateStr: string) {
       window_medians: windowMedians,
       window_counts: windowCounts,
       representative_daily_fare: representativeFare,
-      total_quotes_count: 44,
+      total_quotes_count: 50,
       outliers_excluded: 2,
       carriers: ['6E', 'AI', 'QP', 'SG'],
       weighted_fare_contribution: weightedContribution,

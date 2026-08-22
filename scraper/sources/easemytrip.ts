@@ -48,7 +48,17 @@ export class EaseMyTripScraper extends BaseScraper {
 
     page.on('response', handleResponse);
 
-    const searchUrl = `${this.baseUrl}/FlightList/Index?srch=${origin}-Delhi-India|${dest}-Mumbai-India|${formattedDate}&px=1-0-0&cbn=0&ar=undefined&isqs=true`;
+    const CITY_NAMES: Record<string, string> = {
+      DEL: 'Delhi',
+      BOM: 'Mumbai',
+      BLR: 'Bangalore',
+      CCU: 'Kolkata',
+      HYD: 'Hyderabad',
+      MAA: 'Chennai',
+    };
+    const origLabel = CITY_NAMES[origin] || origin;
+    const destLabel = CITY_NAMES[dest] || dest;
+    const searchUrl = `${this.baseUrl}/FlightList/Index?srch=${origin}-${origLabel}-India|${dest}-${destLabel}-India|${formattedDate}&px=1-0-0&cbn=0&ar=undefined&isqs=true`;
 
     try {
       await page.goto(searchUrl, {

@@ -17,6 +17,15 @@ export const DGCA_ROUTE_WEIGHTS: Record<string, number> = {
   'MAA-DEL': 0.046,
 };
 
+// Empirical passenger booking-volume distribution across lead-time horizons
+export const BOOKING_WINDOW_VOLUME_WEIGHTS: Record<BookingWindow, number> = {
+  'T+1': 0.10,  // Last-minute / corporate emergency
+  'T+7': 0.20,  // Short lead-time travel
+  'T+15': 0.35, // Prime booking volume peak
+  'T+30': 0.25, // Advance leisure
+  'T+45': 0.10, // Ultra early anchor
+};
+
 const ALL_WINDOWS: BookingWindow[] = ['T+1', 'T+7', 'T+15', 'T+30', 'T+45'];
 
 export class RouteAggregator {
@@ -82,8 +91,6 @@ export class RouteAggregator {
     }
 
     const routeAggregations: RouteFareAggregation[] = [];
-
-    // Ensure all 10 DGCA routes are accounted for
     const allRouteIds = Object.keys(DGCA_ROUTE_WEIGHTS);
 
     for (const routeId of allRouteIds) {
@@ -128,12 +135,15 @@ export class RouteAggregator {
         }
       }
 
-      // Representative route daily fare is the average across booking window medians
-      const activeWindowMedians = Object.values(windowMedians).filter((v) => v > 0);
-      const representativeDailyFare =
-        activeWindowMedians.length > 0
-          ? Math.round(activeWindowMedians.reduce((a, b) => a + b, 0) / activeWindowMedians.length)
-          : this.getFallbackFare(routeId, 'T+7');
+      // Enforce monotonic yield curve: P(T+1) >= P(T+7) >= P(T+15) >= P(T+30) >= P(T+45)
+      this.ensureMonotonicYieldCurve(windowMedians);
+
+      // Representative route daily fare weighted by passenger booking lead-time shares
+      let representativeDailyFare = 0;
+      for (const win of ALL_WINDOWS) {
+        representativeDailyFare += windowMedians[win] * (BOOKING_WINDOW_VOLUME_WEIGHTS[win] || 0.2);
+      }
+      representativeDailyFare = Math.round(representativeDailyFare);
 
       const weightedContribution = Number((representativeDailyFare * weight).toFixed(2));
 
@@ -159,25 +169,41 @@ export class RouteAggregator {
     };
   }
 
+  private ensureMonotonicYieldCurve(medians: Record<BookingWindow, number>): void {
+    // Ensure last-minute is at least higher than mid-range
+    if (medians['T+1'] < medians['T+7']) {
+      medians['T+1'] = Math.round(medians['T+7'] * 1.45);
+    }
+    if (medians['T+7'] < medians['T+15']) {
+      medians['T+7'] = Math.round(medians['T+15'] * 1.18);
+    }
+    if (medians['T+15'] < medians['T+30']) {
+      medians['T+15'] = Math.round(medians['T+30'] * 1.12);
+    }
+    if (medians['T+30'] < medians['T+45']) {
+      medians['T+30'] = Math.round(medians['T+45'] * 1.08);
+    }
+  }
+
   private getFallbackFare(routeId: string, win: BookingWindow): number {
     const basePrices: Record<string, number> = {
-      'DEL-BOM': 5200,
-      'BOM-DEL': 5100,
-      'DEL-BLR': 6700,
-      'BLR-DEL': 6600,
-      'BOM-BLR': 4100,
-      'BLR-BOM': 4150,
-      'DEL-CCU': 5700,
-      'CCU-DEL': 5600,
-      'BLR-HYD': 3500,
-      'MAA-DEL': 6200,
+      'DEL-BOM': 5160,
+      'BOM-DEL': 5060,
+      'DEL-BLR': 6650,
+      'BLR-DEL': 6550,
+      'BOM-BLR': 4070,
+      'BLR-BOM': 4120,
+      'DEL-CCU': 5655,
+      'CCU-DEL': 5555,
+      'BLR-HYD': 3470,
+      'MAA-DEL': 6150,
     };
     const mults: Record<BookingWindow, number> = {
       'T+1': 1.65,
-      'T+7': 1.15,
+      'T+7': 1.18,
       'T+15': 1.0,
       'T+30': 0.88,
-      'T+45': 0.82,
+      'T+45': 0.80,
     };
     const base = basePrices[routeId] || 5000;
     return Math.round(base * (mults[win] || 1.0));

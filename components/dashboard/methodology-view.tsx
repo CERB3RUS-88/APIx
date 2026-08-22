@@ -112,13 +112,14 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
             </p>
             <div className="p-3 bg-[#090D15] rounded border border-border-subtle font-mono text-xs text-primary space-y-1.5">
               <div className="text-amber-signal font-bold">Mathematical Formulation:</div>
-              <div>{'1. Representative Fare: P[r,w,t] = Median(Fares[r,w,t])'}</div>
-              <div>{'2. Corridor Basket: P[r,t] = (1/5) * Σ P[r,w,t]'}</div>
-              <div>{'3. National Basket: I[raw,t] = Σ (w[r] * P[r,t])'}</div>
+              <div>{'1. Window Median Fare: P[r,w,t] = Median(Fares[r,w,t])'}</div>
+              <div>{'2. Corridor Basket (Volume-Weighted): P[r,t] = Σ (v[w] * P[r,w,t])'}</div>
+              <div>{'   where v[w] = { T+1: 10%, T+7: 20%, T+15: 35%, T+30: 25%, T+45: 10% }'}</div>
+              <div>{'3. National Basket: I[raw,t] = Σ (w[r] * P[r,t]) across 10 DGCA routes'}</div>
               <div>{'4. Official APIx: APIx[t] = (I[raw,t] / I[base]) * 100.00'}</div>
             </div>
             <p className="text-[11px] text-secondary-muted">
-              Where I[base] = ₹5,280.00 (Jan 2026 Normalization Baseline = 100.00).
+              Where I[base] = ₹5,280.00 (Jan 2026 Reference Basket Fare = 100.00). Weights Σ w[r] = 1.000 (100.0%).
             </p>
           </PanelContent>
         </Panel>

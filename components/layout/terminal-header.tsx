@@ -3,13 +3,15 @@
 import * as React from 'react';
 import { TerminalBadge } from '@/components/ui/terminal-badge';
 import { Button } from '@/components/ui/button';
-import { Activity, Clock, Volume2, VolumeX, ShieldCheck, Terminal } from 'lucide-react';
+import { Activity, Clock, Volume2, VolumeX, ShieldCheck, FileText, Sliders } from 'lucide-react';
 
 interface TerminalHeaderProps {
   activeTab: string;
   onSelectTab: (tab: string) => void;
   audioEnabled: boolean;
   onToggleAudio: () => void;
+  onOpenBulletin?: () => void;
+  onOpenSimulator?: () => void;
 }
 
 export function TerminalHeader({
@@ -17,6 +19,8 @@ export function TerminalHeader({
   onSelectTab,
   audioEnabled,
   onToggleAudio,
+  onOpenBulletin,
+  onOpenSimulator,
 }: TerminalHeaderProps) {
   const [timeStr, setTimeStr] = React.useState<string>('');
 
@@ -56,7 +60,7 @@ export function TerminalHeader({
   ];
 
   return (
-    <header className="border-b border-border-subtle bg-ink sticky top-0 z-50 backdrop-blur-md bg-ink/95">
+    <header className="border-b border-border-subtle bg-ink sticky top-0 z-40 backdrop-blur-md bg-ink/95">
       {/* Top Telemetry Strip */}
       <div className="px-4 py-1.5 border-b border-border-subtle/40 flex items-center justify-between text-[11px] font-mono text-secondary-muted bg-surface-subtle/50">
         <div className="flex items-center gap-3">
@@ -122,8 +126,32 @@ export function TerminalHeader({
           ))}
         </nav>
 
-        {/* Audio Toggle & Quick Status */}
+        {/* Action Triggers: Bulletin, Simulator & Audio */}
         <div className="flex items-center gap-2">
+          {onOpenBulletin && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onOpenBulletin}
+              className="gap-1.5 text-secondary hover:text-primary border-border-subtle"
+            >
+              <FileText className="w-3.5 h-3.5 text-amber-signal" />
+              <span className="hidden md:inline font-mono">MOSPI BULLETIN</span>
+            </Button>
+          )}
+
+          {onOpenSimulator && (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={onOpenSimulator}
+              className="gap-1.5 text-secondary hover:text-primary border-border-subtle"
+            >
+              <Sliders className="w-3.5 h-3.5 text-delta-positive" />
+              <span className="hidden md:inline font-mono">POLICY SIMULATOR</span>
+            </Button>
+          )}
+
           <Button
             variant="outline"
             size="sm"
@@ -134,17 +162,17 @@ export function TerminalHeader({
             {audioEnabled ? (
               <>
                 <Volume2 className="w-3.5 h-3.5 text-amber-signal" />
-                <span className="hidden sm:inline">AUDIO ON</span>
+                <span className="hidden xl:inline">AUDIO ON</span>
               </>
             ) : (
               <>
                 <VolumeX className="w-3.5 h-3.5 text-secondary-muted" />
-                <span className="hidden sm:inline">AUDIO OFF</span>
+                <span className="hidden xl:inline">AUDIO OFF</span>
               </>
             )}
           </Button>
 
-          <TerminalBadge variant="default" size="sm" className="hidden lg:inline-flex">
+          <TerminalBadge variant="default" size="sm" className="hidden 2xl:inline-flex">
             <Activity className="w-3 h-3 text-delta-positive mr-1" />
             FEED: ACTIVE
           </TerminalBadge>

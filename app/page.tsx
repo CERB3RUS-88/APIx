@@ -9,6 +9,9 @@ import { ValidationView } from '@/components/dashboard/validation-view';
 import { MethodologyView } from '@/components/dashboard/methodology-view';
 import { ApiDocsView } from '@/components/dashboard/api-docs-view';
 import { DesignSystemPreview } from '@/components/dashboard/design-system-preview';
+import { BulletinModal } from '@/components/dashboard/bulletin-modal';
+import { PolicySimulator } from '@/components/dashboard/policy-simulator';
+import { AntiGougingWatchdog } from '@/components/dashboard/anti-gouging-watchdog';
 import { CURRENT_LIVE_INDEX } from '@/lib/mock-data';
 import { DailyIndex } from '@/types';
 
@@ -16,6 +19,8 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = React.useState<string>('overview');
   const [audioEnabled, setAudioEnabled] = React.useState<boolean>(false);
   const [liveIndex, setLiveIndex] = React.useState<DailyIndex>(CURRENT_LIVE_INDEX);
+  const [isBulletinOpen, setIsBulletinOpen] = React.useState<boolean>(false);
+  const [isSimulatorOpen, setIsSimulatorOpen] = React.useState<boolean>(false);
 
   // Fetch real-time computed index from /api/latest
   React.useEffect(() => {
@@ -56,6 +61,8 @@ export default function HomePage() {
         onSelectTab={setActiveTab}
         audioEnabled={audioEnabled}
         onToggleAudio={() => setAudioEnabled((prev) => !prev)}
+        onOpenBulletin={() => setIsBulletinOpen(true)}
+        onOpenSimulator={() => setIsSimulatorOpen(true)}
       />
 
       {/* Main Terminal Viewport */}
@@ -67,7 +74,12 @@ export default function HomePage() {
           />
         )}
 
-        {activeTab === 'routes' && <RouteHeatmap />}
+        {activeTab === 'routes' && (
+          <div className="space-y-6">
+            <AntiGougingWatchdog />
+            <RouteHeatmap />
+          </div>
+        )}
 
         {activeTab === 'elasticity' && <ElasticityView />}
 
@@ -85,6 +97,27 @@ export default function HomePage() {
           <DesignSystemPreview audioEnabled={audioEnabled} />
         )}
       </main>
+
+      {/* 1-Click MoSPI Press Bulletin Modal */}
+      <BulletinModal
+        isOpen={isBulletinOpen}
+        onClose={() => setIsBulletinOpen(false)}
+        indexData={{
+          apix_value: liveIndex.apix_value,
+          weighted_basket_fare: liveIndex.weighted_basket_fare || 5588,
+          base_period_value: liveIndex.base_period_value || 100.0,
+          delta_24h: liveIndex.delta_24h || 2.04,
+          index_date: liveIndex.index_date,
+        }}
+      />
+
+      {/* Econometric What-If Policy Impact Simulator */}
+      <PolicySimulator
+        isOpen={isSimulatorOpen}
+        onClose={() => setIsSimulatorOpen(false)}
+        baseIndexValue={liveIndex.apix_value}
+        baseBasketFare={liveIndex.weighted_basket_fare || 5588}
+      />
 
       {/* Terminal Footer */}
       <footer className="border-t border-border-subtle bg-ink py-4 px-6 text-center text-xs font-mono text-secondary-muted mt-auto">
