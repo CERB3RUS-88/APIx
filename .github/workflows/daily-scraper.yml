@@ -23,6 +23,9 @@ concurrency:
   group: apix-daily-scraper
   cancel-in-progress: false
 
+permissions:
+  contents: write
+
 jobs:
   scrape-and-index:
     runs-on: ubuntu-latest
@@ -64,7 +67,8 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "APIx PriceIndex Bot"
           
-          git add data/snapshots/ data/cleaned/ data/index/ data/runs/
+          # Add cleaned records, daily index rollups, and snapshots (excluding large runs/)
+          git add data/snapshots/ data/cleaned/ data/index/
           
           # Check if there are changes to commit
           if git diff --staged --quiet; then
