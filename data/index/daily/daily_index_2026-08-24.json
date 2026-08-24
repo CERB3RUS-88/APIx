@@ -1,0 +1,500 @@
+{
+  "id": "daily_index_2026-08-24",
+  "index_date": "2026-08-24",
+  "frequency": "daily",
+  "apix_value": 186.65,
+  "base_period_value": 100,
+  "raw_weighted_fare": 9855.12,
+  "base_weighted_fare": 5280,
+  "delta_24h": 30.33,
+  "active_routes_count": 16,
+  "total_records_processed": 45006,
+  "outliers_excluded_count": 3579,
+  "methodology_notes": "Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹9855.12 | Active Corridors Sampled: 16/10 DGCA routes | Total Flight Quotes Evaluated: 45006 (3579 outliers rejected via Tukey IQR) | Contributors: DEL-BOM (w=15.5%, P=₹7176); BOM-DEL (w=14.5%, P=₹7221); DEL-BLR (w=9.5%, P=₹12562); BLR-DEL (w=9.0%, P=₹11748); BOM-BLR (w=7.8%, P=₹8088); BLR-BOM (w=7.5%, P=₹10205); DEL-CCU (w=5.8%, P=₹10162); CCU-DEL (w=5.5%, P=₹8832); BLR-HYD (w=4.0%, P=₹6450); MAA-DEL (w=3.4%, P=₹12558); DEL-GAU (w=3.5%, P=₹15564); BOM-GOI (w=3.2%, P=₹10773); DEL-PAT (w=3.8%, P=₹16748); BLR-COK (w=2.8%, P=₹5523); DEL-IXC (w=2.2%, P=₹15961); BOM-PNQ (w=2.0%, P=₹12852)",
+  "route_breakdown": [
+    {
+      "route_id": "DEL-BOM",
+      "origin_code": "DEL",
+      "destination_code": "BOM",
+      "dgca_traffic_weight": 0.155,
+      "window_medians": {
+        "T+1": 7482,
+        "T+7": 8261,
+        "T+15": 7001,
+        "T+30": 6688,
+        "T+45": 6530
+      },
+      "window_counts": {
+        "T+1": 1614,
+        "T+7": 1622,
+        "T+15": 793,
+        "T+30": 270,
+        "T+45": 884
+      },
+      "representative_daily_fare": 7176,
+      "total_quotes_count": 6030,
+      "outliers_excluded": 847,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 1112.28
+    },
+    {
+      "route_id": "BOM-DEL",
+      "origin_code": "BOM",
+      "destination_code": "DEL",
+      "dgca_traffic_weight": 0.145,
+      "window_medians": {
+        "T+1": 7032,
+        "T+7": 8298,
+        "T+15": 7032,
+        "T+30": 6999,
+        "T+45": 6474
+      },
+      "window_counts": {
+        "T+1": 1752,
+        "T+7": 1829,
+        "T+15": 850,
+        "T+30": 846,
+        "T+45": 584
+      },
+      "representative_daily_fare": 7221,
+      "total_quotes_count": 6929,
+      "outliers_excluded": 1068,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 1047.04
+    },
+    {
+      "route_id": "DEL-BLR",
+      "origin_code": "DEL",
+      "destination_code": "BLR",
+      "dgca_traffic_weight": 0.095,
+      "window_medians": {
+        "T+1": 13974,
+        "T+7": 14876,
+        "T+15": 12607,
+        "T+30": 11026,
+        "T+45": 10209
+      },
+      "window_counts": {
+        "T+1": 1302,
+        "T+7": 1361,
+        "T+15": 624,
+        "T+30": 624,
+        "T+45": 668
+      },
+      "representative_daily_fare": 12562,
+      "total_quotes_count": 4846,
+      "outliers_excluded": 267,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 1193.39
+    },
+    {
+      "route_id": "BLR-DEL",
+      "origin_code": "BLR",
+      "destination_code": "DEL",
+      "dgca_traffic_weight": 0.09,
+      "window_medians": {
+        "T+1": 18736,
+        "T+7": 11231,
+        "T+15": 11607,
+        "T+30": 10363,
+        "T+45": 9749
+      },
+      "window_counts": {
+        "T+1": 1184,
+        "T+7": 1298,
+        "T+15": 0,
+        "T+30": 604,
+        "T+45": 644
+      },
+      "representative_daily_fare": 11748,
+      "total_quotes_count": 3971,
+      "outliers_excluded": 241,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 1057.32
+    },
+    {
+      "route_id": "BOM-BLR",
+      "origin_code": "BOM",
+      "destination_code": "BLR",
+      "dgca_traffic_weight": 0.078,
+      "window_medians": {
+        "T+1": 10677,
+        "T+7": 7312,
+        "T+15": 8096,
+        "T+30": 7952,
+        "T+45": 7363
+      },
+      "window_counts": {
+        "T+1": 444,
+        "T+7": 819,
+        "T+15": 0,
+        "T+30": 452,
+        "T+45": 456
+      },
+      "representative_daily_fare": 8088,
+      "total_quotes_count": 2277,
+      "outliers_excluded": 106,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 630.86
+    },
+    {
+      "route_id": "BLR-BOM",
+      "origin_code": "BLR",
+      "destination_code": "BOM",
+      "dgca_traffic_weight": 0.075,
+      "window_medians": {
+        "T+1": 19219,
+        "T+7": 11287,
+        "T+15": 9565,
+        "T+30": 7802,
+        "T+45": 7277
+      },
+      "window_counts": {
+        "T+1": 941,
+        "T+7": 951,
+        "T+15": 488,
+        "T+30": 436,
+        "T+45": 468
+      },
+      "representative_daily_fare": 10205,
+      "total_quotes_count": 3460,
+      "outliers_excluded": 176,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 765.38
+    },
+    {
+      "route_id": "DEL-CCU",
+      "origin_code": "DEL",
+      "destination_code": "CCU",
+      "dgca_traffic_weight": 0.058,
+      "window_medians": {
+        "T+1": 13573,
+        "T+7": 11027,
+        "T+15": 9345,
+        "T+30": 9716,
+        "T+45": 8996
+      },
+      "window_counts": {
+        "T+1": 906,
+        "T+7": 895,
+        "T+15": 448,
+        "T+30": 472,
+        "T+45": 472
+      },
+      "representative_daily_fare": 10162,
+      "total_quotes_count": 3208,
+      "outliers_excluded": 15,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 589.4
+    },
+    {
+      "route_id": "CCU-DEL",
+      "origin_code": "CCU",
+      "destination_code": "DEL",
+      "dgca_traffic_weight": 0.055,
+      "window_medians": {
+        "T+1": 10833,
+        "T+7": 10181,
+        "T+15": 8628,
+        "T+30": 7759,
+        "T+45": 7527
+      },
+      "window_counts": {
+        "T+1": 907,
+        "T+7": 715,
+        "T+15": 416,
+        "T+30": 344,
+        "T+45": 380
+      },
+      "representative_daily_fare": 8832,
+      "total_quotes_count": 3140,
+      "outliers_excluded": 378,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 485.76
+    },
+    {
+      "route_id": "BLR-HYD",
+      "origin_code": "BLR",
+      "destination_code": "HYD",
+      "dgca_traffic_weight": 0.04,
+      "window_medians": {
+        "T+1": 13777,
+        "T+7": 6223,
+        "T+15": 5786,
+        "T+30": 5166,
+        "T+45": 5113
+      },
+      "window_counts": {
+        "T+1": 839,
+        "T+7": 764,
+        "T+15": 0,
+        "T+30": 368,
+        "T+45": 404
+      },
+      "representative_daily_fare": 6450,
+      "total_quotes_count": 2474,
+      "outliers_excluded": 99,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX"
+      ],
+      "weighted_fare_contribution": 258
+    },
+    {
+      "route_id": "MAA-DEL",
+      "origin_code": "MAA",
+      "destination_code": "DEL",
+      "dgca_traffic_weight": 0.034,
+      "window_medians": {
+        "T+1": 18908,
+        "T+7": 14774,
+        "T+15": 12520,
+        "T+30": 10091,
+        "T+45": 8074
+      },
+      "window_counts": {
+        "T+1": 912,
+        "T+7": 829,
+        "T+15": 388,
+        "T+30": 376,
+        "T+45": 404
+      },
+      "representative_daily_fare": 12558,
+      "total_quotes_count": 3047,
+      "outliers_excluded": 138,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP"
+      ],
+      "weighted_fare_contribution": 426.97
+    },
+    {
+      "route_id": "DEL-GAU",
+      "origin_code": "DEL",
+      "destination_code": "GAU",
+      "dgca_traffic_weight": 0.035,
+      "window_medians": {
+        "T+1": 17096,
+        "T+7": 14982,
+        "T+15": 15251,
+        "T+30": 16114,
+        "T+45": 14920
+      },
+      "window_counts": {
+        "T+1": 172,
+        "T+7": 184,
+        "T+15": 172,
+        "T+30": 188,
+        "T+45": 184
+      },
+      "representative_daily_fare": 15564,
+      "total_quotes_count": 900,
+      "outliers_excluded": 0,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP"
+      ],
+      "weighted_fare_contribution": 544.74
+    },
+    {
+      "route_id": "BOM-GOI",
+      "origin_code": "BOM",
+      "destination_code": "GOI",
+      "dgca_traffic_weight": 0.032,
+      "window_medians": {
+        "T+1": 11918,
+        "T+7": 9805,
+        "T+15": 10463,
+        "T+30": 11554,
+        "T+45": 10698
+      },
+      "window_counts": {
+        "T+1": 276,
+        "T+7": 284,
+        "T+15": 296,
+        "T+30": 280,
+        "T+45": 320
+      },
+      "representative_daily_fare": 10773,
+      "total_quotes_count": 1456,
+      "outliers_excluded": 0,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP",
+        "SG"
+      ],
+      "weighted_fare_contribution": 344.74
+    },
+    {
+      "route_id": "DEL-PAT",
+      "origin_code": "DEL",
+      "destination_code": "PAT",
+      "dgca_traffic_weight": 0.038,
+      "window_medians": {
+        "T+1": 20546,
+        "T+7": 16067,
+        "T+15": 17373,
+        "T+30": 15512,
+        "T+45": 15218
+      },
+      "window_counts": {
+        "T+1": 236,
+        "T+7": 220,
+        "T+15": 208,
+        "T+30": 204,
+        "T+45": 224
+      },
+      "representative_daily_fare": 16748,
+      "total_quotes_count": 1092,
+      "outliers_excluded": 0,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "SG"
+      ],
+      "weighted_fare_contribution": 636.42
+    },
+    {
+      "route_id": "BLR-COK",
+      "origin_code": "BLR",
+      "destination_code": "COK",
+      "dgca_traffic_weight": 0.028,
+      "window_medians": {
+        "T+1": 5898,
+        "T+7": 5421,
+        "T+15": 5003,
+        "T+30": 6125,
+        "T+45": 5671
+      },
+      "window_counts": {
+        "T+1": 140,
+        "T+7": 192,
+        "T+15": 176,
+        "T+30": 188,
+        "T+45": 144
+      },
+      "representative_daily_fare": 5523,
+      "total_quotes_count": 880,
+      "outliers_excluded": 40,
+      "carriers": [
+        "6E",
+        "AI",
+        "IX",
+        "QP"
+      ],
+      "weighted_fare_contribution": 154.64
+    },
+    {
+      "route_id": "DEL-IXC",
+      "origin_code": "DEL",
+      "destination_code": "IXC",
+      "dgca_traffic_weight": 0.022,
+      "window_medians": {
+        "T+1": 19174,
+        "T+7": 16727,
+        "T+15": 15456,
+        "T+30": 15140,
+        "T+45": 15033
+      },
+      "window_counts": {
+        "T+1": 144,
+        "T+7": 140,
+        "T+15": 120,
+        "T+30": 188,
+        "T+45": 104
+      },
+      "representative_daily_fare": 15961,
+      "total_quotes_count": 844,
+      "outliers_excluded": 148,
+      "carriers": [
+        "6E",
+        "AI"
+      ],
+      "weighted_fare_contribution": 351.14
+    },
+    {
+      "route_id": "BOM-PNQ",
+      "origin_code": "BOM",
+      "destination_code": "PNQ",
+      "dgca_traffic_weight": 0.02,
+      "window_medians": {
+        "T+1": 13660,
+        "T+7": 14291,
+        "T+15": 12111,
+        "T+30": 12812,
+        "T+45": 11863
+      },
+      "window_counts": {
+        "T+1": 96,
+        "T+7": 72,
+        "T+15": 76,
+        "T+30": 68,
+        "T+45": 84
+      },
+      "representative_daily_fare": 12852,
+      "total_quotes_count": 452,
+      "outliers_excluded": 56,
+      "carriers": [
+        "AI",
+        "IX"
+      ],
+      "weighted_fare_contribution": 257.04
+    }
+  ]
+}
