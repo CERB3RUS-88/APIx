@@ -20,7 +20,7 @@ APIx is an end-to-end software platform that scrapes domestic airfare data from 
 - **Data Cleaning & Anomaly Detection**: Enforces base fare and GST tax separation, deduplication, and Tukey IQR statistical outlier tagging.
 - **Laspeyres Index Engine**: Aggregates quotes across 5 booking windows ($T+1, T+7, T+15, T+30, T+45$) weighted by official DGCA route volume shares with Jan 2026 base period normalization ($100.00 = ₹5,280$).
 - **Institutional Terminal Dashboard**: High-frequency Solari Split-Flap board with mechanical flip audio, 30D/90D/365D trend line chart, departure route heatmap, and advance-purchase elasticity curves.
-- **Empirical DGCA Ground-Truth Validation**: Validation pending — 1 day of live data collected, accumulating toward first monthly comparison against official DGCA reference circulars.
+- **Empirical DGCA Ground-Truth Validation**: Live daily observations dynamically accumulating toward multi-month Pearson $r$ correlation validation against official DGCA reference benchmark circulars.
 - **Open REST API**: High-frequency read-only endpoints (`/api/index`, `/api/routes`, `/api/fares`, `/api/latest`) with built-in rate limiting (60 req/min) and interactive documentation at `/api-docs`.
 
 ---

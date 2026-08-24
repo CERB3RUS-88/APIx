@@ -27,10 +27,26 @@ import {
   Award,
 } from 'lucide-react';
 
-export function ValidationView() {
+interface ValidationViewProps {
+  initialDatesCount?: number;
+}
+
+export function ValidationView({ initialDatesCount = 2 }: ValidationViewProps) {
   const [monthlyData, setMonthlyData] = React.useState<MonthlyBasketComparison[]>([]);
   const [routeRecords, setRouteRecords] = React.useState<DgcaReferenceFareRecord[]>([]);
   const [selectedRouteFilter, setSelectedRouteFilter] = React.useState<string>('ALL');
+  const [daysCount, setDaysCount] = React.useState<number>(initialDatesCount);
+
+  React.useEffect(() => {
+    fetch('/api/latest')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.data?.current_index?.distinct_dates_count) {
+          setDaysCount(json.data.current_index.distinct_dates_count);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const hasSufficientData = monthlyData.length >= 2;
   const metrics = React.useMemo(
@@ -206,7 +222,7 @@ export function ValidationView() {
             <p className="text-[11px] font-mono text-secondary mt-1">
               {metrics
                 ? 'Empirically computed from overlapping data'
-                : 'Validation pending — 1 day of live data collected, accumulating toward first comparison'}
+                : `Validation pending — ${daysCount} ${daysCount === 1 ? 'day' : 'days'} of live data collected, accumulating toward first comparison`}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
@@ -250,12 +266,14 @@ export function ValidationView() {
               {metrics ? `₹${metrics.rmse_inr}` : 'PENDING'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
-              {metrics ? 'INR Root-mean-square standard error' : 'Tracking standard error pending'}
+              {metrics
+                ? 'Root Mean Square Error in INR'
+                : 'Live time-series accumulating'}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
             <span>CURRENT REPO</span>
-            <span className="text-secondary">1 LIVE DAY</span>
+            <span className="text-secondary">{daysCount} {daysCount === 1 ? 'LIVE DAY' : 'LIVE DAYS'}</span>
           </div>
         </Panel>
 
@@ -272,7 +290,7 @@ export function ValidationView() {
             <p className="text-[11px] font-mono text-secondary mt-1">
               {metrics
                 ? 'Statistically validated for MoSPI CPI augmentation'
-                : 'Automated daily scraping active (05:30 IST)'}
+                : 'Automated daily scraping active (00:00 & 05:30 IST)'}
             </p>
           </div>
           <div className="mt-3 pt-2 border-t border-border-subtle/60 text-[10px] font-mono text-secondary-muted flex justify-between">
@@ -292,12 +310,12 @@ export function ValidationView() {
             <TerminalBadge variant="default" size="xs">
               {hasSufficientData
                 ? `${monthlyData.length} MONTHS OVERLAPPING`
-                : 'DATA ACCUMULATION PHASE (1 DAY RECORDED)'}
+                : `DATA ACCUMULATION PHASE (${daysCount} ${daysCount === 1 ? 'DAY' : 'DAYS'} RECORDED)`}
             </TerminalBadge>
           }
         />
         <PanelContent className="p-4 sm:p-6">
-          <ValidationChart data={monthlyData} />
+          <ValidationChart data={monthlyData} distinctDatesCount={daysCount} />
         </PanelContent>
       </Panel>
 

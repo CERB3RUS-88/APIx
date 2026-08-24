@@ -61,16 +61,16 @@ export async function GET(request: NextRequest) {
   return apiSuccess(
     {
       status: 'SCHEDULED_JOB_SUCCESS',
-      cron_schedule: '0 0 * * * (Daily at 00:00 UTC / 05:30 IST)',
+      cron_schedule: 'Daily at 00:00 & 05:30 IST',
       executed_at: executionTimestamp,
       github_workflow_dispatched: githubWorkflowDispatched,
-      index_value: indexComputationResult?.daily_index?.apix_value || 120.69,
-      routes_in_basket: 10,
+      index_value: indexComputationResult?.daily_index?.apix_value || 186.65,
+      routes_in_basket: 16,
     },
     1,
     {
       action: 'DAILY_SCRAPE_AND_INDEX_CRON',
-      next_run: 'Tomorrow at 00:00 UTC / 05:30 IST',
+      next_run: 'Daily at 00:00 IST and 05:30 IST',
     }
   );
 }

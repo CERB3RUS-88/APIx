@@ -2,7 +2,9 @@ name: APIx Daily Automated Scraper & Index Engine
 
 on:
   schedule:
-    # Runs daily at 00:00 UTC (05:30 AM IST)
+    # 1. Runs daily at 18:30 UTC (00:00 IST / Midnight)
+    - cron: '30 18 * * *'
+    # 2. Runs daily at 00:00 UTC (05:30 AM IST / Morning Bulletin)
     - cron: '0 0 * * *'
   workflow_dispatch:
     inputs:
@@ -79,3 +81,14 @@ jobs:
           fi
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Post Execution Summary
+        if: always()
+        run: |
+          if [ "${{ job.status }}" == "success" ]; then
+            echo "### ✅ Daily Automated Scrape & Index Run Succeeded" >> $GITHUB_STEP_SUMMARY
+            echo "Successfully updated live daily index time-series and pushed records to main." >> $GITHUB_STEP_SUMMARY
+          else
+            echo "### ❌ Daily Automated Scrape & Index Run Failed" >> $GITHUB_STEP_SUMMARY
+            echo "An error occurred during scraping, ETL cleaning, or git synchronization. Check job logs for details." >> $GITHUB_STEP_SUMMARY
+          fi

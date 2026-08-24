@@ -21,7 +21,7 @@ export default function HomePage() {
   const [isBulletinOpen, setIsBulletinOpen] = React.useState<boolean>(false);
   const [isSimulatorOpen, setIsSimulatorOpen] = React.useState<boolean>(false);
 
-  // Fetch real-time computed index from /api/latest
+  // Fetch real-time computed index from /api/latest (with auto-polling & focus refresh)
   React.useEffect(() => {
     async function loadRealComputedData() {
       try {
@@ -36,12 +36,14 @@ export default function HomePage() {
               frequency: cur.frequency || 'daily',
               apix_value: cur.apix_value,
               base_period_value: cur.base_period_value || 100.0,
-              weighted_basket_fare: cur.raw_weighted_fare || 5588,
+              weighted_basket_fare: cur.raw_weighted_fare || 9855,
               median_basket_fare: cur.base_weighted_fare || 5280,
-              delta_24h: cur.delta_24h || 2.04,
+              delta_24h: cur.delta_24h ?? 30.33,
               methodology_notes: cur.methodology_notes || CURRENT_LIVE_INDEX.methodology_notes,
-              active_routes_count: cur.active_routes_count || 10,
-              records_processed: cur.total_records_processed || 1420,
+              active_routes_count: cur.active_routes_count || 16,
+              records_processed: cur.total_records_processed || 45006,
+              distinct_dates_count: cur.distinct_dates_count || 2,
+              collected_dates: cur.collected_dates || [],
             });
           }
         }
@@ -49,7 +51,27 @@ export default function HomePage() {
         // Keep initial state if offline
       }
     }
+
     loadRealComputedData();
+
+    // Re-fetch automatically on window focus or tab visibility change
+    const onFocusOrVisible = () => {
+      if (document.visibilityState === 'visible') {
+        loadRealComputedData();
+      }
+    };
+
+    window.addEventListener('focus', onFocusOrVisible);
+    document.addEventListener('visibilitychange', onFocusOrVisible);
+
+    // Periodic background sync every 60 seconds
+    const intervalId = setInterval(loadRealComputedData, 60000);
+
+    return () => {
+      window.removeEventListener('focus', onFocusOrVisible);
+      document.removeEventListener('visibilitychange', onFocusOrVisible);
+      clearInterval(intervalId);
+    };
   }, []);
 
   return (
@@ -99,10 +121,11 @@ export default function HomePage() {
         onClose={() => setIsBulletinOpen(false)}
         indexData={{
           apix_value: liveIndex.apix_value,
-          weighted_basket_fare: liveIndex.weighted_basket_fare || 5588,
+          weighted_basket_fare: liveIndex.weighted_basket_fare || 9855,
           base_period_value: liveIndex.base_period_value || 100.0,
-          delta_24h: liveIndex.delta_24h || 2.04,
+          delta_24h: liveIndex.delta_24h ?? 30.33,
           index_date: liveIndex.index_date,
+          distinct_dates_count: liveIndex.distinct_dates_count || 2,
         }}
       />
 
@@ -111,7 +134,7 @@ export default function HomePage() {
         isOpen={isSimulatorOpen}
         onClose={() => setIsSimulatorOpen(false)}
         baseIndexValue={liveIndex.apix_value}
-        baseBasketFare={liveIndex.weighted_basket_fare || 5588}
+        baseBasketFare={liveIndex.weighted_basket_fare || 9855}
       />
 
       {/* Terminal Footer */}
@@ -119,7 +142,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
           <span>APIx · SMART INDIA HACKATHON 2026 · PROBLEM STATEMENT 26056 · MoSPI / DIID</span>
           <div className="flex items-center gap-4 text-[11px]">
-            <span>DGCA VALIDATION PENDING (1 DAY LIVE DATA COLLECTED)</span>
+            <span>DGCA VALIDATION PENDING ({liveIndex.distinct_dates_count || 2} {(liveIndex.distinct_dates_count || 2) === 1 ? 'DAY' : 'DAYS'} LIVE DATA COLLECTED)</span>
             <span className="text-border-subtle">|</span>
             <span className="text-amber-signal">LIVE COMPUTED ENGINE (BASE = 100.00)</span>
           </div>

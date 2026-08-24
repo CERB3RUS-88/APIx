@@ -9,6 +9,18 @@ import { Button } from '@/components/ui/button';
 
 export default function ValidationPage() {
   const [audioEnabled, setAudioEnabled] = React.useState<boolean>(false);
+  const [daysCount, setDaysCount] = React.useState<number>(2);
+
+  React.useEffect(() => {
+    fetch('/api/latest')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.data?.current_index?.distinct_dates_count) {
+          setDaysCount(json.data.current_index.distinct_dates_count);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   return (
     <div className="min-h-screen flex flex-col bg-ink terminal-grid selection:bg-amber-signal/20 selection:text-amber-signal">
@@ -33,7 +45,7 @@ export default function ValidationPage() {
           </Link>
         </div>
 
-        <ValidationView />
+        <ValidationView initialDatesCount={daysCount} />
       </main>
 
       <footer className="border-t border-border-subtle bg-ink py-4 px-6 text-center text-xs font-mono text-secondary-muted mt-auto">
@@ -42,7 +54,9 @@ export default function ValidationPage() {
           <div className="flex items-center gap-4 text-[11px]">
             <span>DGCA GROUND TRUTH VALIDATION</span>
             <span className="text-border-subtle">|</span>
-            <span className="text-amber-signal">VALIDATION PENDING (1 DAY LIVE DATA COLLECTED)</span>
+            <span className="text-amber-signal">
+              VALIDATION PENDING ({daysCount} {daysCount === 1 ? 'DAY' : 'DAYS'} LIVE DATA COLLECTED)
+            </span>
           </div>
         </div>
       </footer>

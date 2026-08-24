@@ -15,6 +15,7 @@ interface BulletinModalProps {
     base_period_value: number;
     delta_24h: number;
     index_date: string;
+    distinct_dates_count?: number;
   };
 }
 
@@ -155,7 +156,9 @@ export function BulletinModal({ isOpen, onClose, indexData }: BulletinModalProps
               <div className="p-3 rounded border border-border-subtle bg-surface-subtle print:border-gray-300">
                 <span className="text-[10px] text-secondary-muted print:text-gray-600 block">DGCA VALIDATION</span>
                 <span className="text-sm font-bold text-amber-signal print:text-black">Pending Validation</span>
-                <span className="text-[10px] text-secondary-muted block mt-1">1 Day Collected · Accumulating</span>
+                <span className="text-[10px] text-secondary-muted block mt-1">
+                  {indexData.distinct_dates_count || 2} {(indexData.distinct_dates_count || 2) === 1 ? 'Day' : 'Days'} Collected · Accumulating
+                </span>
               </div>
             </div>
           </div>

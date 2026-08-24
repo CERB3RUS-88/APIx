@@ -38,12 +38,14 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
             frequency: cur.frequency || 'daily',
             apix_value: cur.apix_value,
             base_period_value: cur.base_period_value || 100.0,
-            weighted_basket_fare: cur.raw_weighted_fare || 5588,
+            weighted_basket_fare: cur.raw_weighted_fare || 9855,
             median_basket_fare: cur.base_weighted_fare || 5280,
-            delta_24h: cur.delta_24h || 2.04,
+            delta_24h: cur.delta_24h ?? 30.33,
             methodology_notes: cur.methodology_notes,
-            active_routes_count: cur.active_routes_count || 10,
-            records_processed: cur.total_records_processed || 1420,
+            active_routes_count: cur.active_routes_count || 16,
+            records_processed: cur.total_records_processed || 45006,
+            distinct_dates_count: cur.distinct_dates_count || 2,
+            collected_dates: cur.collected_dates || [],
           });
         }
       }
@@ -143,20 +145,22 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div className="p-2.5 bg-surface-elevated/70 rounded border border-border-subtle flex flex-col gap-1">
                   <span className="text-[10px] text-secondary-muted">NATIONAL BASKET</span>
-                  <span className="text-primary font-bold">{formatINR(liveIndexData.weighted_basket_fare || 5588)}</span>
+                  <span className="text-primary font-bold">{formatINR(liveIndexData.weighted_basket_fare || 9855)}</span>
                   <span className="text-[10px] text-secondary">Weighted DGCA Fare</span>
                 </div>
 
                 <div className="p-2.5 bg-surface-elevated/70 rounded border border-border-subtle flex flex-col gap-1">
                   <span className="text-[10px] text-secondary-muted">DGCA VALIDATION</span>
-                  <span className="text-amber-signal font-bold text-[11px] leading-tight">Pending (1 day collected)</span>
+                  <span className="text-amber-signal font-bold text-[11px] leading-tight">
+                    Pending ({liveIndexData.distinct_dates_count || 2} { (liveIndexData.distinct_dates_count || 2) === 1 ? 'day' : 'days' } collected)
+                  </span>
                   <span className="text-[10px] text-secondary-muted">Accumulating toward 1st comparison</span>
                 </div>
 
                 <div className="p-2.5 bg-surface-elevated/70 rounded border border-border-subtle flex flex-col gap-1">
-                  <span className="text-[10px] text-secondary-muted">ACTIVE TRUNKS</span>
-                  <span className="text-primary font-bold">10 / 10 CORRIDORS</span>
-                  <span className="text-[10px] text-secondary">78.4% Passenger Vol</span>
+                  <span className="text-[10px] text-secondary-muted">BASKET CORRIDORS</span>
+                  <span className="text-primary font-bold">{liveIndexData.active_routes_count || 16} / 16 CORRIDORS</span>
+                  <span className="text-[10px] text-secondary">86.8% Passenger Vol</span>
                 </div>
 
                 <div className="p-2.5 bg-surface-elevated/70 rounded border border-border-subtle flex flex-col gap-1">

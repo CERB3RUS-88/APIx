@@ -52,6 +52,8 @@ export interface DailyIndex {
   active_routes_count: number;
   records_processed: number;
   methodology_notes: string;
+  distinct_dates_count?: number;
+  collected_dates?: string[];
 }
 
 export interface DGCAReferenceFare {

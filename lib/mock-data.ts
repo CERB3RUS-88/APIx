@@ -313,18 +313,20 @@ export const MOCK_ROUTE_SUMMARIES: RouteIndexSummary[] = [
 ];
 
 export const CURRENT_LIVE_INDEX: DailyIndex = {
-  id: 'idx_live_latest',
-  index_date: '2026-08-22',
+  id: 'daily_index_2026-08-24',
+  index_date: '2026-08-24',
   frequency: 'daily',
-  apix_value: 105.83,
+  apix_value: 186.65,
   base_period_value: 100.0,
-  delta_24h: 2.04,
+  delta_24h: 30.33,
   delta_7d: 1.45,
   delta_30d: 5.83,
   median_basket_fare: 5280,
-  weighted_basket_fare: 5588,
-  active_routes_count: 10,
-  records_processed: 1420,
+  weighted_basket_fare: 9855.12,
+  active_routes_count: 16,
+  records_processed: 45006,
+  distinct_dates_count: 2,
+  collected_dates: ['2026-08-22', '2026-08-24'],
   methodology_notes:
-    'Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹5587.60 | Active Corridors Sampled: 10/10 DGCA routes | Total Flight Quotes Evaluated: 1,420 (12 outliers rejected via Tukey IQR)',
+    'Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹9855.12 | Active Corridors Sampled: 16/16 DGCA routes (Trunk + Tier-2) | Total Flight Quotes Evaluated: 45,006 (3,579 outliers rejected via Tukey IQR)',
 };

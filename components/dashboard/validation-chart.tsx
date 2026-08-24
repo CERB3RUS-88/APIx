@@ -9,13 +9,17 @@ import { TrendingUp, ShieldCheck, CheckCircle2, Clock } from 'lucide-react';
 
 interface ValidationChartProps {
   data: MonthlyBasketComparison[];
+  distinctDatesCount?: number;
 }
 
 type ViewMode = 'inr' | 'index';
 
-export function ValidationChart({ data }: ValidationChartProps) {
+export function ValidationChart({ data, distinctDatesCount = 2 }: ValidationChartProps) {
   const [viewMode, setViewMode] = React.useState<ViewMode>('inr');
   const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);
+
+  const daysLabel = `${distinctDatesCount} ${distinctDatesCount === 1 ? 'day' : 'days'}`;
+  const daysLabelUpper = `${distinctDatesCount} ${distinctDatesCount === 1 ? 'DAY' : 'DAYS'}`;
 
   if (!data || data.length === 0) {
     return (
@@ -26,18 +30,18 @@ export function ValidationChart({ data }: ValidationChartProps) {
             Live Validation Data Accumulation Phase
           </div>
           <p className="font-mono text-xs text-secondary max-w-md mt-2 leading-relaxed">
-            Validation pending — 1 day of live data collected, accumulating toward first comparison against official DGCA circulars (minimum N ≥ 2 overlapping periods required).
+            Validation pending — {daysLabel} of live data collected, accumulating toward first comparison against official DGCA circulars (minimum N ≥ 2 overlapping monthly periods required).
           </p>
           <div className="mt-4 inline-flex items-center gap-2 px-3 py-1 bg-surface-elevated rounded border border-border-subtle text-[11px] font-mono text-amber-signal">
             <span className="w-2 h-2 rounded-full bg-amber-signal animate-pulse-subtle" />
-            <span>DAILY AUTOMATED CRON ACTIVE (05:30 IST)</span>
+            <span>DAILY AUTOMATED CRON ACTIVE (00:00 & 05:30 IST)</span>
           </div>
         </div>
 
         <div className="flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-secondary pt-1">
           <div className="flex items-center gap-2 text-amber-signal">
             <Clock className="w-4 h-4" />
-            <span>VALIDATION PENDING — 1 DAY OF LIVE DATA COLLECTED, ACCUMULATING TOWARD FIRST COMPARISON</span>
+            <span>VALIDATION PENDING — {daysLabelUpper} OF LIVE DATA COLLECTED, ACCUMULATING TOWARD FIRST COMPARISON</span>
           </div>
         </div>
       </div>
@@ -332,7 +336,7 @@ export function ValidationChart({ data }: ValidationChartProps) {
 
         <div className="flex items-center gap-2 text-amber-signal">
           <Clock className="w-4 h-4" />
-          <span>VALIDATION PENDING — 1 DAY OF LIVE DATA COLLECTED, ACCUMULATING TOWARD FIRST COMPARISON</span>
+          <span>VALIDATION PENDING — {daysLabelUpper} OF LIVE DATA COLLECTED, ACCUMULATING TOWARD FIRST COMPARISON</span>
         </div>
       </div>
     </div>
