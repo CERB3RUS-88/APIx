@@ -1,3 +1,4 @@
 index_date,frequency,apix_value,base_period_value,raw_weighted_fare,delta_24h,records_sampled,outliers_excluded
 2026-08-22,daily,188.32,100,9943.04,30.91,34143,2546
 2026-08-24,daily,185.72,100,9806.2,30,56203,4614
+2026-08-25,daily,185.79,100,9809.93,30.03,67737,5674
