@@ -3,33 +3,60 @@
 import * as React from 'react';
 import { Button } from '@/components/ui/button';
 import { DeltaBadge } from '@/components/ui/delta-badge';
-import { TimeSeriesPoint, TIME_SERIES_30D, TIME_SERIES_90D, TIME_SERIES_365D } from '@/lib/data-provider';
 import { formatIndexValue } from '@/lib/utils';
-import { Calendar, TrendingUp } from 'lucide-react';
+import { TrendingUp, Clock, Database } from 'lucide-react';
 
-type HorizonOption = '30D' | '90D' | '365D';
+export interface TimeSeriesPoint {
+  date: string;
+  apix: number;
+  rawFare: number;
+  delta24h: number;
+  sampledRecords?: number;
+  outliersExcluded?: number;
+}
+
+type HorizonOption = 'ALL' | '30D' | '90D' | '365D';
 
 export function IndexTrendChart() {
-  const [horizon, setHorizon] = React.useState<HorizonOption>('90D');
+  const [horizon, setHorizon] = React.useState<HorizonOption>('ALL');
   const [hoverIndex, setHoverIndex] = React.useState<number | null>(null);
-  const [mounted, setMounted] = React.useState(false);
+  const [realData, setRealData] = React.useState<TimeSeriesPoint[]>([]);
+  const [isLoading, setIsLoading] = React.useState<boolean>(true);
 
-  React.useEffect(() => {
-    setMounted(true);
+  const fetchTimeSeries = React.useCallback(async () => {
+    try {
+      const res = await fetch('/api/index?frequency=daily&limit=365');
+      if (res.ok) {
+        const json = await res.json();
+        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+          setRealData(json.data);
+        }
+      }
+    } catch {
+      // Keep empty if network issue
+    } finally {
+      setIsLoading(false);
+    }
   }, []);
 
-  const data: TimeSeriesPoint[] = React.useMemo(() => {
-    switch (horizon) {
-      case '30D':
-        return TIME_SERIES_30D;
-      case '90D':
-        return TIME_SERIES_90D;
-      case '365D':
-        return TIME_SERIES_365D;
-      default:
-        return TIME_SERIES_90D;
-    }
-  }, [horizon]);
+  React.useEffect(() => {
+    fetchTimeSeries();
+
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') {
+        fetchTimeSeries();
+      }
+    };
+    window.addEventListener('focus', onVisible);
+    document.addEventListener('visibilitychange', onVisible);
+    return () => {
+      window.removeEventListener('focus', onVisible);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [fetchTimeSeries]);
+
+  // Use only real time-series points without synthetic backfilling
+  const data: TimeSeriesPoint[] = realData;
 
   // Chart dimensions & scaling
   const width = 800;
@@ -39,19 +66,42 @@ export function IndexTrendChart() {
   const innerWidth = width - padding.left - padding.right;
   const innerHeight = height - padding.top - padding.bottom;
 
-  const minVal = Math.min(...data.map((d) => d.apix), 96.0);
-  const maxVal = Math.max(...data.map((d) => d.apix), 116.0);
-  const yRange = maxVal - minVal;
+  if (isLoading && data.length === 0) {
+    return (
+      <div className="h-64 flex flex-col items-center justify-center border border-border-subtle/60 rounded bg-surface-subtle/20 text-secondary font-mono text-xs">
+        <Clock className="w-5 h-5 text-amber-signal mb-2 animate-spin" />
+        <span>LOADING REAL TIME-SERIES OBSERVATIONS...</span>
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <div className="h-64 flex flex-col items-center justify-center border border-border-subtle/60 rounded bg-surface-subtle/20 text-secondary font-mono text-xs p-6 text-center">
+        <Database className="w-6 h-6 text-amber-signal mb-2" />
+        <span className="font-bold text-primary mb-1">NO HISTORICAL TIME-SERIES AVAILABLE</span>
+        <span className="text-[11px] text-secondary-muted max-w-md">
+          Awaiting scheduled daily pipeline runs to accumulate real observation dates.
+        </span>
+      </div>
+    );
+  }
+
+  const minVal = Math.floor(Math.min(...data.map((d) => d.apix), 100.0) - 5);
+  const maxVal = Math.ceil(Math.max(...data.map((d) => d.apix), 100.0) + 5);
+  const yRange = Math.max(10, maxVal - minVal);
 
   const getX = (idx: number) =>
-    Number((padding.left + (idx / Math.max(1, data.length - 1)) * innerWidth).toFixed(2));
+    Number((padding.left + (data.length > 1 ? (idx / (data.length - 1)) : 0.5) * innerWidth).toFixed(2));
   const getY = (val: number) =>
     Number((padding.top + innerHeight - ((val - minVal) / yRange) * innerHeight).toFixed(2));
 
   // Build SVG Path
   const points = data.map((d, i) => `${getX(i)},${getY(d.apix)}`);
-  const linePath = `M ${points.join(' L ')}`;
-  const areaPath = `${linePath} L ${getX(data.length - 1)},${(padding.top + innerHeight).toFixed(2)} L ${getX(0)},${(padding.top + innerHeight).toFixed(2)} Z`;
+  const linePath = data.length > 1 ? `M ${points.join(' L ')}` : '';
+  const areaPath = data.length > 1
+    ? `${linePath} L ${getX(data.length - 1)},${(padding.top + innerHeight).toFixed(2)} L ${getX(0)},${(padding.top + innerHeight).toFixed(2)} Z`
+    : '';
 
   // Base 100 baseline Y
   const base100Y = getY(100.0);
@@ -60,6 +110,7 @@ export function IndexTrendChart() {
   const activePoint = hoverIndex !== null && data[hoverIndex] ? data[hoverIndex] : data[data.length - 1];
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
+    if (data.length <= 1) return;
     const rect = e.currentTarget.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const svgX = (mouseX / rect.width) * width;
@@ -81,15 +132,14 @@ export function IndexTrendChart() {
   // Y-axis ticks
   const yTicks = [
     minVal,
-    minVal + yRange * 0.25,
+    Math.round(minVal + yRange * 0.25),
     100.0,
-    minVal + yRange * 0.75,
+    Math.round(minVal + yRange * 0.75),
     maxVal,
   ].filter((v, idx, arr) => arr.indexOf(v) === idx);
 
   // X-axis label samples
-  const xStep = Math.max(1, Math.floor(data.length / 5));
-  const xLabels = data.filter((_, i) => i % xStep === 0 || i === data.length - 1);
+  const xLabels = data;
 
   return (
     <div className="space-y-4">
@@ -109,26 +159,11 @@ export function IndexTrendChart() {
           <DeltaBadge value={activePoint.delta24h} size="xs" />
         </div>
 
-        {/* Time Horizon Switcher */}
-        <div className="flex items-center gap-1 bg-surface-subtle p-0.5 rounded border border-border-subtle">
-          {(['30D', '90D', '365D'] as HorizonOption[]).map((h) => (
-            <Button
-              key={h}
-              variant={horizon === h ? 'primary' : 'ghost'}
-              size="xs"
-              onClick={() => {
-                setHorizon(h);
-                setHoverIndex(null);
-              }}
-              className={
-                horizon === h
-                  ? 'bg-amber-signal text-ink font-bold'
-                  : 'text-secondary hover:text-primary'
-              }
-            >
-              {h}
-            </Button>
-          ))}
+        {/* Live Observation Count */}
+        <div className="flex items-center gap-2">
+          <span className="px-2.5 py-1 rounded bg-surface-subtle border border-border-subtle text-[11px] font-mono text-amber-signal font-bold">
+            {data.length} REAL {data.length === 1 ? 'OBSERVATION' : 'OBSERVATIONS'} ({data[0]?.date || ''} → {data[data.length - 1]?.date || ''})
+          </span>
         </div>
       </div>
 
@@ -191,17 +226,32 @@ export function IndexTrendChart() {
           )}
 
           {/* Gradient Area Fill */}
-          <path d={areaPath} fill="url(#apixAreaGrad)" />
+          {areaPath && <path d={areaPath} fill="url(#apixAreaGrad)" />}
 
           {/* Main APIx Index Line */}
-          <path
-            d={linePath}
-            fill="none"
-            stroke="#E8A33D"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
+          {linePath && (
+            <path
+              d={linePath}
+              fill="none"
+              stroke="#E8A33D"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
+          )}
+
+          {/* Observation Point Dots */}
+          {data.map((pt, idx) => (
+            <circle
+              key={`dot-${pt.date}`}
+              cx={getX(idx)}
+              cy={getY(pt.apix)}
+              r="4.5"
+              fill="#E8A33D"
+              stroke="#0E1420"
+              strokeWidth="2"
+            />
+          ))}
 
           {/* X-axis ticks and labels */}
           {xLabels.map((pt) => {

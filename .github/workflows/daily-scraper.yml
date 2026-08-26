@@ -92,3 +92,18 @@ jobs:
             echo "### ❌ Daily Automated Scrape & Index Run Failed" >> $GITHUB_STEP_SUMMARY
             echo "An error occurred during scraping, ETL cleaning, or git synchronization. Check job logs for details." >> $GITHUB_STEP_SUMMARY
           fi
+
+      - name: Send Failure Webhook Alert
+        if: failure()
+        run: |
+          RUN_URL="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          if [ -n "${{ secrets.DISCORD_WEBHOOK }}" ]; then
+            curl -s -H "Content-Type: application/json" -X POST \
+              -d "{\"content\": \"🚨 **APIx Scraper Pipeline Alert**: Daily automated run failed on commit \`${{ github.sha }}\`. [View Run Logs]($RUN_URL)\"}" \
+              "${{ secrets.DISCORD_WEBHOOK }}" || true
+          fi
+          if [ -n "${{ secrets.SLACK_WEBHOOK }}" ]; then
+            curl -s -H "Content-Type: application/json" -X POST \
+              -d "{\"text\": \"🚨 *APIx Scraper Pipeline Alert*: Daily automated run failed on commit `${{ github.sha }}`. View Run Logs: $RUN_URL\"}" \
+              "${{ secrets.SLACK_WEBHOOK }}" || true
+          fi

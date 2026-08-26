@@ -148,4 +148,42 @@ describe('ElasticityCalculator', () => {
     expect(t1Point?.price_multiplier_vs_t45).toBe(2.0);
     expect(t1Point?.discount_vs_t1).toBe(0.0);
   });
+
+  it('preserves non-monotonic market pricing without artificial yield curve distortion', () => {
+    const calc = new ElasticityCalculator();
+    // Real market scenario: T+7 surge flight (₹9,000) higher than T+1 last-minute discount (₹7,500)
+    const routeAgg: RouteFareAggregation = {
+      route_id: 'DEL-BOM',
+      origin_code: 'DEL',
+      destination_code: 'BOM',
+      dgca_traffic_weight: 0.155,
+      window_medians: {
+        'T+45': 4000,
+        'T+30': 4500,
+        'T+15': 5000,
+        'T+7': 9000, // Surge
+        'T+1': 7500, // Cheaper than T+7
+      },
+      window_counts: {
+        'T+45': 20,
+        'T+30': 20,
+        'T+15': 20,
+        'T+7': 20,
+        'T+1': 20,
+      },
+      representative_daily_fare: 6000,
+      total_quotes_count: 100,
+      outliers_excluded: 0,
+      carriers: ['6E'],
+      weighted_fare_contribution: 930.0,
+    };
+
+    const results = calc.computeElasticity([routeAgg]);
+    const t1 = results[0].curve.find((p) => p.booking_window === 'T+1');
+    const t7 = results[0].curve.find((p) => p.booking_window === 'T+7');
+
+    // Confirms T+1 and T+7 are untouched and report true raw market medians
+    expect(t1?.median_fare).toBe(7500);
+    expect(t7?.median_fare).toBe(9000);
+  });
 });

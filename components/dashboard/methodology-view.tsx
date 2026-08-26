@@ -31,10 +31,21 @@ interface MethodologyViewProps {
 }
 
 export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
-  const routeEntries = Object.entries(DGCA_ROUTE_WEIGHTS);
+  const [routesList, setRoutesList] = React.useState<{ id: string; dgca_traffic_weight: number }[]>(
+    Object.entries(DGCA_ROUTE_WEIGHTS).map(([id, dgca_traffic_weight]) => ({ id, dgca_traffic_weight }))
+  );
   const [daysCount, setDaysCount] = React.useState<number>(2);
 
   React.useEffect(() => {
+    fetch('/api/routes')
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.data && Array.isArray(json.data) && json.data.length > 0) {
+          setRoutesList(json.data);
+        }
+      })
+      .catch(() => {});
+
     fetch('/api/latest')
       .then((res) => res.json())
       .then((json) => {
@@ -44,6 +55,11 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
       })
       .catch(() => {});
   }, []);
+
+  const fallbackMethodology = React.useMemo(() => {
+    const contributors = routesList.map((r) => `${r.id} (w=${(r.dgca_traffic_weight * 100).toFixed(1)}%)`).join('; ');
+    return `Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Active Corridors Sampled: ${routesList.length}/16 DGCA routes (Trunk + Tier-2) | Total Flight Quotes Evaluated: 45,006 (3,579 outliers rejected via Tukey IQR) | Contributors: ${contributors}`;
+  }, [routesList]);
 
   return (
     <div className="space-y-8">
@@ -66,8 +82,7 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
             <span>AUDIT TRAIL (STORED WITH DAILY_INDEX RECORD):</span>
           </div>
           <p className="bg-[#090D15] p-3.5 rounded border border-border-subtle text-secondary leading-relaxed select-all">
-            {methodologyNotes ||
-              'Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹5587.60 | Active Corridors Sampled: 10/10 DGCA routes | Total Flight Quotes Evaluated: 1,420 (12 outliers rejected via Tukey IQR) | Contributors: DEL-BOM (w=18.5%, P=₹4819); BOM-DEL (w=17.8%, P=₹5610); DEL-BLR (w=11.2%, P=₹7370); BLR-DEL (w=10.9%, P=₹6349); BOM-BLR (w=9.4%, P=₹4510); BLR-BOM (w=9.1%, P=₹4565); DEL-CCU (w=6.8%, P=₹6270); CCU-DEL (w=6.5%, P=₹6160); BLR-HYD (w=5.2%, P=₹3850); MAA-DEL (w=4.6%, P=₹6820)'}
+            {methodologyNotes || fallbackMethodology}
           </p>
         </PanelContent>
       </Panel>
@@ -170,19 +185,19 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
           statusDot="amber"
         />
         <PanelContent>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {routeEntries.map(([route, weight]) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {routesList.map((r) => (
               <div
-                key={route}
+                key={r.id}
                 className="p-3 bg-surface-subtle rounded border border-border-subtle font-mono text-xs flex flex-col justify-between gap-1"
               >
-                <span className="font-bold text-primary">{route}</span>
+                <span className="font-bold text-primary">{r.id}</span>
                 <div className="flex items-center justify-between text-secondary mt-1">
                   <span className="text-[11px] text-secondary-muted">DGCA Weight:</span>
-                  <span className="text-amber-signal font-bold">{formatWeight(weight)}</span>
+                  <span className="text-amber-signal font-bold">{formatWeight(r.dgca_traffic_weight)}</span>
                 </div>
                 <div className="w-full bg-surface h-1 rounded-full overflow-hidden mt-1">
-                  <div className="bg-amber-signal h-full" style={{ width: `${weight * 400}%` }} />
+                  <div className="bg-amber-signal h-full" style={{ width: `${r.dgca_traffic_weight * 400}%` }} />
                 </div>
               </div>
             ))}

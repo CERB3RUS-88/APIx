@@ -151,21 +151,23 @@ export class RouteAggregator {
           const fares = winRecords.map((r) => r.total_fare).sort((a, b) => a - b);
           windowMedians[win] = fares[Math.floor(fares.length / 2)];
         } else {
-          // If a specific window has no sample today, interpolate realistically from baseline
-          windowMedians[win] = this.getFallbackFare(routeId, win);
+          // If a specific window has no sample, mark 0 (no quotes) rather than fabricating a fallback fare
+          windowMedians[win] = 0;
         }
       }
 
-      // Enforce monotonic yield curve: P(T+1) >= P(T+7) >= P(T+15) >= P(T+30) >= P(T+45)
-      this.ensureMonotonicYieldCurve(windowMedians);
-
-      // Representative route daily fare weighted by passenger booking lead-time shares
-      let representativeDailyFare = 0;
+      // Representative route daily fare weighted by passenger booking lead-time shares of sampled windows
+      let weightedSum = 0;
+      let totalSampledWeight = 0;
       for (const win of ALL_WINDOWS) {
-        representativeDailyFare += windowMedians[win] * (BOOKING_WINDOW_VOLUME_WEIGHTS[win] || 0.2);
+        if (windowMedians[win] > 0) {
+          const winWeight = BOOKING_WINDOW_VOLUME_WEIGHTS[win] || 0.2;
+          weightedSum += windowMedians[win] * winWeight;
+          totalSampledWeight += winWeight;
+        }
       }
-      representativeDailyFare = Math.round(representativeDailyFare);
 
+      const representativeDailyFare = totalSampledWeight > 0 ? Math.round(weightedSum / totalSampledWeight) : 0;
       const weightedContribution = Number((representativeDailyFare * weight).toFixed(2));
 
       routeAggregations.push({
@@ -188,45 +190,5 @@ export class RouteAggregator {
       totalOutliersExcluded,
       totalValidRecords,
     };
-  }
-
-  private ensureMonotonicYieldCurve(medians: Record<BookingWindow, number>): void {
-    // Ensure last-minute is at least higher than mid-range
-    if (medians['T+1'] < medians['T+7']) {
-      medians['T+1'] = Math.round(medians['T+7'] * 1.45);
-    }
-    if (medians['T+7'] < medians['T+15']) {
-      medians['T+7'] = Math.round(medians['T+15'] * 1.18);
-    }
-    if (medians['T+15'] < medians['T+30']) {
-      medians['T+15'] = Math.round(medians['T+30'] * 1.12);
-    }
-    if (medians['T+30'] < medians['T+45']) {
-      medians['T+30'] = Math.round(medians['T+45'] * 1.08);
-    }
-  }
-
-  private getFallbackFare(routeId: string, win: BookingWindow): number {
-    const basePrices: Record<string, number> = {
-      'DEL-BOM': 5160,
-      'BOM-DEL': 5060,
-      'DEL-BLR': 6650,
-      'BLR-DEL': 6550,
-      'BOM-BLR': 4070,
-      'BLR-BOM': 4120,
-      'DEL-CCU': 5655,
-      'CCU-DEL': 5555,
-      'BLR-HYD': 3470,
-      'MAA-DEL': 6150,
-    };
-    const mults: Record<BookingWindow, number> = {
-      'T+1': 1.65,
-      'T+7': 1.18,
-      'T+15': 1.0,
-      'T+30': 0.88,
-      'T+45': 0.80,
-    };
-    const base = basePrices[routeId] || 5000;
-    return Math.round(base * (mults[win] || 1.0));
   }
 }

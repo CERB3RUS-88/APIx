@@ -279,7 +279,7 @@ export function ApiDocsView() {
             60 REQUESTS / MINUTE
           </div>
           <p className="text-[11px] text-secondary mt-1">
-            Standard X-RateLimit-Limit, Remaining, and Reset headers included.
+            Enforced in-memory per serverless instance (X-RateLimit headers included).
           </p>
         </Panel>
 

@@ -23,16 +23,22 @@ export const seedRoutes = mutation({
     }
 
     const defaultRoutes = [
-      { origin_code: 'DEL', destination_code: 'BOM', dgca_traffic_weight: 0.185, active: true },
-      { origin_code: 'BOM', destination_code: 'DEL', dgca_traffic_weight: 0.178, active: true },
-      { origin_code: 'DEL', destination_code: 'BLR', dgca_traffic_weight: 0.112, active: true },
-      { origin_code: 'BLR', destination_code: 'DEL', dgca_traffic_weight: 0.109, active: true },
-      { origin_code: 'BOM', destination_code: 'BLR', dgca_traffic_weight: 0.094, active: true },
-      { origin_code: 'BLR', destination_code: 'BOM', dgca_traffic_weight: 0.091, active: true },
-      { origin_code: 'DEL', destination_code: 'CCU', dgca_traffic_weight: 0.068, active: true },
-      { origin_code: 'CCU', destination_code: 'DEL', dgca_traffic_weight: 0.065, active: true },
-      { origin_code: 'BLR', destination_code: 'HYD', dgca_traffic_weight: 0.052, active: true },
-      { origin_code: 'MAA', destination_code: 'DEL', dgca_traffic_weight: 0.046, active: true },
+      { origin_code: 'DEL', destination_code: 'BOM', dgca_traffic_weight: 0.155, active: true },
+      { origin_code: 'BOM', destination_code: 'DEL', dgca_traffic_weight: 0.145, active: true },
+      { origin_code: 'DEL', destination_code: 'BLR', dgca_traffic_weight: 0.095, active: true },
+      { origin_code: 'BLR', destination_code: 'DEL', dgca_traffic_weight: 0.090, active: true },
+      { origin_code: 'BOM', destination_code: 'BLR', dgca_traffic_weight: 0.078, active: true },
+      { origin_code: 'BLR', destination_code: 'BOM', dgca_traffic_weight: 0.075, active: true },
+      { origin_code: 'DEL', destination_code: 'CCU', dgca_traffic_weight: 0.058, active: true },
+      { origin_code: 'CCU', destination_code: 'DEL', dgca_traffic_weight: 0.055, active: true },
+      { origin_code: 'BLR', destination_code: 'HYD', dgca_traffic_weight: 0.040, active: true },
+      { origin_code: 'MAA', destination_code: 'DEL', dgca_traffic_weight: 0.034, active: true },
+      { origin_code: 'DEL', destination_code: 'GAU', dgca_traffic_weight: 0.035, active: true },
+      { origin_code: 'BOM', destination_code: 'GOI', dgca_traffic_weight: 0.032, active: true },
+      { origin_code: 'DEL', destination_code: 'PAT', dgca_traffic_weight: 0.038, active: true },
+      { origin_code: 'BLR', destination_code: 'COK', dgca_traffic_weight: 0.028, active: true },
+      { origin_code: 'DEL', destination_code: 'IXC', dgca_traffic_weight: 0.022, active: true },
+      { origin_code: 'BOM', destination_code: 'PNQ', dgca_traffic_weight: 0.020, active: true },
     ];
 
     const insertedIds = [];
@@ -44,6 +50,6 @@ export const seedRoutes = mutation({
       insertedIds.push(id);
     }
 
-    return { seeded: true, count: insertedIds.length, message: 'Successfully seeded 10 DGCA routes' };
+    return { seeded: true, count: insertedIds.length, message: 'Successfully seeded 16 DGCA routes' };
   },
 });

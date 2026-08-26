@@ -53,6 +53,7 @@ export function checkRateLimit(request: NextRequest): {
     'X-RateLimit-Limit': String(MAX_REQUESTS_PER_WINDOW),
     'X-RateLimit-Remaining': String(remaining),
     'X-RateLimit-Reset': String(resetSeconds),
+    'X-RateLimit-Scope': 'per-instance',
   };
 
   return {
