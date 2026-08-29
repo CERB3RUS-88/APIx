@@ -1,0 +1,18 @@
+{
+  "route_id": "DEL-GAU",
+  "origin": "DEL",
+  "destination": "GAU",
+  "source": "EaseMyTrip",
+  "booking_window": "T+30",
+  "flight_date": "2026-09-28",
+  "scraped_at": "2026-08-29T21:09:50.485Z",
+  "duration_ms": 5330,
+  "success": true,
+  "quotes_count": 0,
+  "quotes": [],
+  "intercepted_api": false,
+  "raw_payload": {
+    "dom_extracted_count": 0,
+    "url": "https://flight.easemytrip.com/FlightList/Index?srch=DEL-Delhi-India|GAU-Guwahati-India|28/09/2026&px=1-0-0&cbn=0&ar=undefined&isqs=true"
+  }
+}
