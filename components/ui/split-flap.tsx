@@ -60,12 +60,16 @@ export function SplitFlapDigit({
   const [flipperTop, setFlipperTop] = React.useState(prevChar);
   const [flipperBottom, setFlipperBottom] = React.useState(char);
   const [animating, setAnimating] = React.useState(false);
+  const prevCharRef = React.useRef(char);
 
   // When char changes, trigger the 3D flip lifecycle
   React.useEffect(() => {
-    if (char === displayBottom) return;
+    if (char === prevCharRef.current) return;
 
-    setFlipperTop(displayTop);
+    const oldChar = prevCharRef.current;
+    prevCharRef.current = char;
+
+    setFlipperTop(oldChar);
     setFlipperBottom(char);
     setDisplayTop(char);
     setAnimating(true);
@@ -76,7 +80,7 @@ export function SplitFlapDigit({
     }, 280);
 
     return () => clearTimeout(timer);
-  }, [char, displayTop, displayBottom]);
+  }, [char]);
 
   // Size dimensions
   const sizeStyles = {
@@ -254,14 +258,15 @@ export function SplitFlapDisplay({
   cycleSteps = 3,
   className,
 }: SplitFlapDisplayProps) {
-  const targetStr = String(value).toUpperCase().padStart(minLength, ' ');
+  const targetStr = String(value ?? '').toUpperCase().padStart(minLength, ' ');
   const [currentChars, setCurrentChars] = React.useState<string[]>(
-    targetStr.split('')
+    () => targetStr.split('')
   );
   const [prevChars, setPrevChars] = React.useState<string[]>(
-    targetStr.split('')
+    () => targetStr.split('')
   );
   const isFirstRender = React.useRef(true);
+  const timersRef = React.useRef<NodeJS.Timeout[]>([]);
 
   React.useEffect(() => {
     if (isFirstRender.current) {
@@ -269,51 +274,63 @@ export function SplitFlapDisplay({
       return;
     }
 
+    timersRef.current.forEach((t) => clearTimeout(t));
+    timersRef.current = [];
+
     const targetArray = targetStr.split('');
-    const paddedCurrent = [...currentChars];
-
-    while (paddedCurrent.length < targetArray.length) {
-      paddedCurrent.unshift(' ');
-    }
-
-    setPrevChars([...paddedCurrent]);
-
-    // Animate each column with staggered stepping
-    targetArray.forEach((targetChar, index) => {
-      const fromChar = paddedCurrent[index] || ' ';
-      if (fromChar === targetChar) return;
-
-      const delay = index * staggerMs;
-
-      // Intermediate cycling steps for authentic airport Solari effect
-      for (let step = 1; step <= cycleSteps; step++) {
-        setTimeout(() => {
-          if (step === cycleSteps) {
-            setCurrentChars((prev) => {
-              const next = [...prev];
-              next[index] = targetChar;
-              return next;
-            });
-            if (enableAudio) {
-              playMechanicalTick();
-            }
-          } else {
-            // Pick a rolling intermediate character
-            const fromIndex = CHAR_SET.indexOf(fromChar);
-            const intermediate =
-              CHAR_SET[(fromIndex + step * 3) % CHAR_SET.length];
-            setCurrentChars((prev) => {
-              const next = [...prev];
-              next[index] = intermediate;
-              return next;
-            });
-            if (enableAudio && step === 1) {
-              playMechanicalTick();
-            }
-          }
-        }, delay + step * 50);
+    setCurrentChars((prev) => {
+      const paddedCurrent = [...prev];
+      while (paddedCurrent.length < targetArray.length) {
+        paddedCurrent.unshift(' ');
       }
+      setPrevChars([...paddedCurrent]);
+
+      // Animate each column with staggered stepping
+      targetArray.forEach((targetChar, index) => {
+        const fromChar = paddedCurrent[index] || ' ';
+        if (fromChar === targetChar) return;
+
+        const delay = index * staggerMs;
+
+        // Intermediate cycling steps for authentic airport Solari effect
+        for (let step = 1; step <= cycleSteps; step++) {
+          const t = setTimeout(() => {
+            if (step === cycleSteps) {
+              setCurrentChars((c) => {
+                const next = [...c];
+                next[index] = targetChar;
+                return next;
+              });
+              if (enableAudio) {
+                playMechanicalTick();
+              }
+            } else {
+              // Pick a rolling intermediate character
+              const fromIndex = CHAR_SET.indexOf(fromChar);
+              const intermediate =
+                CHAR_SET[(fromIndex + step * 3) % CHAR_SET.length];
+              setCurrentChars((c) => {
+                const next = [...c];
+                next[index] = intermediate;
+                return next;
+              });
+              if (enableAudio && step === 1) {
+                playMechanicalTick();
+              }
+            }
+          }, delay + step * 50);
+
+          timersRef.current.push(t);
+        }
+      });
+
+      return paddedCurrent;
     });
+
+    return () => {
+      timersRef.current.forEach((t) => clearTimeout(t));
+      timersRef.current = [];
+    };
   }, [targetStr, staggerMs, cycleSteps, enableAudio]);
 
   return (
