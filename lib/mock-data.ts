@@ -313,20 +313,20 @@ export const MOCK_ROUTE_SUMMARIES: RouteIndexSummary[] = [
 ];
 
 export const CURRENT_LIVE_INDEX: DailyIndex = {
-  id: 'daily_index_2026-08-26',
-  index_date: '2026-08-26',
+  id: 'daily_index_2026-08-29',
+  index_date: '2026-08-29',
   frequency: 'daily',
-  apix_value: 186.53,
+  apix_value: 178.56,
   base_period_value: 100.0,
-  delta_24h: 30.29,
+  delta_24h: 27.50,
   delta_7d: 1.45,
   delta_30d: 5.83,
   median_basket_fare: 5280,
-  weighted_basket_fare: 9849.01,
+  weighted_basket_fare: 9427.93,
   active_routes_count: 16,
-  records_processed: 94584,
-  distinct_dates_count: 4,
-  collected_dates: ['2026-08-22', '2026-08-24', '2026-08-25', '2026-08-26'],
+  records_processed: 224967,
+  distinct_dates_count: 7,
+  collected_dates: ['2026-08-22', '2026-08-24', '2026-08-25', '2026-08-26', '2026-08-27', '2026-08-28', '2026-08-29'],
   methodology_notes:
-    'Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹9849.01 | Active Corridors Sampled: 16/16 DGCA routes (Trunk + Tier-2) | Total Flight Quotes Evaluated: 94,584 (8,469 outliers rejected via Tukey IQR)',
+    'Methodology: Laspeyres Weighted Basket Index (MoSPI CPI Transport Sub-Group Augmentation) | Base Period Value: 100.00 (Jan 2026 Reference Basket Fare = ₹5280.00) | Current 24h Weighted Basket Fare: ₹9427.93 | Active Corridors Sampled: 16/16 DGCA routes (Trunk + Tier-2) | Total Flight Quotes Evaluated: 224,967 (21,006 outliers rejected via Tukey IQR)',
 };
