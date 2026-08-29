@@ -162,7 +162,7 @@ export function ValidationView({ initialDatesCount = 2 }: ValidationViewProps) {
       sortable: true,
       align: 'center',
       cell: (row) => {
-        const absPct = Math.abs(row.variance_pct);
+        const absPct = Math.abs(row.variance_pct ?? 0);
         const isGradeA = absPct <= 2.0;
 
         return (
@@ -173,7 +173,7 @@ export function ValidationView({ initialDatesCount = 2 }: ValidationViewProps) {
                 : 'bg-amber-signal/10 text-amber-signal border-amber-signal/30'
             }`}
           >
-            <span>{row.variance_pct > 0 ? '+' : ''}{row.variance_pct.toFixed(2)}%</span>
+            <span>{(row.variance_pct ?? 0) > 0 ? '+' : ''}{(row.variance_pct ?? 0).toFixed(2)}%</span>
           </div>
         );
       },
@@ -217,7 +217,7 @@ export function ValidationView({ initialDatesCount = 2 }: ValidationViewProps) {
           </div>
           <div>
             <div className="text-2xl font-bold font-mono text-amber-signal">
-              {metrics ? metrics.pearson_correlation.toFixed(3) : 'PENDING'}
+              {metrics && typeof metrics.pearson_correlation === 'number' ? metrics.pearson_correlation.toFixed(3) : 'PENDING'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
               {metrics
@@ -241,7 +241,7 @@ export function ValidationView({ initialDatesCount = 2 }: ValidationViewProps) {
           </div>
           <div>
             <div className="text-2xl font-bold font-mono text-primary">
-              {metrics ? `${metrics.mape_pct.toFixed(2)}%` : 'PENDING'}
+              {metrics && typeof metrics.mape_pct === 'number' ? `${metrics.mape_pct.toFixed(2)}%` : 'PENDING'}
             </div>
             <p className="text-[11px] font-mono text-secondary mt-1">
               {metrics

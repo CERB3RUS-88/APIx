@@ -119,7 +119,7 @@ export function AntiGougingWatchdog() {
                       <span className="text-[10px] text-secondary-muted font-normal">({alt.window})</span>
                     </div>
                     <span className="px-1.5 py-0.5 rounded text-[9px] font-bold bg-delta-negative/20 text-delta-negative border border-delta-negative/30">
-                      +{alt.surge_pct.toFixed(0)}% ({alt.sigma_deviation}σ)
+                      +{(alt.surge_pct ?? 0).toFixed(0)}% ({alt.sigma_deviation ?? 3}σ)
                     </span>
                   </div>
 

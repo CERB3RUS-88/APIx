@@ -11,7 +11,7 @@ export interface DeltaBadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
 }
 
 export function DeltaBadge({
-  value,
+  value = 0,
   format = 'percent',
   invertColors = false,
   size = 'sm',
@@ -20,8 +20,9 @@ export function DeltaBadge({
   className,
   ...props
 }: DeltaBadgeProps) {
-  const isZero = Math.abs(value) < 0.001;
-  const isUp = value > 0;
+  const numVal = typeof value === 'number' && !Number.isNaN(value) ? value : 0;
+  const isZero = Math.abs(numVal) < 0.001;
+  const isUp = numVal > 0;
   
   // In MoSPI / consumer economics:
   // Fare down = positive development for passenger = green (#4FA98C)
@@ -43,7 +44,7 @@ export function DeltaBadge({
 
   const arrow = isZero ? '—' : isUp ? '▲' : '▼';
   const sign = isUp ? '+' : '';
-  const displayVal = format === 'percent' ? `${sign}${value.toFixed(2)}%` : `${sign}${value.toFixed(2)} pts`;
+  const displayVal = format === 'percent' ? `${sign}${numVal.toFixed(2)}%` : `${sign}${numVal.toFixed(2)} pts`;
 
   return (
     <span

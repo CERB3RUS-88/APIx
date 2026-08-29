@@ -1,22 +1,29 @@
 'use client';
 
-import { ReactNode } from 'react';
+import * as React from 'react';
 import { ConvexProvider, ConvexReactClient } from 'convex/react';
-
-const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL || 'https://placeholder-deployment.convex.cloud';
 
 export const isConvexConfigured = Boolean(
   process.env.NEXT_PUBLIC_CONVEX_URL &&
-  process.env.NEXT_PUBLIC_CONVEX_URL !== 'https://placeholder-deployment.convex.cloud'
+  process.env.NEXT_PUBLIC_CONVEX_URL !== 'https://placeholder-deployment.convex.cloud' &&
+  process.env.NEXT_PUBLIC_CONVEX_URL.startsWith('http')
 );
 
-const convex = new ConvexReactClient(convexUrl);
+export function ConvexClientProvider({ children }: { children: React.ReactNode }) {
+  const convexClient = React.useMemo(() => {
+    if (!isConvexConfigured || !process.env.NEXT_PUBLIC_CONVEX_URL) {
+      return null;
+    }
+    try {
+      return new ConvexReactClient(process.env.NEXT_PUBLIC_CONVEX_URL);
+    } catch {
+      return null;
+    }
+  }, []);
 
-export function ConvexClientProvider({ children }: { children: ReactNode }) {
-  if (!isConvexConfigured) {
-    // If not configured yet, pass through children smoothly
+  if (!convexClient) {
     return <>{children}</>;
   }
 
-  return <ConvexProvider client={convex}>{children}</ConvexProvider>;
+  return <ConvexProvider client={convexClient}>{children}</ConvexProvider>;
 }

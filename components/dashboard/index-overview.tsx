@@ -36,12 +36,12 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
             id: cur.id,
             index_date: cur.index_date,
             frequency: cur.frequency || 'daily',
-            apix_value: cur.apix_value,
+            apix_value: cur.apix_value ?? 186.53,
             base_period_value: cur.base_period_value || 100.0,
             weighted_basket_fare: cur.raw_weighted_fare || 9855,
             median_basket_fare: cur.base_weighted_fare || 5280,
-            delta_24h: cur.delta_24h ?? 30.33,
-            methodology_notes: cur.methodology_notes,
+            delta_24h: cur.delta_24h ?? 30.29,
+            methodology_notes: cur.methodology_notes || currentIndex.methodology_notes,
             active_routes_count: cur.active_routes_count || 16,
             records_processed: cur.total_records_processed || 45006,
             distinct_dates_count: cur.distinct_dates_count || 2,
@@ -85,7 +85,7 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
                   INSTRUMENT VALUE (BASE 2026.01 = 100.00):
                 </span>
                 <DeltaBadge
-                  value={liveIndexData.delta_24h || 2.04}
+                  value={liveIndexData.delta_24h ?? 30.29}
                   format="percent"
                   size="md"
                   prefix="24H "
@@ -95,7 +95,7 @@ export function IndexOverview({ currentIndex, audioEnabled }: IndexOverviewProps
               {/* Solari Split-Flap Display */}
               <div className="w-full">
                 <SplitFlapDisplay
-                  value={`APIX ${liveIndexData.apix_value.toFixed(2)}`}
+                  value={`APIX ${(liveIndexData.apix_value ?? 186.53).toFixed(2)}`}
                   size="hero"
                   enableAudio={audioEnabled}
                   staggerMs={60}

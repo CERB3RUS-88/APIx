@@ -107,7 +107,14 @@ export function IndexTrendChart() {
   const base100Y = getY(100.0);
 
   // Active hover point
-  const activePoint = hoverIndex !== null && data[hoverIndex] ? data[hoverIndex] : data[data.length - 1];
+  const activePoint =
+    (hoverIndex !== null && data[hoverIndex]) ||
+    data[data.length - 1] || {
+      date: '—',
+      apix: 186.53,
+      rawFare: 9849,
+      delta24h: 30.29,
+    };
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
     if (data.length <= 1) return;

@@ -25,9 +25,9 @@ const PRESETS = [
 
 export function IndexHero({ currentIndex, audioEnabled }: IndexHeroProps) {
   const [displayedValue, setDisplayedValue] = React.useState<string>(
-    currentIndex.apix_value.toFixed(2)
+    (currentIndex?.apix_value ?? 186.53).toFixed(2)
   );
-  const [currentDelta, setCurrentDelta] = React.useState<number>(currentIndex.delta_24h);
+  const [currentDelta, setCurrentDelta] = React.useState<number>(currentIndex?.delta_24h ?? 30.29);
   const [activePresetIndex, setActivePresetIndex] = React.useState<number>(0);
   const [isSimulating, setIsSimulating] = React.useState<boolean>(false);
 

@@ -31,18 +31,18 @@ export default function HomePage() {
           if (json.data && json.data.current_index) {
             const cur = json.data.current_index;
             setLiveIndex({
-              id: cur.id,
-              index_date: cur.index_date,
+              id: cur.id || 'daily_index_latest',
+              index_date: cur.index_date || '2026-08-26',
               frequency: cur.frequency || 'daily',
-              apix_value: cur.apix_value,
+              apix_value: typeof cur.apix_value === 'number' ? cur.apix_value : CURRENT_LIVE_INDEX.apix_value,
               base_period_value: cur.base_period_value || 100.0,
-              weighted_basket_fare: cur.raw_weighted_fare || 9855,
+              weighted_basket_fare: cur.raw_weighted_fare || 9849,
               median_basket_fare: cur.base_weighted_fare || 5280,
-              delta_24h: cur.delta_24h ?? 30.33,
+              delta_24h: typeof cur.delta_24h === 'number' ? cur.delta_24h : 30.29,
               methodology_notes: cur.methodology_notes || CURRENT_LIVE_INDEX.methodology_notes,
               active_routes_count: cur.active_routes_count || 16,
-              records_processed: cur.total_records_processed || 45006,
-              distinct_dates_count: cur.distinct_dates_count || 2,
+              records_processed: cur.total_records_processed || 94584,
+              distinct_dates_count: cur.distinct_dates_count || 4,
               collected_dates: cur.collected_dates || [],
             });
           }

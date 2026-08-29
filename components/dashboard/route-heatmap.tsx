@@ -206,9 +206,9 @@ export function RouteHeatmap() {
             className={`inline-flex items-center gap-1.5 px-2 py-0.5 rounded border font-mono text-xs font-semibold select-none ${colorClass}`}
           >
             <span>{isSurge ? '▲' : '▼'}</span>
-            <span>{isSurge ? '+' : ''}{row.delta_percent.toFixed(2)}%</span>
+            <span>{isSurge ? '+' : ''}{(row.delta_percent ?? 0).toFixed(2)}%</span>
             <span className="text-[10px] opacity-75">
-              ({isSurge ? '+' : ''}₹{row.delta_amount})
+              ({isSurge ? '+' : ''}₹{row.delta_amount ?? 0})
             </span>
           </div>
         );
@@ -392,7 +392,7 @@ export function RouteHeatmap() {
                     <span>Base: {formatINR(item.baseline_fare)}</span>
                     {hasData ? (
                       <span className={isSurge ? 'text-delta-negative font-bold' : 'text-delta-positive font-bold'}>
-                        {isSurge ? '+' : ''}{item.delta_percent.toFixed(1)}%
+                        {isSurge ? '+' : ''}{(item.delta_percent ?? 0).toFixed(1)}%
                       </span>
                     ) : (
                       <span className="text-[10px] text-secondary-muted font-mono">
