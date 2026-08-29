@@ -129,7 +129,7 @@ export function ElasticityView() {
                   : 'text-secondary hover:text-primary'
               }
             >
-              {key} ({item?.origin_city?.slice(0, 3) || key.split('-')[0]} → {item?.destination_city?.slice(0, 3) || key.split('-')[1]})
+              {key} ({typeof item?.origin_city === 'string' ? item.origin_city.slice(0, 3) : (key ? key.split('-')[0] : 'DEL')} → {typeof item?.destination_city === 'string' ? item.destination_city.slice(0, 3) : (key ? key.split('-')[1] : 'BOM')})
             </Button>
           );
         })}

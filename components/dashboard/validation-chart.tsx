@@ -276,7 +276,9 @@ export function ValidationChart({ data, distinctDatesCount = 2 }: ValidationChar
                   className="font-mono text-[10px]"
                   fontFamily="var(--font-mono), monospace"
                 >
-                  {d.month.slice(5)}/{d.month.slice(2, 4)}
+                  {typeof d.month === 'string' && d.month.length >= 7
+                    ? `${d.month.slice(5)}/${d.month.slice(2, 4)}`
+                    : d.month || '—'}
                 </text>
               </g>
             );

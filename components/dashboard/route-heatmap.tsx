@@ -50,7 +50,9 @@ export function RouteHeatmap() {
               const currentFare = hasData ? (r.representative_daily_fare || 0) : 0;
               const deltaAmt = hasData ? currentFare - baseFare : 0;
               const deltaPct = hasData && baseFare > 0 ? Number(((deltaAmt / baseFare) * 100).toFixed(2)) : 0;
-              const cities = CITY_NAMES[r.route_id] || { origin: r.origin_code, dest: r.destination_code };
+              const origin = r.origin_code || (typeof r.route_id === 'string' ? r.route_id.split('-')[0] : 'DEL');
+              const dest = r.destination_code || (typeof r.route_id === 'string' ? r.route_id.split('-')[1] : 'BOM');
+              const cities = (r.route_id && CITY_NAMES[r.route_id]) || { origin, dest };
 
               let status: 'SURGE' | 'EASED' | 'STABLE' | 'NORMAL' | 'AWAITING_FIRST_SCRAPE' = hasData ? 'NORMAL' : 'AWAITING_FIRST_SCRAPE';
               if (hasData) {

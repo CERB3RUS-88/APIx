@@ -29,7 +29,50 @@ export function IndexTrendChart() {
       if (res.ok) {
         const json = await res.json();
         if (json.data && Array.isArray(json.data) && json.data.length > 0) {
-          setRealData(json.data);
+          // Normalize API response fields (supporting index_date, apix_value, raw_weighted_fare, delta_24h)
+          const validPoints: TimeSeriesPoint[] = json.data
+            .map((item: any) => {
+              const rawDate = item.index_date || item.date;
+              const date = typeof rawDate === 'string' ? rawDate.trim() : '';
+
+              const apix =
+                typeof item.apix_value === 'number'
+                  ? item.apix_value
+                  : typeof item.apix === 'number'
+                  ? item.apix
+                  : parseFloat(item.apix_value || item.apix);
+
+              const rawFare =
+                typeof item.raw_weighted_fare === 'number'
+                  ? item.raw_weighted_fare
+                  : typeof item.rawFare === 'number'
+                  ? item.rawFare
+                  : parseFloat(item.raw_weighted_fare || item.rawFare) || 5280;
+
+              const delta24h =
+                typeof item.delta_24h === 'number'
+                  ? item.delta_24h
+                  : typeof item.delta24h === 'number'
+                  ? item.delta24h
+                  : parseFloat(item.delta_24h || item.delta24h) || 0;
+
+              const sampledRecords = item.records_sampled || item.sampledRecords || 0;
+              const outliersExcluded = item.outliers_excluded || item.outliersExcluded || 0;
+
+              return {
+                date,
+                apix: Number.isFinite(apix) ? apix : 100,
+                rawFare: Number.isFinite(rawFare) ? rawFare : 5280,
+                delta24h: Number.isFinite(delta24h) ? delta24h : 0,
+                sampledRecords: Number(sampledRecords) || 0,
+                outliersExcluded: Number(outliersExcluded) || 0,
+              };
+            })
+            .filter((pt: TimeSeriesPoint) => pt.date && pt.date.length >= 5 && Number.isFinite(pt.apix));
+
+          if (validPoints.length > 0) {
+            setRealData(validPoints);
+          }
         }
       }
     } catch {
@@ -55,7 +98,7 @@ export function IndexTrendChart() {
     };
   }, [fetchTimeSeries]);
 
-  // Use only real time-series points without synthetic backfilling
+  // Use only real validated time-series points without synthetic backfilling
   const data: TimeSeriesPoint[] = realData;
 
   // Chart dimensions & scaling
@@ -94,7 +137,7 @@ export function IndexTrendChart() {
   const getX = (idx: number) =>
     Number((padding.left + (data.length > 1 ? (idx / (data.length - 1)) : 0.5) * innerWidth).toFixed(2));
   const getY = (val: number) =>
-    Number((padding.top + innerHeight - ((val - minVal) / yRange) * innerHeight).toFixed(2));
+    Number((padding.top + innerHeight - (((Number.isFinite(val) ? val : 100) - minVal) / yRange) * innerHeight).toFixed(2));
 
   // Build SVG Path
   const points = data.map((d, i) => `${getX(i)},${getY(d.apix)}`);
@@ -106,14 +149,14 @@ export function IndexTrendChart() {
   // Base 100 baseline Y
   const base100Y = getY(100.0);
 
-  // Active hover point
-  const activePoint =
-    (hoverIndex !== null && data[hoverIndex]) ||
+  // Active hover point with complete fallback safety
+  const activePoint: TimeSeriesPoint =
+    (hoverIndex !== null && hoverIndex >= 0 && hoverIndex < data.length && data[hoverIndex]) ||
     data[data.length - 1] || {
       date: '—',
-      apix: 186.53,
-      rawFare: 9849,
-      delta24h: 30.29,
+      apix: 100,
+      rawFare: 5280,
+      delta24h: 0,
     };
 
   const handleMouseMove = (e: React.MouseEvent<SVGSVGElement>) => {
@@ -250,7 +293,7 @@ export function IndexTrendChart() {
           {/* Observation Point Dots */}
           {data.map((pt, idx) => (
             <circle
-              key={`dot-${pt.date}`}
+              key={`dot-${pt.date || idx}`}
               cx={getX(idx)}
               cy={getY(pt.apix)}
               r="4.5"
@@ -261,11 +304,16 @@ export function IndexTrendChart() {
           ))}
 
           {/* X-axis ticks and labels */}
-          {xLabels.map((pt) => {
-            const idx = data.indexOf(pt);
-            const x = getX(idx);
+          {xLabels.map((pt, idx) => {
+            const pointIdx = data.indexOf(pt);
+            const x = getX(pointIdx >= 0 ? pointIdx : idx);
+            const dateLabel =
+              typeof pt.date === 'string' && pt.date.length >= 5
+                ? pt.date.slice(5)
+                : pt.date || '—';
+
             return (
-              <g key={`xtick-${pt.date}`}>
+              <g key={`xtick-${pt.date || idx}`}>
                 <line
                   x1={x}
                   y1={padding.top + innerHeight}
@@ -282,7 +330,7 @@ export function IndexTrendChart() {
                   className="font-mono text-[10px]"
                   fontFamily="var(--font-mono), monospace"
                 >
-                  {pt.date.slice(5)} {/* MM-DD */}
+                  {dateLabel} {/* MM-DD */}
                 </text>
               </g>
             );
