@@ -20,8 +20,8 @@ export async function GET(request: NextRequest) {
 
   if (githubToken) {
     try {
-      const repoOwner = 'CERB3RUS-88';
-      const repoName = 'APIx';
+      const repoOwner = process.env.GITHUB_REPOSITORY_OWNER || 'KnullVoid-Git';
+      const repoName = process.env.GITHUB_REPOSITORY_NAME || 'APIx';
       const workflowFileName = 'daily-scraper.yml';
 
       const ghRes = await fetch(
