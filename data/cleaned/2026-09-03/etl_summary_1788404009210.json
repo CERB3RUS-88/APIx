@@ -1,0 +1,97 @@
+{
+  "run_id": "etl_1788404009191",
+  "executed_at": "2026-09-03T02:53:29.191Z",
+  "snapshots_processed": 240,
+  "total_raw_quotes_parsed": 2485,
+  "duplicates_skipped": 1051,
+  "invalid_fares_skipped": 0,
+  "valid_records_processed": 1201,
+  "outliers_flagged": 141,
+  "records_inserted": 1201,
+  "group_stats": [
+    {
+      "route_id": "BOM-DEL",
+      "booking_window": "T+15",
+      "count": 167,
+      "q1": 6688,
+      "median": 7032,
+      "q3": 9695,
+      "iqr": 3007,
+      "lower_fence": 2178,
+      "upper_fence": 14206,
+      "outlier_count": 22
+    },
+    {
+      "route_id": "BOM-DEL",
+      "booking_window": "T+1",
+      "count": 167,
+      "q1": 6562,
+      "median": 6930,
+      "q3": 8345,
+      "iqr": 1783,
+      "lower_fence": 3888,
+      "upper_fence": 11020,
+      "outlier_count": 33
+    },
+    {
+      "route_id": "BOM-DEL",
+      "booking_window": "T+7",
+      "count": 163,
+      "q1": 6562,
+      "median": 7032,
+      "q3": 9925,
+      "iqr": 3363,
+      "lower_fence": 1518,
+      "upper_fence": 14970,
+      "outlier_count": 22
+    },
+    {
+      "route_id": "DEL-BOM",
+      "booking_window": "T+1",
+      "count": 168,
+      "q1": 6530,
+      "median": 7000,
+      "q3": 10596,
+      "iqr": 4066,
+      "lower_fence": 500,
+      "upper_fence": 16695,
+      "outlier_count": 16
+    },
+    {
+      "route_id": "DEL-BOM",
+      "booking_window": "T+30",
+      "count": 185,
+      "q1": 6530,
+      "median": 7000,
+      "q3": 10491,
+      "iqr": 3961,
+      "lower_fence": 589,
+      "upper_fence": 16433,
+      "outlier_count": 17
+    },
+    {
+      "route_id": "DEL-BOM",
+      "booking_window": "T+45",
+      "count": 185,
+      "q1": 7169,
+      "median": 7502,
+      "q3": 11930,
+      "iqr": 4761,
+      "lower_fence": 500,
+      "upper_fence": 19072,
+      "outlier_count": 13
+    },
+    {
+      "route_id": "DEL-BOM",
+      "booking_window": "T+7",
+      "count": 166,
+      "q1": 6530,
+      "median": 7000,
+      "q3": 10801,
+      "iqr": 4271,
+      "lower_fence": 500,
+      "upper_fence": 17208,
+      "outlier_count": 18
+    }
+  ]
+}
