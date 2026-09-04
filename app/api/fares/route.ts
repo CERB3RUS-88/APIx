@@ -7,10 +7,19 @@ import { isValidBookingWindow, normalizeBookingWindow } from '@/lib/api/validato
 import { DGCA_ROUTE_BASKET } from '@/lib/mock-data';
 import { CleanedFareRecord } from '@/pipeline/cleaner/types';
 
+let cachedRecords: CleanedFareRecord[] | null = null;
+let lastCacheTime = 0;
+const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
+
 /**
- * Loads real cleaned fare records from data/cleaned/ directory
+ * Loads real cleaned fare records from data/cleaned/ directory with caching
  */
 function loadCleanedFareRecords(): CleanedFareRecord[] {
+  const now = Date.now();
+  if (cachedRecords && now - lastCacheTime < CACHE_TTL_MS) {
+    return cachedRecords;
+  }
+
   const cleanedBase = path.join(process.cwd(), 'data', 'cleaned');
   if (!fs.existsSync(cleanedBase)) {
     return [];
@@ -57,6 +66,8 @@ function loadCleanedFareRecords(): CleanedFareRecord[] {
     console.warn(`Error reading cleaned fare records: ${(err as Error).message}`);
   }
 
+  cachedRecords = allRecords;
+  lastCacheTime = now;
   return allRecords;
 }
 
