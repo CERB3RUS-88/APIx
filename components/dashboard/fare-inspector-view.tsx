@@ -100,9 +100,9 @@ export function FareInspectorView() {
         throw new Error(`HTTP ${res.status}: Failed to fetch fare records`);
       }
       const json = await res.json();
-      if (json.status === 'success' && Array.isArray(json.data)) {
+      if (json && Array.isArray(json.data)) {
         setRecords(json.data);
-        setTotalInStore(json.metadata?.total_available_in_store || json.data.length);
+        setTotalInStore(json.meta?.total_available_in_store || json.meta?.count || json.data.length);
       } else {
         setRecords([]);
         setTotalInStore(0);
@@ -783,9 +783,10 @@ export function FareInspectorView() {
                 <pre className="bg-ink p-3 rounded border border-border-subtle text-secondary text-[11px] overflow-x-auto leading-relaxed max-h-60">
                   {JSON.stringify(
                     {
-                      status: 'success',
-                      count: filteredRecords.length,
-                      metadata: {
+                      data: filteredRecords.slice(0, 3),
+                      meta: {
+                        generated_at: new Date().toISOString(),
+                        count: filteredRecords.length,
                         filter_route_id: selectedRoute,
                         filter_booking_window: selectedWindow,
                         filter_fare_class: selectedFareClass,
@@ -793,7 +794,6 @@ export function FareInspectorView() {
                         data_source: 'REAL_CLEANED_FLIGHT_RECORDS',
                         compliance_policy: 'ROBOTS_TXT_ADHERENT',
                       },
-                      data: filteredRecords.slice(0, 3),
                     },
                     null,
                     2
