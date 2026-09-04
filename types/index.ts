@@ -1,5 +1,6 @@
 export type BookingWindow = 'T+1' | 'T+7' | 'T+15' | 'T+30' | 'T+45';
 export type IndexFrequency = 'daily' | 'weekly' | 'monthly';
+export type FareClass = 'Economy' | 'Premium Economy' | 'Business';
 
 export interface Route {
   id: string;
@@ -16,7 +17,7 @@ export interface Route {
 export interface RawSnapshot {
   id: string;
   route_id: string;
-  source: 'IndiGo' | 'AirIndia' | 'SpiceJet' | 'MakeMyTrip' | 'EaseMyTrip';
+  source: 'IndiGo' | 'AirIndia' | 'SpiceJet' | 'MakeMyTrip' | 'EaseMyTrip' | 'Akasa' | 'Cleartrip';
   booking_window: BookingWindow;
   scraped_at: string;
   raw_payload: Record<string, unknown>;
@@ -31,6 +32,7 @@ export interface FareRecord {
   departure_time?: string;
   flight_date: string;
   booking_window: BookingWindow;
+  fare_class: FareClass;
   base_fare: number;
   taxes: number;
   total_fare: number;

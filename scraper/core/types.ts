@@ -1,4 +1,5 @@
 export type BookingWindow = 'T+1' | 'T+7' | 'T+15' | 'T+30' | 'T+45';
+export type FareClass = 'Economy' | 'Premium Economy' | 'Business';
 
 export interface RouteTarget {
   id: string; // e.g. 'DEL-BOM'
@@ -27,6 +28,7 @@ export interface RawFlightQuote {
   base_fare: number;
   taxes: number;
   total_fare: number;
+  fare_class?: FareClass;
   cabin_class?: string;
   seats_left?: number;
   raw_flight_payload?: Record<string, unknown>;

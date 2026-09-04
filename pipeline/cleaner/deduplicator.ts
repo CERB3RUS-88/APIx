@@ -8,7 +8,7 @@ export class FareDeduplicator {
    */
   public getCompositeKey(record: CleanedFareRecord): string {
     const flightIdentifier = record.flight_number || record.departure_time || 'std';
-    return `${record.route_id}#${record.carrier}#${record.flight_date}#${record.booking_window}#${record.source}#${flightIdentifier}`;
+    return `${record.route_id}#${record.carrier}#${record.flight_date}#${record.booking_window}#${record.source}#${record.fare_class || 'Economy'}#${flightIdentifier}`;
   }
 
   /**

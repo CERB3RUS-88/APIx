@@ -24,6 +24,7 @@ describe('FareDeduplicator', () => {
     source: 'EaseMyTrip',
     source_url: 'https://flight.easemytrip.com',
     scraped_at: '2026-08-22T10:00:00.000Z',
+    fare_class: 'Economy',
     base_fare: 6500,
     taxes: 799,
     total_fare: 7299,
@@ -38,7 +39,7 @@ describe('FareDeduplicator', () => {
     const rec1 = createSampleRecord({ flight_number: '6E-501' });
     const rec2 = createSampleRecord({ flight_number: '6E-501' });
     expect(deduplicator.getCompositeKey(rec1)).toBe(deduplicator.getCompositeKey(rec2));
-    expect(deduplicator.getCompositeKey(rec1)).toBe('DEL-BOM#6E#2026-08-23#T+1#EaseMyTrip#6E-501');
+    expect(deduplicator.getCompositeKey(rec1)).toBe('DEL-BOM#6E#2026-08-23#T+1#EaseMyTrip#Economy#6E-501');
   });
 
   it('filters out duplicate records with identical flight identifiers in a batch', () => {
@@ -103,6 +104,7 @@ describe('OutlierDetector (Tukey IQR)', () => {
       source: 'EaseMyTrip',
       source_url: 'https://flight.easemytrip.com',
       scraped_at: '2026-08-22T10:00:00.000Z',
+      fare_class: 'Economy',
       base_fare: Math.round(fare * 0.85),
       taxes: Math.round(fare * 0.15),
       total_fare: fare,

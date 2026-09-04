@@ -76,6 +76,7 @@ export async function GET(request: NextRequest) {
   const routeId = searchParams.get('route_id')?.toUpperCase();
   const rawBookingWindow = searchParams.get('booking_window');
   const bookingWindow = rawBookingWindow ? normalizeBookingWindow(rawBookingWindow) : undefined;
+  const fareClassParam = searchParams.get('fare_class');
   const limitParam = searchParams.get('limit');
   const limit = limitParam ? Math.min(200, parseInt(limitParam, 10)) : 50;
 
@@ -107,7 +108,10 @@ export async function GET(request: NextRequest) {
   // Load real scraped and cleaned fare records
   const allCleaned = loadCleanedFareRecords();
 
-  let filtered = allCleaned;
+  let filtered = allCleaned.map((r) => ({
+    ...r,
+    fare_class: r.fare_class || 'Economy',
+  }));
 
   if (routeId) {
     filtered = filtered.filter((r) => r.route_id === routeId);
@@ -115,6 +119,10 @@ export async function GET(request: NextRequest) {
 
   if (bookingWindow) {
     filtered = filtered.filter((r) => r.booking_window === bookingWindow);
+  }
+
+  if (fareClassParam) {
+    filtered = filtered.filter((r) => r.fare_class.toLowerCase() === fareClassParam.toLowerCase());
   }
 
   // Filter out statistical outliers from public quotes feed unless requested
@@ -128,6 +136,7 @@ export async function GET(request: NextRequest) {
     {
       filter_route_id: routeId || 'ALL',
       filter_booking_window: bookingWindow || 'ALL',
+      filter_fare_class: fareClassParam || 'ALL',
       total_available_in_store: filtered.length,
       data_source: 'REAL_CLEANED_FLIGHT_RECORDS',
     },

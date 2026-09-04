@@ -52,6 +52,14 @@ export class SnapshotParser {
     const flightNumber = raw.flight_number || raw.flightNumber || raw.FltNo ? String(raw.flight_number || raw.flightNumber || raw.FltNo) : undefined;
     const departureTime = raw.departure_time || raw.departureTime || raw.DepTime ? String(raw.departure_time || raw.departureTime || raw.DepTime) : '08:00';
 
+    const rawClass = String(raw.fare_class || raw.fareClass || raw.cabin_class || raw.cabinClass || raw.class || 'Economy').toLowerCase();
+    let fareClass: 'Economy' | 'Premium Economy' | 'Business' = 'Economy';
+    if (rawClass.includes('business') || rawClass === 'biz' || rawClass === 'j' || rawClass === 'c') {
+      fareClass = 'Business';
+    } else if (rawClass.includes('premium') || rawClass.includes('prem') || rawClass === 'w') {
+      fareClass = 'Premium Economy';
+    }
+
     return {
       id: `fare_${snapshot.route_id}_${carrier}_${snapshot.flight_date}_${snapshot.booking_window}_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       route_id: snapshot.route_id,
@@ -60,6 +68,7 @@ export class SnapshotParser {
       flight_number: flightNumber,
       flight_date: snapshot.flight_date,
       booking_window: snapshot.booking_window,
+      fare_class: fareClass,
       base_fare: baseFare!,
       taxes: taxes!,
       total_fare: totalFare,

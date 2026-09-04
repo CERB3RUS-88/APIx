@@ -16,12 +16,12 @@ APIx is an end-to-end software platform that scrapes domestic airfare data from 
 
 ## 🛫 Key Capabilities
 
-- **Ethical Scraping Safeguards**: Automated, rate-limited (3–7s randomized jitter delay to keep server load minimal), transparent User-Agent identification, and robots.txt path verification across sources (EaseMyTrip, Cleartrip, Akasa Air, Air India). Where a carrier's own website restricts automated search access (per robots.txt), that carrier's fare data is still represented in the index via compliant OTA aggregators that legitimately list their fares (e.g. IndiGo flights via EaseMyTrip/Cleartrip), preserving basket coverage without violating source compliance boundaries.
-- **Data Cleaning & Anomaly Detection**: Enforces base fare and GST tax separation, deduplication, and Tukey IQR statistical outlier tagging.
+- **Ethical Scraping Safeguards**: Automated, rate-limited (3–7s randomized jitter delay to keep server load minimal), transparent User-Agent identification (`APIx-PriceIndex-Bot/1.0`), and strict RFC 9309 robots.txt path validation across sources (EaseMyTrip, Cleartrip, Akasa Air, Air India). Audited portals with search-route bot disallows (Ixigo, Goibibo, Yatra, MakeMyTrip, IndiGo) are bypassed for direct scraping, with all national carrier inventory compliantly captured via compliant OTA aggregators (EaseMyTrip/Cleartrip), maintaining 100% basket coverage without breaching crawler boundaries.
+- **Data Cleaning & Anomaly Detection**: Enforces mandatory `fare_class` metadata (`Economy` / `Premium Economy` / `Business`), base fare and GST tax separation, composite deduplication, and Tukey IQR statistical outlier tagging.
 - **Laspeyres Index Engine**: Aggregates quotes across 5 booking windows ($T+1, T+7, T+15, T+30, T+45$) weighted by official DGCA route volume shares with Jan 2026 base period normalization ($100.00 = ₹5,280$).
 - **Institutional Terminal Dashboard**: High-frequency Solari Split-Flap board with mechanical flip audio, 30D/90D/365D trend line chart, departure route heatmap, and advance-purchase elasticity curves.
 - **Empirical DGCA Ground-Truth Validation**: Live daily observations dynamically accumulating toward multi-month Pearson $r$ correlation validation against official DGCA reference benchmark circulars.
-- **Open REST API**: High-frequency read-only endpoints (`/api/index`, `/api/routes`, `/api/fares`, `/api/latest`) with built-in rate limiting (60 req/min) and interactive documentation at `/api-docs`.
+- **Open REST API**: High-frequency read-only endpoints (`/api/index`, `/api/routes`, `/api/fares`, `/api/latest`) supporting `fare_class` filtering with built-in rate limiting (60 req/min) and interactive documentation at `/api-docs`.
 
 ---
 

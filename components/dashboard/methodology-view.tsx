@@ -108,8 +108,23 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
               <span className="p-1.5 bg-surface-subtle border border-border-subtle rounded text-delta-positive font-bold">T+45 (45d)</span>
             </div>
             <p className="text-[11px] text-secondary-muted pt-1">
-              Fares are collected under ethical scraping safeguards: transparent User-Agent identification, randomized 3–7s jitter delays to keep server load minimal, and robots.txt path validation. Where a carrier's own website restricts automated search access (per robots.txt), that carrier's fare data is still represented in the index via compliant OTA aggregators that legitimately list their fares (e.g. IndiGo flights via EaseMyTrip/Cleartrip), preserving basket coverage without violating source compliance boundaries.
+              Fares are collected under ethical scraping safeguards: transparent User-Agent identification (<code className="text-amber-signal">APIx-PriceIndex-Bot/1.0</code>), randomized 3–7s jitter delays to keep server load minimal, and robots.txt path validation across active compliant sources (EaseMyTrip, Cleartrip, Akasa Air, Air India).
             </p>
+            <div className="p-2.5 rounded bg-surface border border-border-subtle text-[11px] space-y-1.5 text-secondary-muted">
+              <span className="text-primary font-semibold font-mono text-[10px] uppercase tracking-wider block">OTA & Carrier Robots.txt Compliance Audit:</span>
+              <p>
+                <strong>Ixigo.com:</strong> Explicitly disallows <code className="text-delta-negative">/flights/search</code>, <code className="text-delta-negative">/search/result/</code>, and <code className="text-delta-negative">/api/</code> for all bots; excluded from direct scraper pipeline.
+              </p>
+              <p>
+                <strong>Goibibo.com:</strong> Explicitly disallows <code className="text-delta-negative">/flight/searchticket/</code>, <code className="text-delta-negative">/flights/new/</code>, and <code className="text-delta-negative">/api/</code>; excluded from direct scraper pipeline.
+              </p>
+              <p>
+                <strong>Yatra.com:</strong> Restricts bot access on <code className="text-delta-negative">/pwa/</code>, <code className="text-delta-negative">/fresco/</code>, and flight search interfaces; excluded from direct scraper pipeline.
+              </p>
+              <p>
+                <strong>MakeMyTrip / IndiGo:</strong> Direct search URLs disallowed via robots.txt. All carrier inventory (IndiGo 6E, Air India AI, Akasa QP, SpiceJet SG, AIX IX) is fully captured via compliant OTA aggregators (EaseMyTrip & Cleartrip), preserving 100% national basket coverage while respecting RFC 9309 crawler standards.
+              </p>
+            </div>
           </PanelContent>
         </Panel>
 
@@ -122,11 +137,12 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
           />
           <PanelContent className="space-y-3 text-xs text-secondary leading-relaxed font-sans">
             <p>
-              Before aggregation, all quotes undergo tax decomposition and statistical anomaly filtering:
+              Before aggregation, all quotes undergo schema normalization, tax decomposition, and statistical anomaly filtering:
             </p>
             <ul className="space-y-1.5 list-disc pl-4 font-mono text-[11px]">
+              <li><strong>Fare Class Metadata:</strong> Tags each quote with mandatory <span className="text-primary">fare_class</span> (<code className="text-amber-signal">Economy</code> / <code className="text-amber-signal">Premium Economy</code> / <code className="text-amber-signal">Business</code>), defaulting to standard Economy where cabin class is unsegregated.</li>
               <li><strong>Tax Separation:</strong> Strictly enforces <span className="text-primary">Total Fare = Base Fare + Taxes</span> (GST, UDF, fuel surcharges).</li>
-              <li><strong>Deduplication:</strong> Eliminates duplicate quotes matching the same carrier, date, window, and departure time.</li>
+              <li><strong>Deduplication:</strong> Eliminates duplicate quotes matching the same carrier, date, window, fare class, and departure time.</li>
               <li><strong>Tukey IQR Fences:</strong> For each corridor and window, computes IQR = Q3 - Q1. Fares outside [Q1 - 1.5×IQR, Q3 + 1.5×IQR] are tagged as <span className="text-delta-negative">is_outlier = true</span> and excluded from index calculation while retained for audit.</li>
             </ul>
           </PanelContent>

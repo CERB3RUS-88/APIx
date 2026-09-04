@@ -1,4 +1,5 @@
-import { BookingWindow } from '../../scraper/core/types';
+import { BookingWindow, FareClass } from '../../scraper/core/types';
+export type { FareClass };
 
 export interface CleanedFareRecord {
   id: string; // e.g. 'fare_DEL-BOM_6E_2026-08-23_T+1_...'
@@ -8,6 +9,7 @@ export interface CleanedFareRecord {
   flight_number?: string;
   flight_date: string; // YYYY-MM-DD
   booking_window: BookingWindow;
+  fare_class: FareClass;
   base_fare: number;
   taxes: number;
   total_fare: number;
