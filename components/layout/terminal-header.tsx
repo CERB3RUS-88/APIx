@@ -53,10 +53,10 @@ export function TerminalHeader({
     { id: 'overview', label: '01. INDEX OVERVIEW' },
     { id: 'routes', label: '02. ROUTE BASKET' },
     { id: 'elasticity', label: '03. LEAD-TIME ELASTICITY' },
-    { id: 'validation', label: '04. DGCA VALIDATION' },
-    { id: 'methodology', label: '05. METHODOLOGY' },
-    { id: 'api-docs', label: '06. API SPECS' },
-    { id: 'fare-inspector', label: '07. FARE INSPECTOR' },
+    { id: 'fare-inspector', label: '04. FARE INSPECTOR' },
+    { id: 'validation', label: '05. DGCA VALIDATION' },
+    { id: 'methodology', label: '06. METHODOLOGY' },
+    { id: 'api-docs', label: '07. API SPECS' },
   ];
 
   return (

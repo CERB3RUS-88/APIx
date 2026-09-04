@@ -418,7 +418,7 @@ export function FareInspectorView() {
     <div className="space-y-6">
       {/* Section Header */}
       <SectionHeader
-        kicker="07 · MICRO-DATA AUDIT TRAIL"
+        kicker="04 · MICRO-DATA AUDIT TRAIL"
         title="SAMPLE FARE INSPECTOR & MICRO-DATA AUDIT LEDGER"
         description="Transparent verification layer: inspect individual cleaned flight fare records collected directly from compliant sources contributing to the national representative price vector."
         actions={

@@ -119,6 +119,8 @@ export default function HomePage() {
 
         {activeTab === 'elasticity' && <ElasticityView />}
 
+        {activeTab === 'fare-inspector' && <FareInspectorView />}
+
         {activeTab === 'validation' && <ValidationView />}
 
         {activeTab === 'methodology' && (
@@ -128,8 +130,6 @@ export default function HomePage() {
         )}
 
         {activeTab === 'api-docs' && <ApiDocsView />}
-
-        {activeTab === 'fare-inspector' && <FareInspectorView />}
       </main>
 
       {/* 1-Click MoSPI Press Bulletin Modal */}

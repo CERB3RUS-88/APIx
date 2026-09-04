@@ -64,7 +64,7 @@ export function MethodologyView({ methodologyNotes }: MethodologyViewProps) {
   return (
     <div className="space-y-8">
       <SectionHeader
-        kicker="[MODULE 05 // METHODOLOGY & GOVERNANCE]"
+        kicker="[MODULE 06 // METHODOLOGY & GOVERNANCE]"
         title="APIx Index Methodology & Statistical Framework"
         description="Comprehensive technical and mathematical specification of the National Airfare Price Index, designed to augment the Transport and Communication sub-group of India's official Consumer Price Index (CPI)."
       />

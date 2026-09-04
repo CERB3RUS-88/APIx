@@ -202,7 +202,7 @@ export function ValidationView({ initialDatesCount = 2 }: ValidationViewProps) {
   return (
     <div className="space-y-8">
       <SectionHeader
-        kicker="[MODULE 04 // EMPIRICAL VALIDATION & GROUND TRUTH]"
+        kicker="[MODULE 05 // EMPIRICAL VALIDATION & GROUND TRUTH]"
         title="DGCA Back-Test Validation & Econometric Convergence"
         description="Empirical validation of the real-time APIx Index against official Ministry of Civil Aviation / DGCA tariff benchmark circulars. Live validation requires minimum N ≥ 2 overlapping monthly periods."
       />
