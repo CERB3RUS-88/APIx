@@ -8,6 +8,7 @@ import { ElasticityView } from '@/components/dashboard/elasticity-view';
 import { ValidationView } from '@/components/dashboard/validation-view';
 import { MethodologyView } from '@/components/dashboard/methodology-view';
 import { ApiDocsView } from '@/components/dashboard/api-docs-view';
+import { FareInspectorView } from '@/components/dashboard/fare-inspector-view';
 import { BulletinModal } from '@/components/dashboard/bulletin-modal';
 import { PolicySimulator } from '@/components/dashboard/policy-simulator';
 import { AntiGougingWatchdog } from '@/components/dashboard/anti-gouging-watchdog';
@@ -20,6 +21,20 @@ export default function HomePage() {
   const [liveIndex, setLiveIndex] = React.useState<DailyIndex>(CURRENT_LIVE_INDEX);
   const [isBulletinOpen, setIsBulletinOpen] = React.useState<boolean>(false);
   const [isSimulatorOpen, setIsSimulatorOpen] = React.useState<boolean>(false);
+
+  // Sync tab from URL search parameters on mount if present
+  React.useEffect(() => {
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      const validTabs = ['overview', 'routes', 'elasticity', 'validation', 'methodology', 'api-docs', 'fare-inspector'];
+      if (tabParam && validTabs.includes(tabParam)) {
+        setActiveTab(tabParam);
+      }
+    } catch {
+      // Ignore in SSR
+    }
+  }, []);
 
   // Fetch real-time computed index from /api/latest (with auto-polling & focus refresh)
   React.useEffect(() => {
@@ -113,6 +128,8 @@ export default function HomePage() {
         )}
 
         {activeTab === 'api-docs' && <ApiDocsView />}
+
+        {activeTab === 'fare-inspector' && <FareInspectorView />}
       </main>
 
       {/* 1-Click MoSPI Press Bulletin Modal */}

@@ -56,6 +56,7 @@ export function TerminalHeader({
     { id: 'validation', label: '04. DGCA VALIDATION' },
     { id: 'methodology', label: '05. METHODOLOGY' },
     { id: 'api-docs', label: '06. API SPECS' },
+    { id: 'fare-inspector', label: '07. FARE INSPECTOR' },
   ];
 
   return (
